@@ -22,7 +22,16 @@ public class IMEI_NULL implements RulesInterface {
 
     @PostConstruct
     public void init() {
-        NULL_IMEI_VALUE = Optional.ofNullable(systemConfigurationDbRepository.getByTag("CDR_NULL_IMEI_REPLACE_PATTERN").getValue()).orElse("999999999999999");
+        try {
+            NULL_IMEI_VALUE = Optional.ofNullable(systemConfigurationDbRepository.getByTag("CDR_NULL_IMEI_REPLACE_PATTERN").getValue()).orElse("999999999999999");
+        } catch (Exception e) {
+            handleDbConnectionError();
+        }
+    }
+
+    private void handleDbConnectionError() {
+        // Set a default value in case of DB connection error
+        NULL_IMEI_VALUE = "999999999999999";
     }
 
     @Override
