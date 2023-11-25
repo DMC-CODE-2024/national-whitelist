@@ -312,7 +312,8 @@ public class ValidateRules implements Runnable{
                     }
                     systemConfigurationDbRepository.save(new SystemConfigurationDb("nw_unique_foreign_imei_last_run_time", activeUniqueForeignImeisLastRunEndDate, "latest date when foreign whitelist process for unique imei ran"));
                 }
-            List<RuleEngineMapping> foreignRules = ruleEngineMappingRepository.getByFeatureAndUserTypeOrderByRuleOrder("foreign_whitelist", "default", "Enabled");
+            List<RuleEngineMapping> foreignRules = ruleEngineMappingRepository.
+                    getByFeatureAndUserTypeOrderByRuleOrder("foreign_whitelist", "default", "Enabled");
             int compareDatesActiveUniqueForeignImeis = compareDates(activeUniqueForeignImeisLastRunDate, cdrProcessingTimestamp);
             if (compareDatesActiveUniqueForeignImeis > 0) {
                 Pageable pageable = PageRequest.of(0, batchSize);
