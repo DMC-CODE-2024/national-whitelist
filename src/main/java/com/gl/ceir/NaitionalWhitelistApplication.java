@@ -16,9 +16,9 @@ public class NaitionalWhitelistApplication {
 	public static void main(String[] args) {
 		ConfigurableApplicationContext ctx = SpringApplication.run(NaitionalWhitelistApplication.class, args);
 		ValidateRules validateRules = ctx.getBean(ValidateRules.class);
-		WatchdogService watchdogService = ctx.getBean(WatchdogService.class);
+//		WatchdogService watchdogService = ctx.getBean(WatchdogService.class);
 		new Thread(validateRules).start();
-		new Thread(watchdogService).start();
+//		new Thread(watchdogService).start();
 	}
 
 }

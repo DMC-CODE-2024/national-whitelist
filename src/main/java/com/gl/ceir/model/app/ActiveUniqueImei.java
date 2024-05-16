@@ -1,9 +1,8 @@
 package com.gl.ceir.model.app;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import com.gl.ceir.config.BooleanToStringConverter;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -43,19 +42,34 @@ public class ActiveUniqueImei implements Serializable{
     private LocalDateTime updateImeiArrivalTime;
     private String updateSource;
     private String serverOrigin;
-    private boolean validityFlag;
+//    @Transient
+//    @Convert(converter = BooleanToStringConverter.class)
+    private Boolean validityFlag;
+    private Integer isTypeApprovedFlag;
     private String actualOperator;
     private String testImei;
     private String deviceType;
     private String isUsed;
     @Transient
     private String reason;
+    @Transient
+    private Integer gdceImeiStatus;
+    @Transient
+    private LocalDateTime gdceModifiedTime;
+    @Transient
+    private Integer trcImeiStatus;
+    @Transient
+    private LocalDateTime trcModifiedTime;
+    @Transient
+    private Integer customsStatus;
+    @Transient
+    private Integer localManufacturerStatus;
 
 
     public ActiveUniqueImei() {
     }
 
-    public ActiveUniqueImei(Integer id, LocalDateTime createdOn, LocalDateTime modifiedOn, String foreginRule, String tac, String msisdn, Integer failedRuleId, String failedRuleName, String imsi, String mobileOperator, String createFilename, String updateFilename, LocalDateTime updatedOn, String systemType, String action, String period, LocalDateTime failedRuleDate, Integer mobileOperatorId, Integer taxPaid, String featureName, LocalDateTime recordTime, String actualImei, String recordType, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, boolean validityFlag, String actualOperator, String testImei, String deviceType, String isUsed, String reason) {
+    public ActiveUniqueImei(Integer id, LocalDateTime createdOn, LocalDateTime modifiedOn, String foreginRule, String tac, String msisdn, Integer failedRuleId, String failedRuleName, String imsi, String mobileOperator, String createFilename, String updateFilename, LocalDateTime updatedOn, String systemType, String action, String period, LocalDateTime failedRuleDate, Integer mobileOperatorId, Integer taxPaid, String featureName, LocalDateTime recordTime, String actualImei, String recordType, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, Boolean validityFlag, Integer isTypeApprovedFlag, String actualOperator, String testImei, String deviceType, String isUsed, String reason, Integer gdceImeiStatus, LocalDateTime gdceModifiedTime, Integer trcImeiStatus, LocalDateTime trcModifiedTime, Integer customsStatus, Integer localManufacturerStatus) {
         this.id = id;
         this.createdOn = createdOn;
         this.modifiedOn = modifiedOn;
@@ -88,11 +102,18 @@ public class ActiveUniqueImei implements Serializable{
         this.updateSource = updateSource;
         this.serverOrigin = serverOrigin;
         this.validityFlag = validityFlag;
+        this.isTypeApprovedFlag = isTypeApprovedFlag;
         this.actualOperator = actualOperator;
         this.testImei = testImei;
         this.deviceType = deviceType;
         this.isUsed = isUsed;
         this.reason = reason;
+        this.gdceImeiStatus = gdceImeiStatus;
+        this.gdceModifiedTime = gdceModifiedTime;
+        this.trcImeiStatus = trcImeiStatus;
+        this.trcModifiedTime = trcModifiedTime;
+        this.customsStatus = customsStatus;
+        this.localManufacturerStatus = localManufacturerStatus;
     }
 
     public Integer getId() {
@@ -343,12 +364,20 @@ public class ActiveUniqueImei implements Serializable{
         this.serverOrigin = serverOrigin;
     }
 
-    public boolean isValidityFlag() {
+    public Boolean getValidityFlag() {
         return validityFlag;
     }
 
-    public void setValidityFlag(boolean validityFlag) {
+    public void setValidityFlag(Boolean validityFlag) {
         this.validityFlag = validityFlag;
+    }
+
+    public Integer getIsTypeApprovedFlag() {
+        return isTypeApprovedFlag;
+    }
+
+    public void setIsTypeApprovedFlag(Integer isTypeApprovedFlag) {
+        this.isTypeApprovedFlag = isTypeApprovedFlag;
     }
 
     public String getActualOperator() {
@@ -391,47 +420,101 @@ public class ActiveUniqueImei implements Serializable{
         this.reason = reason;
     }
 
+    public Integer getGdceImeiStatus() {
+        return gdceImeiStatus;
+    }
+
+    public void setGdceImeiStatus(Integer gdceImeiStatus) {
+        this.gdceImeiStatus = gdceImeiStatus;
+    }
+
+    public LocalDateTime getGdceModifiedTime() {
+        return gdceModifiedTime;
+    }
+
+    public void setGdceModifiedTime(LocalDateTime gdceModifiedTime) {
+        this.gdceModifiedTime = gdceModifiedTime;
+    }
+
+    public Integer getTrcImeiStatus() {
+        return trcImeiStatus;
+    }
+
+    public void setTrcImeiStatus(Integer trcImeiStatus) {
+        this.trcImeiStatus = trcImeiStatus;
+    }
+
+    public LocalDateTime getTrcModifiedTime() {
+        return trcModifiedTime;
+    }
+
+    public void setTrcModifiedTime(LocalDateTime trcModifiedTime) {
+        this.trcModifiedTime = trcModifiedTime;
+    }
+
+    public Integer getCustomsStatus() {
+        return customsStatus;
+    }
+
+    public void setCustomsStatus(Integer customsStatus) {
+        this.customsStatus = customsStatus;
+    }
+
+    public Integer getLocalManufacturerStatus() {
+        return localManufacturerStatus;
+    }
+
+    public void setLocalManufacturerStatus(Integer localManufacturerStatus) {
+        this.localManufacturerStatus = localManufacturerStatus;
+    }
+
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ActiveUniqueImei{");
-        sb.append("id=").append(id);
-        sb.append(", createdOn=").append(createdOn);
-        sb.append(", modifiedOn=").append(modifiedOn);
-        sb.append(", foreginRule='").append(foreginRule).append('\'');
-        sb.append(", tac='").append(tac).append('\'');
-        sb.append(", msisdn='").append(msisdn).append('\'');
-        sb.append(", failedRuleId=").append(failedRuleId);
-        sb.append(", failedRuleName='").append(failedRuleName).append('\'');
-        sb.append(", imsi='").append(imsi).append('\'');
-        sb.append(", mobileOperator='").append(mobileOperator).append('\'');
-        sb.append(", createFilename='").append(createFilename).append('\'');
-        sb.append(", updateFilename='").append(updateFilename).append('\'');
-        sb.append(", updatedOn=").append(updatedOn);
-        sb.append(", systemType='").append(systemType).append('\'');
-        sb.append(", action='").append(action).append('\'');
-        sb.append(", period='").append(period).append('\'');
-        sb.append(", failedRuleDate=").append(failedRuleDate);
-        sb.append(", mobileOperatorId=").append(mobileOperatorId);
-        sb.append(", taxPaid=").append(taxPaid);
-        sb.append(", featureName='").append(featureName).append('\'');
-        sb.append(", recordTime=").append(recordTime);
-        sb.append(", actualImei='").append(actualImei).append('\'');
-        sb.append(", recordType='").append(recordType).append('\'');
-        sb.append(", imei='").append(imei).append('\'');
-        sb.append(", rawCdrFileName='").append(rawCdrFileName).append('\'');
-        sb.append(", imeiArrivalTime=").append(imeiArrivalTime);
-        sb.append(", source='").append(source).append('\'');
-        sb.append(", updateRawCdrFileName='").append(updateRawCdrFileName).append('\'');
-        sb.append(", updateImeiArrivalTime=").append(updateImeiArrivalTime);
-        sb.append(", updateSource='").append(updateSource).append('\'');
-        sb.append(", serverOrigin='").append(serverOrigin).append('\'');
-        sb.append(", validityFlag=").append(validityFlag);
-        sb.append(", actualOperator='").append(actualOperator).append('\'');
-        sb.append(", testImei='").append(testImei).append('\'');
-        sb.append(", deviceType='").append(deviceType).append('\'');
-        sb.append(", isUsed='").append(isUsed).append('\'');
-        sb.append(", reason='").append(reason).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "ActiveUniqueImei{" +
+                "id=" + id +
+                ", createdOn=" + createdOn +
+                ", modifiedOn=" + modifiedOn +
+                ", foreginRule='" + foreginRule + '\'' +
+                ", tac='" + tac + '\'' +
+                ", msisdn='" + msisdn + '\'' +
+                ", failedRuleId=" + failedRuleId +
+                ", failedRuleName='" + failedRuleName + '\'' +
+                ", imsi='" + imsi + '\'' +
+                ", mobileOperator='" + mobileOperator + '\'' +
+                ", createFilename='" + createFilename + '\'' +
+                ", updateFilename='" + updateFilename + '\'' +
+                ", updatedOn=" + updatedOn +
+                ", systemType='" + systemType + '\'' +
+                ", action='" + action + '\'' +
+                ", period='" + period + '\'' +
+                ", failedRuleDate=" + failedRuleDate +
+                ", mobileOperatorId=" + mobileOperatorId +
+                ", taxPaid=" + taxPaid +
+                ", featureName='" + featureName + '\'' +
+                ", recordTime=" + recordTime +
+                ", actualImei='" + actualImei + '\'' +
+                ", recordType='" + recordType + '\'' +
+                ", imei='" + imei + '\'' +
+                ", rawCdrFileName='" + rawCdrFileName + '\'' +
+                ", imeiArrivalTime=" + imeiArrivalTime +
+                ", source='" + source + '\'' +
+                ", updateRawCdrFileName='" + updateRawCdrFileName + '\'' +
+                ", updateImeiArrivalTime=" + updateImeiArrivalTime +
+                ", updateSource='" + updateSource + '\'' +
+                ", serverOrigin='" + serverOrigin + '\'' +
+                ", validityFlag=" + validityFlag +
+                ", isTypeApprovedFlag=" + isTypeApprovedFlag +
+                ", actualOperator='" + actualOperator + '\'' +
+                ", testImei='" + testImei + '\'' +
+                ", deviceType='" + deviceType + '\'' +
+                ", isUsed='" + isUsed + '\'' +
+                ", reason='" + reason + '\'' +
+                ", gdceImeiStatus=" + gdceImeiStatus +
+                ", gdceModifiedTime=" + gdceModifiedTime +
+                ", trcImeiStatus=" + trcImeiStatus +
+                ", trcModifiedTime=" + trcModifiedTime +
+                ", customsStatus=" + customsStatus +
+                ", localManufacturerStatus=" + localManufacturerStatus +
+                '}';
     }
 }

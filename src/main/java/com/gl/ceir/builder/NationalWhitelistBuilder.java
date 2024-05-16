@@ -12,12 +12,11 @@ import java.util.Optional;
 
 public class NationalWhitelistBuilder {
 
-    public static List<NationalWhitelist> fromActiveUniqueImei(List<ActiveUniqueImei> activeUniqueImeiList) {
+    public static List<NationalWhitelist> fromActiveUniqueImei(List<ActiveUniqueImei> activeUniqueImeiList, List<String> rules) {
         List<NationalWhitelist> nationalWhitelistList = new ArrayList<>();
 
         for (ActiveUniqueImei activeUniqueImei : activeUniqueImeiList) {
             NationalWhitelist nationalWhitelist = new NationalWhitelist();
-
             nationalWhitelist.setCreatedOn(activeUniqueImei.getCreatedOn());
             nationalWhitelist.setModifiedOn(activeUniqueImei.getModifiedOn());
             nationalWhitelist.setForeignRule(activeUniqueImei.getForeginRule());
@@ -50,12 +49,16 @@ public class NationalWhitelistBuilder {
             nationalWhitelist.setCreatedOnDate(convertLocalDate(activeUniqueImei.getCreatedOn()));
             nationalWhitelist.setActualOperator(activeUniqueImei.getActualOperator());
             nationalWhitelist.setIsTestImei(activeUniqueImei.getTestImei());
-            nationalWhitelist.setValidityFlag(activeUniqueImei.isValidityFlag());
+            nationalWhitelist.setValidityFlag(activeUniqueImei.getValidityFlag());
             nationalWhitelist.setListType("active_unique_imei");
             nationalWhitelist.setNationalWhiteListCreatedDate(LocalDateTime.now());
             nationalWhitelist.setReasonForInvalidImei(activeUniqueImei.getReason());
             nationalWhitelist.setIsUsedDeviceImei(activeUniqueImei.getIsUsed());
             nationalWhitelist.setForeignRule(activeUniqueImei.getForeginRule());
+            nationalWhitelist.setTrcImeiStatus(evaluateTrcFinalValue(activeUniqueImei.getTrcImeiStatus(), rules));
+            nationalWhitelist.setTrcModifiedTime(activeUniqueImei.getTrcModifiedTime());
+            nationalWhitelist.setGdceImeiStatus(evaluateGdceFinalValue(activeUniqueImei.getGdceImeiStatus(), activeUniqueImei.getLocalManufacturerStatus(), rules));
+            nationalWhitelist.setGdceModifiedTime(LocalDateTime.now());
 
             nationalWhitelistList.add(nationalWhitelist);
         }
@@ -98,7 +101,7 @@ public class NationalWhitelistBuilder {
             nationalWhitelist.setCreatedOnDate(convertLocalDate(activeUniqueImei.getCreatedOn()));
             nationalWhitelist.setActualOperator(activeUniqueImei.getActualOperator());
             nationalWhitelist.setIsTestImei(activeUniqueImei.getTestImei());
-            nationalWhitelist.setValidityFlag(activeUniqueImei.isValidityFlag());
+            nationalWhitelist.setValidityFlag(activeUniqueImei.getValidityFlag());
             nationalWhitelist.setListType("active_unique_imei");
             nationalWhitelist.setReasonForInvalidImei(activeUniqueImei.getReason());
             nationalWhitelist.setNationalWhiteListCreatedDate(LocalDateTime.now());
@@ -109,9 +112,38 @@ public class NationalWhitelistBuilder {
     }
 
     public static LocalDate convertLocalDate(LocalDateTime inputDate) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String formattedDate = inputDate.format(formatter);
-        return LocalDate.parse(formattedDate, formatter);
+        return LocalDate.of(inputDate.getYear(), inputDate.getMonth(), inputDate.getDayOfMonth());
+    }
+
+    public static int evaluateGdceFinalValue(Integer customsStatus, Integer manufacturerStatus, List<String> activeRules) {
+        boolean isCustomsActive = activeRules.contains("CUSTOM_CHK");
+        boolean isManufacturerActive = activeRules.contains("EXISTS_IN_LOCAL_MANUFACTURER_DB");
+
+        int customs = (isCustomsActive && customsStatus != null && customsStatus == 1) ? 1 : 0;
+        int manufacturer = (isManufacturerActive && manufacturerStatus != null && manufacturerStatus == 1) ? 1 : 0;
+
+        if (customs == 0 && manufacturer == 0) {
+            if (!isCustomsActive && !isManufacturerActive) {
+                return 3;
+            } else if (!isCustomsActive && isManufacturerActive) {
+                return 0;
+            } else if (isCustomsActive && !isManufacturerActive) {
+                return 0;
+            }
+        } else if (customs == 0 && manufacturer == 1) {
+            return 2;
+        } else if (customs == 1 && manufacturer == 0) {
+            return 1;
+        } else if (customs == 1 && manufacturer == 1) {
+            return 0;
+        }
+        return 3;
+    }
+
+    public static int evaluateTrcFinalValue(Integer trcStatus, List<String> activeRules) {
+        boolean isTrcActive = activeRules.contains("TYPE_APPROVED");
+        int trc = (isTrcActive && trcStatus != null )? trcStatus: 3;
+        return trc;
     }
 
 }

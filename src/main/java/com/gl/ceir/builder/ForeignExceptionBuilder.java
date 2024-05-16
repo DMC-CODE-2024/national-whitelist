@@ -38,7 +38,7 @@ public class ForeignExceptionBuilder {
         exceptionList.setUpdateImeiArrivalTime(activeUniqueImei.getUpdateImeiArrivalTime());
         exceptionList.setUpdateSource(activeUniqueImei.getUpdateSource());
         exceptionList.setServerOrigin(activeUniqueImei.getServerOrigin());
-        exceptionList.setValidityFlag(activeUniqueImei.isValidityFlag());
+        exceptionList.setValidityFlag(activeUniqueImei.getValidityFlag());
         exceptionList.setExceptionListCreatedDate(LocalDateTime.now());
         exceptionList.setActualOperator(activeUniqueImei.getActualOperator());
         exceptionList.setIsTestImei(activeUniqueImei.getTestImei());
@@ -80,7 +80,7 @@ public class ForeignExceptionBuilder {
         exceptionList.setUpdateImeiArrivalTime(activeImeiWithDifferentMsisdn.getUpdateImeiArrivalTime());
         exceptionList.setUpdateSource(activeImeiWithDifferentMsisdn.getUpdateSource());
         exceptionList.setServerOrigin(activeImeiWithDifferentMsisdn.getServerOrigin());
-        exceptionList.setValidityFlag(activeImeiWithDifferentMsisdn.isValidityFlag());
+        exceptionList.setValidityFlag(activeImeiWithDifferentMsisdn.getValidityFlag());
         exceptionList.setExceptionListCreatedDate(LocalDateTime.now());
         exceptionList.setActualOperator(activeImeiWithDifferentMsisdn.getActualOperator());
         exceptionList.setIsTestImei(activeImeiWithDifferentMsisdn.getTestImei());

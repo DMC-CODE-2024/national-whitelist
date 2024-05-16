@@ -21,6 +21,7 @@ public class ExceptionListService {
             try {
                 exceptionListRepository.save(entry);
             } catch (DataIntegrityViolationException ex) {
+                ex.printStackTrace();
                 // Ignore duplicate entry constraint violation
 //                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             }

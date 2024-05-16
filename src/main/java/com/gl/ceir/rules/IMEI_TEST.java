@@ -24,7 +24,7 @@ public class IMEI_TEST implements RulesInterface {
 
         for (ActiveUniqueImei activeUniqueImei : ruleEngineDto.getNationalWhitelistAccepted()) {
             if (activeUniqueImei.getReason() == null) {
-                if (!startsWithAnyPrefix(activeUniqueImei.getActualImei(), prefixArray)) {
+                if (startsWithAnyPrefix(activeUniqueImei.getActualImei(), prefixArray)) {
                     ExceptionList exceptionList = ExceptionListBuilder.fromActiveUniqueImei(activeUniqueImei);
                     if (!exceptionLists.contains(exceptionList)) {
                         exceptionList.setValidityFlag(false);
@@ -48,7 +48,7 @@ public class IMEI_TEST implements RulesInterface {
         String[] prefixArray = prefixes.split(","); // Assuming 'prefixes' is available from properties
 
         for (ActiveImeiWithDifferentMsisdn activeUniqueImei : ruleEngineDto.getNationalWhitelistAccepted()) {
-            if (!startsWithAnyPrefix(activeUniqueImei.getActualImei(), prefixArray)) {
+            if (startsWithAnyPrefix(activeUniqueImei.getActualImei(), prefixArray)) {
                 ExceptionList exceptionList = ExceptionListBuilder.fromActiveImeiWithDifferentMsisdn(activeUniqueImei);
                 if (!exceptionLists.contains(exceptionList)) {
                     exceptionList.setValidityFlag(false);
@@ -71,7 +71,7 @@ public class IMEI_TEST implements RulesInterface {
 
         for (ActiveUniqueForeignImei activeUniqueImei : ruleEngineDto.getNationalWhitelistAccepted()) {
             if (activeUniqueImei.getReason() == null) {
-                if (!startsWithAnyPrefix(activeUniqueImei.getActualImei(), prefixArray)) {
+                if (startsWithAnyPrefix(activeUniqueImei.getActualImei(), prefixArray)) {
                     ForeignExceptionList exceptionList = ForeignExceptionBuilder.fromActiveUniqueImei(activeUniqueImei);
                     if (!exceptionLists.contains(exceptionList)) {
                         exceptionList.setValidityFlag(false);
@@ -99,7 +99,7 @@ public class IMEI_TEST implements RulesInterface {
         String[] prefixArray = prefixes.split(",");
 
         for (ActiveForeignImeiWithDifferentMsisdn activeUniqueImei : ruleEngineDto.getNationalWhitelistAccepted()) {
-            if (!startsWithAnyPrefix(activeUniqueImei.getActualImei(), prefixArray)) {
+            if (startsWithAnyPrefix(activeUniqueImei.getActualImei(), prefixArray)) {
                 ForeignExceptionList exceptionList = ForeignExceptionBuilder.fromActiveImeiWithDifferentMsisdn(activeUniqueImei);
                 if (!exceptionLists.contains(exceptionList)) {
                     exceptionList.setValidityFlag(false);

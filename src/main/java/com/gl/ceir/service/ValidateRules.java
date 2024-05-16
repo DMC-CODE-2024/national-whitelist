@@ -20,14 +20,13 @@ import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.TimeZone;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ValidateRules implements Runnable{
@@ -71,6 +70,12 @@ public class ValidateRules implements Runnable{
     IMEI_LENGTH imeiLength;
     @Autowired
     IMEI_ALPHANUMERIC imeiAlphanumeric;
+    @Autowired
+    CUSTOM_CHK customChk;
+    @Autowired
+    TYPE_APPROVED typeApproved;
+    @Autowired
+    EXISTS_IN_LOCAL_MANUFACTURER_DB existsInLocalManufacturerDb;
 
     @Override
     public void run() {
@@ -82,10 +87,11 @@ public class ValidateRules implements Runnable{
         int exceptionListCount = 0;
         int foreignWhitelistCount = 0;
         int foreignExceptionListCount = 0;
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-        TimeZone serverTimeZone = TimeZone.getDefault();
-        System.out.println("Server Time Zone ID: " + serverTimeZone.getID());
-        System.out.println("Server Time Zone Display Name: " + serverTimeZone.getDisplayName());
+        boolean amnestyPeriodFlag = false;
+//        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+//        TimeZone serverTimeZone = TimeZone.getDefault();
+//        System.out.println("Server Time Zone ID: " + serverTimeZone.getID());
+//        System.out.println("Server Time Zone Display Name: " + serverTimeZone.getDisplayName());
         if(batchSize == null) {
             batchSize = 1000000;
         }
@@ -95,6 +101,10 @@ public class ValidateRules implements Runnable{
             startAudit = modulesAuditTrailRepository.save(startAudit);
             moduleAudiTrailId = startAudit.getId();
             Optional<SystemConfigurationDb> activeUniqueImeiDate = Optional.ofNullable(systemConfigurationDbRepository.getByTag("nw_unique_imei_last_run_time"));
+            Optional<SystemConfigurationDb> amnestyPeriodDate = Optional.ofNullable(systemConfigurationDbRepository.getByTag("GRACE_PERIOD_END_DATE"));
+            if (amnestyPeriodDate.isPresent()){
+                amnestyPeriodFlag = isBeforeAmnestyPeriod(amnestyPeriodDate.get().getValue());
+            }
             String cdrProcessingTimestamp = Optional.ofNullable(genericRepository.getCdrProcessingTimestamp()).orElseThrow(() -> new Exception("CDR Not Processed Yet"));
             String activeUniqueImeisLastRunDate = "";
             String activeUniqueImeisLastRunEndDate = "";
@@ -124,12 +134,15 @@ public class ValidateRules implements Runnable{
                 systemConfigurationDbRepository.save(new SystemConfigurationDb("nw_unique_imei_last_run_time", activeUniqueImeisLastRunEndDate, "latest date when national whitelist process for unique imei ran"));
             }
             List<RuleEngineMapping> rules = ruleEngineMappingRepository.getByFeatureAndUserTypeOrderByRuleOrder("national_whitelist", "default", "Enabled");
+            List<String> ruleNames = rules.stream()
+                    .map(RuleEngineMapping::getName)
+                    .collect(Collectors.toList());
             int compareDatesActiveUniqueImei = compareDates(activeUniqueImeisLastRunDate, cdrProcessingTimestamp);
             if (compareDatesActiveUniqueImei > 0) {
                 Pageable pageable = PageRequest.of(0, batchSize);
                 Page<ActiveUniqueImei> activeUniqueImeis;
                 while (true) {
-                    activeUniqueImeis = activeUniqueImeiRepository.findAllLatestUniqueImeiInLastXDays(activeUniqueImeisLastRunDate, activeUniqueImeisLastRunEndDate, pageable);
+                    activeUniqueImeis = activeUniqueImeiRepository.findAllLatestUniqueImeiInLastXDays(convertStringToDateTime(activeUniqueImeisLastRunDate), convertStringToDateTime(activeUniqueImeisLastRunEndDate), pageable);
                     if (activeUniqueImeis.isEmpty()) {
                         break;
                     }
@@ -139,6 +152,21 @@ public class ValidateRules implements Runnable{
                             log.info("Starting validation for " + activeUniqueImeis.getTotalElements() + " active unique imei between startDate: {}, endDate: {}, pageNo: {}, totalPages: {}", activeUniqueImeisLastRunDate, activeUniqueImeisLastRunEndDate, pageable.getPageNumber(), activeUniqueImeis.getTotalPages());
                             for (RuleEngineMapping rule : rules) {
                                 switch (Rules.valueOf(rule.getName().trim())) {
+                                    case TYPE_APPROVED:
+                                        ModulesAuditTrail typeApprovedAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking trc data", "national_whitelist", executionStartTime, startTime);
+                                        modulesAuditTrailRepository.save(typeApprovedAudit);
+                                        activeUniqueImeiDto = typeApproved.validateActiveUniqueImei(activeUniqueImeiDto);
+                                        break;
+                                    case CUSTOM_CHK:
+                                        ModulesAuditTrail customCheckAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking customs data", "national_whitelist", executionStartTime, startTime);
+                                        modulesAuditTrailRepository.save(customCheckAudit);
+                                        activeUniqueImeiDto = customChk.validateActiveUniqueImei(activeUniqueImeiDto);
+                                        break;
+                                    case EXISTS_IN_LOCAL_MANUFACTURER_DB:
+                                        ModulesAuditTrail manufacturersAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking manufacturers data", "national_whitelist", executionStartTime, startTime);
+                                        modulesAuditTrailRepository.save(manufacturersAudit);
+                                        activeUniqueImeiDto = existsInLocalManufacturerDb.validateActiveUniqueImei(activeUniqueImeiDto);
+                                        break;
                                     case VALID_TAC:
                                         ModulesAuditTrail tacAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking invalid tac for unique imei", "national_whitelist", executionStartTime, startTime);
                                         modulesAuditTrailRepository.save(tacAudit);
@@ -169,15 +197,15 @@ public class ValidateRules implements Runnable{
                             lastProgressTime = System.currentTimeMillis();
                             log.info("ActiveUniqueImeis: Count National Whitelist=> "+activeUniqueImeiDto.getNationalWhitelistAccepted().size()+ ", Exception List=> "+activeUniqueImeiDto.getExceptionList().size());
                             if (!activeUniqueImeiDto.getNationalWhitelistAccepted().isEmpty()) {
-                                List<NationalWhitelist> nationalWhitelists = NationalWhitelistBuilder.fromActiveUniqueImei(activeUniqueImeiDto.getNationalWhitelistAccepted());
-                                nationalWhitelistService.saveNationalWhitelists(nationalWhitelists);
+                                List<NationalWhitelist> nationalWhitelists = NationalWhitelistBuilder.fromActiveUniqueImei(activeUniqueImeiDto.getNationalWhitelistAccepted(), ruleNames);
+                                nationalWhitelistService.saveNationalWhitelists(nationalWhitelists, amnestyPeriodFlag);
                                 nationaWhitelistCount = nationaWhitelistCount + nationalWhitelists.size();
                             }
-                            lastProgressTime = System.currentTimeMillis();
-                            if (!activeUniqueImeiDto.getExceptionList().isEmpty()) {
-                                exceptionListService.saveExceptionLists(activeUniqueImeiDto.getExceptionList());
-                                exceptionListCount = exceptionListCount + activeUniqueImeiDto.getExceptionList().size();
-                            }
+//                            lastProgressTime = System.currentTimeMillis();
+//                            if (!activeUniqueImeiDto.getExceptionList().isEmpty()) {
+//                                exceptionListService.saveExceptionLists(activeUniqueImeiDto.getExceptionList());
+//                                exceptionListCount = exceptionListCount + activeUniqueImeiDto.getExceptionList().size();
+//                            }
                             lastProgressTime = System.currentTimeMillis();
                         } else {
                             log.info("No active unique imei found for " + activeUniqueImeisLastRunDate);
@@ -189,97 +217,7 @@ public class ValidateRules implements Runnable{
                 ModulesAuditTrail completedAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "running", "NA", "National Whitelist", "UPDATE", "Process completed for unique imei", "national_whitelist", executionStartTime, startTime);
                 modulesAuditTrailRepository.save(completedAudit);
 
-                    Optional<SystemConfigurationDb> activeImeiWithDifferentMsisdnDate = Optional.ofNullable(systemConfigurationDbRepository.getByTag("nw_unique_imei_diff_msisdn_last_run_time"));
-                    String activeImeisDifferentMsisdnLastRunDate = "";
-                    String activeImeisDifferentMsisdnLastRunEndDate = "";
-                if (activeImeiWithDifferentMsisdnDate.isPresent()) {
-                    activeImeisDifferentMsisdnLastRunDate = formatDateString(activeImeiWithDifferentMsisdnDate.get().getValue());
-                    int compareDate = compareDates(activeImeisDifferentMsisdnLastRunDate, cdrProcessingTimestamp);
-                    if (compareDate > 0) {
-                        if (compareDates(addOneDayToDate(activeImeisDifferentMsisdnLastRunDate), cdrProcessingTimestamp) > 0) {
-                            SystemConfigurationDb activeImeiWithDifferentMsisdnLatestDate = activeImeiWithDifferentMsisdnDate.get();
-                            activeImeiWithDifferentMsisdnLatestDate.setValue(addOneDayToDate(activeImeisDifferentMsisdnLastRunDate));
-                            systemConfigurationDbRepository.save(activeImeiWithDifferentMsisdnLatestDate);
-                            activeImeisDifferentMsisdnLastRunEndDate = addOneDayToDate(activeImeisDifferentMsisdnLastRunDate);
-                        } else {
-                            SystemConfigurationDb activeImeiWithDifferentMsisdnLatestDate = activeImeiWithDifferentMsisdnDate.get();
-                            activeImeiWithDifferentMsisdnLatestDate.setValue(cdrProcessingTimestamp);
-                            systemConfigurationDbRepository.save(activeImeiWithDifferentMsisdnLatestDate);
-                            activeImeisDifferentMsisdnLastRunEndDate = cdrProcessingTimestamp;
-                        }
-                    }
-                } else {
-                    activeImeisDifferentMsisdnLastRunDate = formatDateString(activeImeiWithDifferentMsisdnRepository.getEarliestActiveTimestamp());
-                    if (compareDates(addOneDayToDate(activeImeisDifferentMsisdnLastRunDate), cdrProcessingTimestamp) > 0) {
-                        activeImeisDifferentMsisdnLastRunEndDate = addOneDayToDate(activeImeisDifferentMsisdnLastRunDate);
-                    } else {
-                        activeImeisDifferentMsisdnLastRunEndDate = cdrProcessingTimestamp;
-                    }
-                    systemConfigurationDbRepository.save(new SystemConfigurationDb("nw_unique_imei_diff_msisdn_last_run_time", activeImeisDifferentMsisdnLastRunEndDate, "latest date when national whitelist process for imei with different msisdn ran"));
-                }
-            int compareDatesActiveImeiWithDifferentMsisdnDate = compareDates(activeImeisDifferentMsisdnLastRunDate, cdrProcessingTimestamp);
-            if (compareDatesActiveImeiWithDifferentMsisdnDate > 0) {
-                Pageable pageable = PageRequest.of(0, batchSize);
-                Page<ActiveImeiWithDifferentMsisdn> activeImeiWithDifferentMsisdns;
-                while (true) {
-                    activeImeiWithDifferentMsisdns = activeImeiWithDifferentMsisdnRepository.findAllLatestDifferentImeiInLastXDays(activeImeisDifferentMsisdnLastRunDate, activeImeisDifferentMsisdnLastRunEndDate, pageable);
-
-                    if (activeImeiWithDifferentMsisdns.isEmpty()) {
-                        break;
-                    }
-                    RuleEngineDto<ActiveImeiWithDifferentMsisdn, ExceptionList> activeUniqueImeiWithDifferentMsisdnDto = new RuleEngineDto(activeImeiWithDifferentMsisdns.getContent(), new ArrayList<>());
-                    if (!rules.isEmpty()) {
-                        if (!activeImeiWithDifferentMsisdns.isEmpty()) {
-                            log.info("Starting validation for " + activeImeiWithDifferentMsisdns.getTotalElements() + " active imei with different msisdn between startDate: {}, endDate: {}, pageNo: {}, totalPages: {}", activeImeisDifferentMsisdnLastRunDate, activeImeisDifferentMsisdnLastRunEndDate, pageable.getPageNumber(), activeImeiWithDifferentMsisdns.getTotalPages());
-                            for (RuleEngineMapping rule : rules) {
-                                switch (Rules.valueOf(rule.getName().trim())) {
-                                    case VALID_TAC:
-                                        ModulesAuditTrail diffMsisdnTacAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "running rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking invalid tac for imei with different msisdn", "national_whitelist", executionStartTime, startTime);
-                                        modulesAuditTrailRepository.save(diffMsisdnTacAudit);
-                                        activeUniqueImeiWithDifferentMsisdnDto = validTac.validateActiveImeiWithDifferentMsisdn(activeUniqueImeiWithDifferentMsisdnDto);
-                                        break;
-                                    case IMEI_NULL:
-                                        ModulesAuditTrail diffMsisdnNullAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "running rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking if imei is null  for imei with different msisdn", "national_whitelist", executionStartTime, startTime);
-                                        modulesAuditTrailRepository.save(diffMsisdnNullAudit);
-                                        activeUniqueImeiWithDifferentMsisdnDto = imeiNull.validateActiveImeiWithDifferentMsisdn(activeUniqueImeiWithDifferentMsisdnDto);
-                                        break;
-                                    case IMEI_TEST:
-                                        ModulesAuditTrail diffMsisdnTestAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "running rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking if test imei  for imei with different msisdn", "national_whitelist", executionStartTime, startTime);
-                                        modulesAuditTrailRepository.save(diffMsisdnTestAudit);
-                                        activeUniqueImeiWithDifferentMsisdnDto = imeiTest.validateActiveImeiWithDifferentMsisdn(activeUniqueImeiWithDifferentMsisdnDto);
-                                        break;
-                                    case IMEI_LENGTH_NATIONAL_WHITELIST:
-                                        ModulesAuditTrail diffMsisdnLengthAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "running rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking imei length  for imei with different msisdn", "national_whitelist", executionStartTime, startTime);
-                                        modulesAuditTrailRepository.save(diffMsisdnLengthAudit);
-                                        activeUniqueImeiWithDifferentMsisdnDto = imeiLength.validateActiveImeiWithDifferentMsisdn(activeUniqueImeiWithDifferentMsisdnDto);
-                                        break;
-                                    case IMEI_ALPHANUMERIC:
-                                        ModulesAuditTrail diffMsisdnAlphanumericAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "running rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking if imei alphanumeric  for imei with different msisdn", "national_whitelist", executionStartTime, startTime);
-                                        modulesAuditTrailRepository.save(diffMsisdnAlphanumericAudit);
-                                        activeUniqueImeiWithDifferentMsisdnDto = imeiAlphanumeric.validateActiveImeiWithDifferentMsisdn(activeUniqueImeiWithDifferentMsisdnDto);
-                                        break;
-                                }
-                            }
-                            lastProgressTime = System.currentTimeMillis();
-                            log.info("ActiveImeiWithDifferentMsisdns: Count National Whitelist=> "+activeUniqueImeiWithDifferentMsisdnDto.getNationalWhitelistAccepted().size()+ ", Exception List=> "+activeUniqueImeiWithDifferentMsisdnDto.getExceptionList().size());
-                            if (!activeUniqueImeiWithDifferentMsisdnDto.getExceptionList().isEmpty()) {
-                                exceptionListService.saveExceptionLists(activeUniqueImeiWithDifferentMsisdnDto.getExceptionList());
-                                exceptionListCount = exceptionListCount + activeUniqueImeiWithDifferentMsisdnDto.getExceptionList().size();
-                            }
-                            lastProgressTime = System.currentTimeMillis();
-                        } else {
-                            log.info("No active imei with different msisdn found for " + activeImeisDifferentMsisdnLastRunDate);
-                        }
-                    }
-                    pageable = pageable.next();
-                }
-            }
-                    ModulesAuditTrail diffMsisdnCompletedAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 200, "completed", "NA", "National Whitelist", "UPDATE", "Process completed national whitelist", "national_whitelist", nationaWhitelistCount, executionStartTime, startTime);
-                    modulesAuditTrailRepository.save(diffMsisdnCompletedAudit);
-                    ModulesAuditTrail exceptionListAudit = ModulesAuditTrailBuilder.forInsert(200, "completed", "NA", "National Whitelist", "INSERT", exceptionListCount,"Process completed for exception list", "exception_list", startTime);
-                    modulesAuditTrailRepository.save(exceptionListAudit);
                 // For foreign tables
-
                 ModulesAuditTrail foreignModuleTrail = ModulesAuditTrailBuilder.forInsert(201, "created", "NA", "National Whitelist", "INSERT", 0,"Started Foreign Whitelist Process", "foreign_whitelist", startTime);
                 foreignModuleTrail = modulesAuditTrailRepository.save(foreignModuleTrail);
                 foreignModuleTrailId = foreignModuleTrail.getId();
@@ -312,14 +250,16 @@ public class ValidateRules implements Runnable{
                     }
                     systemConfigurationDbRepository.save(new SystemConfigurationDb("nw_unique_foreign_imei_last_run_time", activeUniqueForeignImeisLastRunEndDate, "latest date when foreign whitelist process for unique imei ran"));
                 }
-            List<RuleEngineMapping> foreignRules = ruleEngineMappingRepository.
-                    getByFeatureAndUserTypeOrderByRuleOrder("foreign_whitelist", "default", "Enabled");
+            List<RuleEngineMapping> foreignRules = ruleEngineMappingRepository.getByFeatureAndUserTypeOrderByRuleOrder("foreign_whitelist", "default", "Enabled");
+            List<String> foreignRuleNames = rules.stream()
+                    .map(RuleEngineMapping::getName)
+                    .collect(Collectors.toList());
             int compareDatesActiveUniqueForeignImeis = compareDates(activeUniqueForeignImeisLastRunDate, cdrProcessingTimestamp);
             if (compareDatesActiveUniqueForeignImeis > 0) {
                 Pageable pageable = PageRequest.of(0, batchSize);
                 Page<ActiveUniqueForeignImei> activeUniqueForeignImeis;
                 while (true) {
-                    activeUniqueForeignImeis = activeUniqueForeignImeiRepository.findAllLatestUniqueImeiInLastXDays(activeUniqueForeignImeisLastRunDate, activeUniqueForeignImeisLastRunEndDate, pageable);
+                    activeUniqueForeignImeis = activeUniqueForeignImeiRepository.findAllLatestUniqueImeiInLastXDays(convertStringToDateTime(activeUniqueForeignImeisLastRunDate), convertStringToDateTime(activeUniqueForeignImeisLastRunEndDate), pageable);
 
                     if (activeUniqueForeignImeis.isEmpty()) {
                         break;
@@ -330,6 +270,21 @@ public class ValidateRules implements Runnable{
                             log.info("Starting validation for " + activeUniqueForeignImeis.getTotalElements() + " active unique foreign imei between startDate: {}, endDate: {}, pageNo: {}, totalPages: {}", activeUniqueForeignImeisLastRunDate, activeUniqueForeignImeisLastRunEndDate, pageable.getPageNumber(), activeUniqueForeignImeis.getTotalPages());
                             for (RuleEngineMapping rule : foreignRules) {
                                 switch (Rules.valueOf(rule.getName().trim())) {
+                                    case TYPE_APPROVED:
+                                        ModulesAuditTrail typeApprovedAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking trc data", "national_whitelist", executionStartTime, startTime);
+                                        modulesAuditTrailRepository.save(typeApprovedAudit);
+                                        activeUniqueForeignImeiDto = typeApproved.validateActiveUniqueForeignImei(activeUniqueForeignImeiDto);
+                                        break;
+                                    case CUSTOM_CHK:
+                                        ModulesAuditTrail customCheckAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking customs data", "national_whitelist", executionStartTime, startTime);
+                                        modulesAuditTrailRepository.save(customCheckAudit);
+                                        activeUniqueForeignImeiDto = customChk.validateActiveUniqueForeignImei(activeUniqueForeignImeiDto);
+                                        break;
+                                    case EXISTS_IN_LOCAL_MANUFACTURER_DB:
+                                        ModulesAuditTrail manufacturersAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking manufacturers data", "national_whitelist", executionStartTime, startTime);
+                                        modulesAuditTrailRepository.save(manufacturersAudit);
+                                        activeUniqueForeignImeiDto = existsInLocalManufacturerDb.validateActiveUniqueForeignImei(activeUniqueForeignImeiDto);
+                                        break;
                                     case VALID_TAC:
                                         ModulesAuditTrail foreignTacAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "running rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking invalid tac for foreign unique imei", "foreign_whitelist", executionStartTime, startTime);
                                         modulesAuditTrailRepository.save(foreignTacAudit);
@@ -360,15 +315,15 @@ public class ValidateRules implements Runnable{
                             lastProgressTime = System.currentTimeMillis();
                             log.info("ActiveUniqueForeignImeis: Count National Whitelist=> "+activeUniqueForeignImeiDto.getNationalWhitelistAccepted().size()+ ", Exception List=> "+activeUniqueForeignImeiDto.getExceptionList().size());
                             if (!activeUniqueForeignImeiDto.getNationalWhitelistAccepted().isEmpty()) {
-                                List<ForeignWhitelist> nationalWhitelists = ForeignWhitelistBuilder.fromActiveUniqueImei(activeUniqueForeignImeiDto.getNationalWhitelistAccepted());
-                                foreignWhitelistService.saveNationalWhitelists(nationalWhitelists);
+                                List<ForeignWhitelist> nationalWhitelists = ForeignWhitelistBuilder.fromActiveUniqueImei(activeUniqueForeignImeiDto.getNationalWhitelistAccepted(), foreignRuleNames);
+                                foreignWhitelistService.saveNationalWhitelists(nationalWhitelists, amnestyPeriodFlag);
                                 foreignWhitelistCount = foreignWhitelistCount + nationalWhitelists.size();
                             }
-                            lastProgressTime = System.currentTimeMillis();
-                            if (!activeUniqueForeignImeiDto.getExceptionList().isEmpty()) {
-                                foreignExceptionListService.saveExceptionLists(activeUniqueForeignImeiDto.getExceptionList());
-                                foreignExceptionListCount = foreignExceptionListCount + activeUniqueForeignImeiDto.getExceptionList().size();
-                            }
+//                            lastProgressTime = System.currentTimeMillis();
+//                            if (!activeUniqueForeignImeiDto.getExceptionList().isEmpty()) {
+//                                foreignExceptionListService.saveExceptionLists(activeUniqueForeignImeiDto.getExceptionList());
+//                                foreignExceptionListCount = foreignExceptionListCount + activeUniqueForeignImeiDto.getExceptionList().size();
+//                            }
                             lastProgressTime = System.currentTimeMillis();
                         } else {
                             log.info("No active unique foreign imei found for " + activeUniqueForeignImeisLastRunDate);
@@ -377,99 +332,8 @@ public class ValidateRules implements Runnable{
                     pageable = pageable.next();
                 }
             }
-                    ModulesAuditTrail foreignCompletedAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "running", "NA", "National Whitelist", "UPDATE", "Process completed for foreign unique imei", "foreign_whitelist", executionStartTime, startTime);
-                    modulesAuditTrailRepository.save(foreignCompletedAudit);
-
-                    Optional<SystemConfigurationDb> activeForeignImeisDifferentMsisdnDate = Optional.ofNullable(systemConfigurationDbRepository.getByTag("nw_foreign_unique_imei_diff_msisdn_last_run_time"));
-                    String activeForeignImeisDifferentMsisdnLastRunDate = "";
-                    String activeForeignImeisDifferentMsisdnLastRunEndDate = "";
-                if (activeForeignImeisDifferentMsisdnDate.isPresent()) {
-                    activeForeignImeisDifferentMsisdnLastRunDate = formatDateString(activeForeignImeisDifferentMsisdnDate.get().getValue());
-                    int compareDates = compareDates(activeForeignImeisDifferentMsisdnLastRunDate, cdrProcessingTimestamp);
-                    if (compareDates > 0) {
-                        if (compareDates(addOneDayToDate(activeForeignImeisDifferentMsisdnLastRunDate), cdrProcessingTimestamp) > 0) {
-                            SystemConfigurationDb activeForeignImeisDifferentMsisdnLatestDate = activeForeignImeisDifferentMsisdnDate.get();
-                            activeForeignImeisDifferentMsisdnLatestDate.setValue(addOneDayToDate(activeForeignImeisDifferentMsisdnLastRunDate));
-                            systemConfigurationDbRepository.save(activeForeignImeisDifferentMsisdnLatestDate);
-                            activeForeignImeisDifferentMsisdnLastRunEndDate = addOneDayToDate(activeForeignImeisDifferentMsisdnLastRunDate);
-                        } else {
-                            SystemConfigurationDb activeForeignImeisDifferentMsisdnLatestDate = activeForeignImeisDifferentMsisdnDate.get();
-                            activeForeignImeisDifferentMsisdnLatestDate.setValue(cdrProcessingTimestamp);
-                            systemConfigurationDbRepository.save(activeForeignImeisDifferentMsisdnLatestDate);
-                            activeForeignImeisDifferentMsisdnLastRunEndDate = cdrProcessingTimestamp;
-                        }
-                    }
-                } else {
-                    activeForeignImeisDifferentMsisdnLastRunDate = formatDateString(activeForeignImeiWithDifferentMsisdnRepository.getEarliestActiveTimestamp());
-                    if (compareDates(addOneDayToDate(activeForeignImeisDifferentMsisdnLastRunDate), cdrProcessingTimestamp) > 0) {
-                        activeForeignImeisDifferentMsisdnLastRunEndDate = addOneDayToDate(activeForeignImeisDifferentMsisdnLastRunDate);
-                    } else {
-                        activeForeignImeisDifferentMsisdnLastRunEndDate = cdrProcessingTimestamp;
-                    }
-                    systemConfigurationDbRepository.save(new SystemConfigurationDb("nw_foreign_unique_imei_diff_msisdn_last_run_time", activeForeignImeisDifferentMsisdnLastRunEndDate, "latest date when foreign whitelist process for imei with different msisdn ran"));
-                }
-            int compareDatesActiveForeignImeisDifferentMsisdn = compareDates(activeForeignImeisDifferentMsisdnLastRunDate, cdrProcessingTimestamp);
-            if (compareDatesActiveForeignImeisDifferentMsisdn > 0) {
-                Pageable pageable = PageRequest.of(0, batchSize);
-                Page<ActiveForeignImeiWithDifferentMsisdn> activeForeignImeiWithDifferentMsisdns;
-                while (true) {
-                    activeForeignImeiWithDifferentMsisdns = activeForeignImeiWithDifferentMsisdnRepository.findAllLatestDifferentImeiInLastXDays(activeForeignImeisDifferentMsisdnLastRunDate, activeForeignImeisDifferentMsisdnLastRunEndDate, pageable);
-
-                    if (activeForeignImeiWithDifferentMsisdns.isEmpty()) {
-                        break;
-                    }
-                    RuleEngineDto<ActiveForeignImeiWithDifferentMsisdn, ForeignExceptionList> activeForeignUniqueImeiWithDifferentMsisdnDto = new RuleEngineDto(activeForeignImeiWithDifferentMsisdns.getContent(), new ArrayList<>());
-                    if (!foreignRules.isEmpty()) {
-                        if (!activeForeignImeiWithDifferentMsisdns.isEmpty()) {
-                            log.info("Starting validation for " + activeForeignImeiWithDifferentMsisdns.getTotalElements() + " active foreign imei with different msisdn between startDate: {}, endDate: {}, pageNo: {}, totalPages", activeForeignImeisDifferentMsisdnLastRunDate, activeForeignImeisDifferentMsisdnLastRunEndDate, pageable.getPageNumber(), activeForeignImeiWithDifferentMsisdns.getTotalPages());
-                            for (RuleEngineMapping rule : rules) {
-                                switch (Rules.valueOf(rule.getName().trim())) {
-                                    case VALID_TAC:
-                                        ModulesAuditTrail diffMsisdnForeignTacAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "running rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking invalid tac for foreign imei with different msisdn", "foreign_whitelist", executionStartTime, startTime);
-                                        modulesAuditTrailRepository.save(diffMsisdnForeignTacAudit);
-                                        activeForeignUniqueImeiWithDifferentMsisdnDto = validTac.validateActiveForeignImeiWithDifferentMsisdn(activeForeignUniqueImeiWithDifferentMsisdnDto);
-                                        break;
-                                    case IMEI_NULL:
-                                        ModulesAuditTrail diffMsisdnForeignNullAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "running rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking if imei is null for foreign imei with different msisdn", "foreign_whitelist", executionStartTime, startTime);
-                                        modulesAuditTrailRepository.save(diffMsisdnForeignNullAudit);
-                                        activeForeignUniqueImeiWithDifferentMsisdnDto = imeiNull.validateActiveForeignImeiWithDifferentMsisdn(activeForeignUniqueImeiWithDifferentMsisdnDto);
-                                        break;
-                                    case IMEI_TEST:
-                                        ModulesAuditTrail diffMsisdnForeignTestAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "running rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking if test imei for foreign imei with different msisdn", "foreign_whitelist", executionStartTime, startTime);
-                                        modulesAuditTrailRepository.save(diffMsisdnForeignTestAudit);
-                                        activeForeignUniqueImeiWithDifferentMsisdnDto = imeiTest.validateActiveForeignImeiWithDifferentMsisdn(activeForeignUniqueImeiWithDifferentMsisdnDto);
-                                        break;
-                                    case IMEI_LENGTH_NATIONAL_WHITELIST:
-                                        ModulesAuditTrail diffMsisdnForeignLengthAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "running rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking imei length for foreign imei with different msisdn", "foreign_whitelist", executionStartTime, startTime);
-                                        modulesAuditTrailRepository.save(diffMsisdnForeignLengthAudit);
-                                        activeForeignUniqueImeiWithDifferentMsisdnDto = imeiLength.validateActiveForeignImeiWithDifferentMsisdn(activeForeignUniqueImeiWithDifferentMsisdnDto);
-                                        break;
-                                    case IMEI_ALPHANUMERIC:
-                                        ModulesAuditTrail diffMsisdnForeignAlphanumericAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "running rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking if imei alphanumeric for foreign imei with different msisdn", "foreign_whitelist", executionStartTime, startTime);
-                                        modulesAuditTrailRepository.save(diffMsisdnForeignAlphanumericAudit);
-                                        activeForeignUniqueImeiWithDifferentMsisdnDto = imeiAlphanumeric.validateActiveForeignImeiWithDifferentMsisdn(activeForeignUniqueImeiWithDifferentMsisdnDto);
-                                        break;
-                                }
-                            }
-                            lastProgressTime = System.currentTimeMillis();
-                            log.info("ActiveForeignImeiWithDifferentMsisdns: Count National Whitelist=> "+activeForeignUniqueImeiWithDifferentMsisdnDto.getNationalWhitelistAccepted().size()+ ", Exception List=> "+activeForeignUniqueImeiWithDifferentMsisdnDto.getExceptionList().size());
-                            if (!activeForeignUniqueImeiWithDifferentMsisdnDto.getExceptionList().isEmpty()) {
-                                foreignExceptionListService.saveExceptionLists(activeForeignUniqueImeiWithDifferentMsisdnDto.getExceptionList());
-                                foreignExceptionListCount = foreignExceptionListCount + activeForeignUniqueImeiWithDifferentMsisdnDto.getExceptionList().size();
-                            }
-                            lastProgressTime = System.currentTimeMillis();
-                        } else {
-                            log.info("No active foreign imei with different msisdn found for " + activeForeignImeisDifferentMsisdnLastRunDate);
-                        }
-                    }
-                    pageable = pageable.next();
-                }
-            }
-                    ModulesAuditTrail diffMsisdnForeignCompletedAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 200, "completed", "NA", "National Whitelist", "UPDATE", "Process completed for foreign whitelist", "foreign_whitelist", foreignWhitelistCount, executionStartTime, startTime);
-                    modulesAuditTrailRepository.save(diffMsisdnForeignCompletedAudit);
-                    ModulesAuditTrail foreignExceptionModuleTrail = ModulesAuditTrailBuilder.forInsert(200, "completed", "NA", "National Whitelist", "INSERT", foreignExceptionListCount,"Process completed for foreign exception list", "foreign_whitelist", startTime);
-                    modulesAuditTrailRepository.save(foreignExceptionModuleTrail);
-
+            ModulesAuditTrail foreignCompletedAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 200, "completed", "NA", "National Whitelist", "UPDATE", "Process completed for foreign unique imei", "foreign_whitelist", executionStartTime, startTime);
+            modulesAuditTrailRepository.save(foreignCompletedAudit);
         } catch (DataAccessException e) {
             log.error("DB Exception: Raising alert016 "+e);
             String msg = e.getMessage().length() <= 200?e.getMessage(): e.getMessage().substring(0, 200);
@@ -528,6 +392,10 @@ public class ValidateRules implements Runnable{
         }
     }
 
+//    private RuleEngineDto<ActiveUniqueImei, ExceptionList> checkRulesForGdceTrc(RuleEngineDto<ActiveUniqueImei, ExceptionList> activeUniqueImeiDto) {
+//
+//    }
+
     public String getDateTimeNow() {
         LocalDateTime currentDateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -552,9 +420,9 @@ public class ValidateRules implements Runnable{
         LocalDateTime dateTime = LocalDateTime.parse(timestamp, formatterWithoutMilliseconds);
         LocalDateTime modifiedDateTime = dateTime.plusDays(1);
 
-        OffsetDateTime offsetModifiedDateTime = modifiedDateTime.atOffset(ZoneOffset.UTC);
+//        OffsetDateTime offsetModifiedDateTime = modifiedDateTime.atOffset(ZoneOffset.UTC);
 
-        return offsetModifiedDateTime.format(formatterWithoutMilliseconds);
+        return modifiedDateTime.format(formatterWithoutMilliseconds);
     }
 
     public static String formatDateString(String inputDateString) {
@@ -563,12 +431,12 @@ public class ValidateRules implements Runnable{
 
         try {
             LocalDateTime localDateTime = LocalDateTime.parse(inputDateString, formatterWithMilliseconds);
-            OffsetDateTime offsetDateTime = localDateTime.atOffset(ZoneOffset.UTC);
-            return offsetDateTime.format(formatterWithoutMilliseconds);
+//            OffsetDateTime offsetDateTime = localDateTime.atOffset(ZoneOffset.UTC);
+            return localDateTime.format(formatterWithoutMilliseconds);
         } catch (Exception e) {
             LocalDateTime localDateTime = LocalDateTime.parse(inputDateString, formatterWithoutMilliseconds);
-            OffsetDateTime offsetDateTime = localDateTime.atOffset(ZoneOffset.UTC);
-            return offsetDateTime.format(formatterWithoutMilliseconds);
+//            OffsetDateTime offsetDateTime = localDateTime.atOffset(ZoneOffset.UTC);
+            return localDateTime.format(formatterWithoutMilliseconds);
         }
     }
 
@@ -592,6 +460,18 @@ public class ValidateRules implements Runnable{
 
     public boolean madeProgressSince(long timestamp) {
         return lastProgressTime >= timestamp;
+    }
+
+    public LocalDateTime convertStringToDateTime(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return LocalDateTime.parse(date, formatter);
+    }
+
+    public static boolean isBeforeAmnestyPeriod(String dateStr) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate amnestyDate = LocalDate.parse(dateStr, formatter);
+        LocalDate today = LocalDate.now();
+        return today.isBefore(amnestyDate);
     }
 
 }

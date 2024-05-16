@@ -11,6 +11,7 @@ import org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy;
 import org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -32,6 +33,8 @@ import java.util.Objects;
 @EntityScan( "com.gl.ceir.model.audit" )
 
 public class AuditDbConfig {
+    @Autowired
+    Environment env;
     @Bean
     public CommandLineRunner auditDbConnectionCheck(DbConnectionChecker dbConnectionChecker) {
         return args -> dbConnectionChecker.checkAuditDbConnection(auditDataSource());
@@ -50,9 +53,23 @@ public class AuditDbConfig {
     }
 
     @Bean(name = "auditDataSource")
-    @ConfigurationProperties(prefix = "audit.datasource")
+//    @ConfigurationProperties(prefix = "audit.datasource")
     public DataSource auditDataSource() {
-        return DataSourceBuilder.create().build();
+        if ("oracle".equals(env.getProperty("spring.profiles.active"))) {
+            return DataSourceBuilder.create()
+                    .url(env.getProperty("audit.datasource.oracle.url"))
+                    .username(env.getProperty("audit.datasource.oracle.username"))
+                    .password(env.getProperty("audit.datasource.oracle.password"))
+                    .driverClassName(env.getProperty("audit.datasource.oracle.driver-class-name"))
+                    .build();
+        } else {
+            return DataSourceBuilder.create()
+                    .url(env.getProperty("audit.datasource.url"))
+                    .username(env.getProperty("audit.datasource.username"))
+                    .password(env.getProperty("audit.datasource.password"))
+                    .driverClassName(env.getProperty("audit.datasource.driver-class-name"))
+                    .build();
+        }
     }
 
     @Bean(name = "auditTransactionManager")
@@ -66,6 +83,14 @@ public class AuditDbConfig {
         Map<String, Object> props = new HashMap<>();
         props.put("hibernate.physical_naming_strategy", SpringPhysicalNamingStrategy.class.getName());
         props.put("hibernate.implicit_naming_strategy", SpringImplicitNamingStrategy.class.getName());
+
+        String activeProfile = env.getProperty("spring.profiles.active");
+
+        if ("oracle".equals(activeProfile)) {
+            props.put("hibernate.dialect", "org.hibernate.dialect.Oracle12cDialect");
+        } else {
+            props.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+        }
         return props;
     }
 }

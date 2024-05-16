@@ -17,10 +17,16 @@ public class NationalWhitelistService {
 
 
 //    @Transactional
-    public void saveNationalWhitelists(List<NationalWhitelist> nationalWhitelists) {
+    public void saveNationalWhitelists(List<NationalWhitelist> nationalWhitelists, boolean amnestyPeriod) {
         for (NationalWhitelist entry : nationalWhitelists) {
             try {
-                nationalWhitelistRepository.save(entry);
+                if (amnestyPeriod) {
+                    nationalWhitelistRepository.save(entry);
+                } else {
+                    if (Boolean.TRUE.equals(entry.getValidityFlag())) {
+                        nationalWhitelistRepository.save(entry);
+                    }
+                }
             } catch (DataIntegrityViolationException ex) {
                 // Ignore duplicate entry constraint violation
 //                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();

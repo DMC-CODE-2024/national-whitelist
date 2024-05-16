@@ -17,7 +17,7 @@ public class VALID_TAC implements RulesInterface {
         List<ExceptionList> exceptionLists = ruleEngineDto.getExceptionList();
         for(ActiveUniqueImei activeUniqueImei: ruleEngineDto.getNationalWhitelistAccepted()) {
             if(activeUniqueImei.getReason() == null) {
-                if (activeUniqueImei.isValidityFlag()) {
+                if (activeUniqueImei.getValidityFlag()) {
                     accepted.add(activeUniqueImei);
                 } else {
                     ExceptionList exceptionList = ExceptionListBuilder.fromActiveUniqueImei(activeUniqueImei);
@@ -42,7 +42,7 @@ public class VALID_TAC implements RulesInterface {
         List<ActiveImeiWithDifferentMsisdn> accepted = new ArrayList<>();
         List<ExceptionList> exceptionLists = ruleEngineDto.getExceptionList();
         for(ActiveImeiWithDifferentMsisdn activeUniqueImei: ruleEngineDto.getNationalWhitelistAccepted()) {
-            if(activeUniqueImei.isValidityFlag()) {
+            if(activeUniqueImei.getValidityFlag()) {
                 accepted.add(activeUniqueImei);
             } else {
                 ExceptionList exceptionList = ExceptionListBuilder.fromActiveImeiWithDifferentMsisdn(activeUniqueImei);
@@ -62,7 +62,7 @@ public class VALID_TAC implements RulesInterface {
         List<ForeignExceptionList> exceptionLists = ruleEngineDto.getExceptionList();
         for(ActiveUniqueForeignImei activeUniqueImei: ruleEngineDto.getNationalWhitelistAccepted()) {
             if(activeUniqueImei.getReason() == null) {
-                if (activeUniqueImei.isValidityFlag()) {
+                if (activeUniqueImei.getValidityFlag()) {
                     accepted.add(activeUniqueImei);
                 } else {
                     ForeignExceptionList exceptionList = ForeignExceptionBuilder.fromActiveUniqueImei(activeUniqueImei);
@@ -87,7 +87,7 @@ public class VALID_TAC implements RulesInterface {
         List<ActiveForeignImeiWithDifferentMsisdn> accepted = new ArrayList<>();
         List<ForeignExceptionList> exceptionLists = ruleEngineDto.getExceptionList();
         for(ActiveForeignImeiWithDifferentMsisdn activeUniqueImei: ruleEngineDto.getNationalWhitelistAccepted()) {
-            if(activeUniqueImei.isValidityFlag()) {
+            if(activeUniqueImei.getValidityFlag()) {
                 accepted.add(activeUniqueImei);
             } else {
                 ForeignExceptionList exceptionList = ForeignExceptionBuilder.fromActiveImeiWithDifferentMsisdn(activeUniqueImei);
