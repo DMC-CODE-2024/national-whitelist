@@ -38,16 +38,22 @@ jobs:
         from google.oauth2 import service_account
         from googleapiclient.discovery import build
         from googleapiclient.http import MediaFileUpload
+        import json
 
-        # Initialize Google Drive API client
-        SCOPES = ['https://www.googleapis.com/auth/drive.file']
+        # Load the credentials from the environment variable
         credentials_info = ${{ secrets.GDRIVE_CREDENTIALS_JSON }}
-        credentials = service_account.Credentials.from_service_account_info(credentials_info, scopes=SCOPES)
+        credentials = service_account.Credentials.from_service_account_info(credentials_info, scopes=['https://www.googleapis.com/auth/drive.file'])
+
+        # Initialize the Google Drive service
         drive_service = build('drive', 'v3', credentials=credentials)
 
+        # Dynamically determine the JAR file name
+        jar_file_path = os.getenv('JAR_FILE')
+        file_name = os.path.basename(jar_file_path)
+
         # Upload the JAR file to Google Drive
-        file_metadata = {'name': os.path.basename('target/national-whitelist-1.1.0.jar'), 'parents': ['${{ secrets.GDRIVE_FOLDER_ID }}']}
-        media = MediaFileUpload('target/national-whitelist-1.1.0.jar', mimetype='application/java-archive')
+        file_metadata = {'name': file_name, 'parents': ['${{ secrets.GDRIVE_FOLDER_ID }}']}
+        media = MediaFileUpload(jar_file_path, mimetype='application/java-archive')
         file = drive_service.files().create(body=file_metadata, media_body=media, fields='id').execute()
         file_id = file.get('id')
         print(f"Uploaded file with ID: {file_id}")
