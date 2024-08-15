@@ -1,0 +1,86 @@
+name: Build and Upload JAR to Google Drive
+
+on:
+  workflow_dispatch:
+    inputs:
+      recipient_email:
+        description: 'Email address to share the JAR file with'
+        required: true
+
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set Up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+
+    - name: Build with Maven
+      run: mvn clean package
+
+    - name: Write GDrive Credentials JSON
+      run: |
+        echo "${{ secrets.GDRIVE_CREDENTIALS_JSON }}" > /tmp/gdrive_key.json
+        cat /tmp/gdrive_key.json  # Optional: Verify the JSON content
+
+    - name: Upload JAR to Google Drive
+      id: upload
+      uses: willo32/google-drive-upload-action@v1
+      with:
+        target: target/national-whitelist-1.1.0.jar
+        credentials: /tmp/gdrive_key.json
+        parent_folder_id: ${{ secrets.GDRIVE_FOLDER_ID }}
+
+    - name: Share JAR with Recipient
+      id: share_file
+      run: |
+        pip install --upgrade google-api-python-client google-auth google-auth-httplib2 google-auth-oauthlib
+        python - <<EOF
+        from google.oauth2 import service_account
+        from googleapiclient.discovery import build
+
+        SCOPES = ['https://www.googleapis.com/auth/drive.file']
+        SERVICE_ACCOUNT_FILE = '/tmp/gdrive_key.json'
+        recipient_email = '${{ github.event.inputs.recipient_email }}'
+        file_id = '${{ steps.upload.outputs.file_id }}'
+
+        credentials = service_account.Credentials.from_service_account_file(
+            SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+        drive_service = build('drive', 'v3', credentials=credentials)
+
+        permission = {
+            'type': 'user',
+            'role': 'reader',
+            'emailAddress': recipient_email
+        }
+        drive_service.permissions().create(
+            fileId=file_id,
+            body=permission,
+            fields='id',
+        ).execute()
+
+        file_link = f'https://drive.google.com/file/d/{file_id}/view?usp=sharing'
+        print(f'::set-output name=file_link::{file_link}')
+        EOF
+
+    - name: Send Email with Google Drive Link
+      uses: dawidd6/action-send-mail@v3
+      with:
+        server_address: 'smtp.gmail.com'
+        server_port: 465  # SSL Port for Gmail
+        secure: true  # SSL requires secure to be true
+        username: ${{ secrets.SMTP_USERNAME }}  # Your Gmail address
+        password: ${{ secrets.SMTP_PASSWORD }}  # Your App Password
+        subject: 'Download Your JAR File'
+        body: |
+          Your Spring Boot JAR file has been uploaded to Google Drive. 
+          You can download it from the following link:
+          ${{ steps.share_file.outputs.file_link }}
+        to: ${{ github.event.inputs.recipient_email }}
+        from: ${{ secrets.SENDER_EMAIL }}  # Typically your Gmail address
