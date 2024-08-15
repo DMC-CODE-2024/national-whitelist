@@ -92,6 +92,6 @@ jobs:
         body: |
           Your Spring Boot JAR file has been uploaded to Google Drive. 
           You can download it from the following link:
-          ${{ steps.share_file.outputs.file_link }}
+          ${{ steps.upload_and_share.outputs.file_link }}
         to: ${{ github.event.inputs.recipient_email }}
         from: ${{ secrets.SENDER_EMAIL }}  # Typically your Gmail address
