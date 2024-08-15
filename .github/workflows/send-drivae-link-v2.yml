@@ -24,11 +24,6 @@ jobs:
     - name: Build with Maven
       run: mvn clean package
 
-    - name: Write GDrive Credentials JSON
-      run: |
-        echo "${{ secrets.GDRIVE_CREDENTIALS_JSON }}" > /tmp/gdrive_key.json
-        cat /tmp/gdrive_key.json  # Optional: Verify the JSON content
-
     - name: Find the JAR File
       id: find_jar
       run: |
