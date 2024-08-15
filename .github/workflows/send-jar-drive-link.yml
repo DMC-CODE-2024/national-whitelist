@@ -24,6 +24,11 @@ jobs:
     - name: Build with Maven
       run: mvn clean package
 
+    - name: Debug GDrive Credentials
+      run: |
+        echo "${GDRIVE_CREDENTIALS}" | base64 --decode > /tmp/gdrive_key.json
+        cat /tmp/gdrive_key.json  # Check if JSON is correctly written
+
     - name: Upload JAR to Google Drive
       id: upload
       uses: willo32/google-drive-upload-action@v1
