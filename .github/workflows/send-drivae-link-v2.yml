@@ -46,13 +46,14 @@ jobs:
         from googleapiclient.discovery import build
 
         SCOPES = ['https://www.googleapis.com/auth/drive.file']
-        SERVICE_ACCOUNT_FILE = '/tmp/gdrive_key.json'
-        recipient_email = '${{ github.event.inputs.recipient_email }}'
-        file_id = '${{ steps.upload.outputs.file_id }}'
+        credentials_info = ${{ secrets.GDRIVE_CREDENTIALS_JSON }}
 
-        credentials = service_account.Credentials.from_service_account_file(
-            SERVICE_ACCOUNT_FILE, scopes=SCOPES)
+        # Use the JSON string directly here
+        credentials = service_account.Credentials.from_service_account_info(credentials_info)
         drive_service = build('drive', 'v3', credentials=credentials)
+
+        file_id = '${{ steps.upload.outputs.file_id }}'
+        recipient_email = '${{ github.event.inputs.recipient_email }}'
 
         permission = {
             'type': 'user',
