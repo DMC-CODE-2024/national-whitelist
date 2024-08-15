@@ -74,9 +74,10 @@ jobs:
         }
         drive_service.permissions().create(fileId=file_id, body=permission, fields='id').execute()
 
-        # Output the file link
+        # Output the file link to GITHUB_OUTPUT
         file_link = f'https://drive.google.com/file/d/{file_id}/view?usp=sharing'
-        print(f"::set-output name=file_link::{file_link}")
+        with open(os.environ['GITHUB_OUTPUT'], 'a') as fh:
+            print(f"file_link={file_link}", file=fh)
         EOF
 
     - name: Send Email with Google Drive Link
