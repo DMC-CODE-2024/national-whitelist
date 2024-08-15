@@ -1,8 +1,14 @@
 package com.gl.ceir.builder;
 
+import com.gl.ceir.config.AppDbConfig;
 import com.gl.ceir.model.app.ActiveUniqueImei;
 import com.gl.ceir.model.app.NationalWhitelist;
+import com.gl.custom.CustomCheck;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -12,7 +18,10 @@ import java.util.Optional;
 
 public class NationalWhitelistBuilder {
 
-    public static List<NationalWhitelist> fromActiveUniqueImei(List<ActiveUniqueImei> activeUniqueImeiList, List<String> rules) {
+    @Autowired
+    private DataSource appDataSource;
+
+    public static List<NationalWhitelist> fromActiveUniqueImei(List<ActiveUniqueImei> activeUniqueImeiList, List<String> rules, boolean amnestyPeriodFlag) {
         List<NationalWhitelist> nationalWhitelistList = new ArrayList<>();
 
         for (ActiveUniqueImei activeUniqueImei : activeUniqueImeiList) {
@@ -55,9 +64,9 @@ public class NationalWhitelistBuilder {
             nationalWhitelist.setReasonForInvalidImei(activeUniqueImei.getReason());
             nationalWhitelist.setIsUsedDeviceImei(activeUniqueImei.getIsUsed());
             nationalWhitelist.setForeignRule(activeUniqueImei.getForeginRule());
-            nationalWhitelist.setTrcImeiStatus(evaluateTrcFinalValue(activeUniqueImei.getTrcImeiStatus(), rules));
+            nationalWhitelist.setTrcImeiStatus(evaluateTrcFinalValue(activeUniqueImei.getTrcImeiStatus(), rules, activeUniqueImei.getValidityFlag()));
             nationalWhitelist.setTrcModifiedTime(activeUniqueImei.getTrcModifiedTime());
-            nationalWhitelist.setGdceImeiStatus(evaluateGdceFinalValue(activeUniqueImei.getGdceImeiStatus(), activeUniqueImei.getLocalManufacturerStatus(), rules));
+            nationalWhitelist.setGdceImeiStatus(evaluateGdceFinalValue(activeUniqueImei.getCustomsStatus(), activeUniqueImei.getLocalManufacturerStatus(), rules, amnestyPeriodFlag));
             nationalWhitelist.setGdceModifiedTime(LocalDateTime.now());
 
             nationalWhitelistList.add(nationalWhitelist);
@@ -115,34 +124,64 @@ public class NationalWhitelistBuilder {
         return LocalDate.of(inputDate.getYear(), inputDate.getMonth(), inputDate.getDayOfMonth());
     }
 
-    public static int evaluateGdceFinalValue(Integer customsStatus, Integer manufacturerStatus, List<String> activeRules) {
+    public static int evaluateGdceFinalValue(Integer customsStatus, Integer manufacturerStatus, List<String> activeRules, boolean amnestyPeriodFlag) {
         boolean isCustomsActive = activeRules.contains("CUSTOM_CHK");
         boolean isManufacturerActive = activeRules.contains("EXISTS_IN_LOCAL_MANUFACTURER_DB");
 
-        int customs = (isCustomsActive && customsStatus != null && customsStatus == 1) ? 1 : 0;
-        int manufacturer = (isManufacturerActive && manufacturerStatus != null && manufacturerStatus == 1) ? 1 : 0;
+        int customs = (isCustomsActive && customsStatus != null) ? 1 : 0;
+        int manufacturer = (isManufacturerActive && manufacturerStatus != null) ? 1 : 0;
 
         if (customs == 0 && manufacturer == 0) {
-            if (!isCustomsActive && !isManufacturerActive) {
-                return 3;
-            } else if (!isCustomsActive && isManufacturerActive) {
-                return 0;
-            } else if (isCustomsActive && !isManufacturerActive) {
-                return 0;
-            }
-        } else if (customs == 0 && manufacturer == 1) {
-            return 2;
-        } else if (customs == 1 && manufacturer == 0) {
-            return 1;
-        } else if (customs == 1 && manufacturer == 1) {
-            return 0;
+            return 3;
         }
-        return 3;
+
+        if (customs == 0 && manufacturer == 1) {
+            if (manufacturerStatus == 1) {
+                return 2;
+            } else if (manufacturerStatus == 0) {
+                return amnestyPeriodFlag ? 3 : 0;
+            }
+        }
+
+        if (customs == 1 && manufacturer == 0) {
+            if (customsStatus == 1) {
+                return 1;
+            } else if (customsStatus == 0) {
+                return amnestyPeriodFlag ? 3 : 0;
+            }
+        }
+
+        if (customs == 1 && manufacturer == 1) {
+            if (customsStatus == 1 && manufacturerStatus != null) {
+                return 1;
+            } else if (customsStatus == 0) {
+                if (manufacturerStatus == 0) {
+                    return amnestyPeriodFlag ? 3 : 0;
+                } else if (manufacturerStatus == 1) {
+                    return 2;
+                }
+            }
+        }
+
+        return -1;
     }
 
-    public static int evaluateTrcFinalValue(Integer trcStatus, List<String> activeRules) {
+    public static int evaluateTrcFinalValue(Integer trcStatus, List<String> activeRules, boolean validityFlag) {
         boolean isTrcActive = activeRules.contains("TYPE_APPROVED");
-        int trc = (isTrcActive && trcStatus != null )? trcStatus: 3;
+        int trc;
+        if (isTrcActive) {
+            if (validityFlag) {
+                trc = trcStatus;
+            } else {
+                trc = 2;
+            }
+        } else {
+            if (validityFlag) {
+                trc = 3;
+            } else {
+                trc = 2;
+            }
+        }
         return trc;
     }
 

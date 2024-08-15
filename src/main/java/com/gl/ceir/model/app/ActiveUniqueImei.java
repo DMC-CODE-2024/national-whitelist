@@ -45,7 +45,7 @@ public class ActiveUniqueImei implements Serializable{
 //    @Transient
 //    @Convert(converter = BooleanToStringConverter.class)
     private Boolean validityFlag;
-    private Integer isTypeApprovedFlag;
+    private Integer isTypeApproved;
     private String actualOperator;
     private String testImei;
     private String deviceType;
@@ -69,7 +69,7 @@ public class ActiveUniqueImei implements Serializable{
     public ActiveUniqueImei() {
     }
 
-    public ActiveUniqueImei(Integer id, LocalDateTime createdOn, LocalDateTime modifiedOn, String foreginRule, String tac, String msisdn, Integer failedRuleId, String failedRuleName, String imsi, String mobileOperator, String createFilename, String updateFilename, LocalDateTime updatedOn, String systemType, String action, String period, LocalDateTime failedRuleDate, Integer mobileOperatorId, Integer taxPaid, String featureName, LocalDateTime recordTime, String actualImei, String recordType, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, Boolean validityFlag, Integer isTypeApprovedFlag, String actualOperator, String testImei, String deviceType, String isUsed, String reason, Integer gdceImeiStatus, LocalDateTime gdceModifiedTime, Integer trcImeiStatus, LocalDateTime trcModifiedTime, Integer customsStatus, Integer localManufacturerStatus) {
+    public ActiveUniqueImei(Integer id, LocalDateTime createdOn, LocalDateTime modifiedOn, String foreginRule, String tac, String msisdn, Integer failedRuleId, String failedRuleName, String imsi, String mobileOperator, String createFilename, String updateFilename, LocalDateTime updatedOn, String systemType, String action, String period, LocalDateTime failedRuleDate, Integer mobileOperatorId, Integer taxPaid, String featureName, LocalDateTime recordTime, String actualImei, String recordType, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, Boolean validityFlag, Integer isTypeApproved, String actualOperator, String testImei, String deviceType, String isUsed, String reason, Integer gdceImeiStatus, LocalDateTime gdceModifiedTime, Integer trcImeiStatus, LocalDateTime trcModifiedTime, Integer customsStatus, Integer localManufacturerStatus) {
         this.id = id;
         this.createdOn = createdOn;
         this.modifiedOn = modifiedOn;
@@ -102,7 +102,7 @@ public class ActiveUniqueImei implements Serializable{
         this.updateSource = updateSource;
         this.serverOrigin = serverOrigin;
         this.validityFlag = validityFlag;
-        this.isTypeApprovedFlag = isTypeApprovedFlag;
+        this.isTypeApproved = isTypeApproved;
         this.actualOperator = actualOperator;
         this.testImei = testImei;
         this.deviceType = deviceType;
@@ -114,6 +114,56 @@ public class ActiveUniqueImei implements Serializable{
         this.trcModifiedTime = trcModifiedTime;
         this.customsStatus = customsStatus;
         this.localManufacturerStatus = localManufacturerStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "ActiveUniqueImei{" +
+                "id=" + id +
+                ", createdOn=" + createdOn +
+                ", modifiedOn=" + modifiedOn +
+                ", foreginRule='" + foreginRule + '\'' +
+                ", tac='" + tac + '\'' +
+                ", msisdn='" + msisdn + '\'' +
+                ", failedRuleId=" + failedRuleId +
+                ", failedRuleName='" + failedRuleName + '\'' +
+                ", imsi='" + imsi + '\'' +
+                ", mobileOperator='" + mobileOperator + '\'' +
+                ", createFilename='" + createFilename + '\'' +
+                ", updateFilename='" + updateFilename + '\'' +
+                ", updatedOn=" + updatedOn +
+                ", systemType='" + systemType + '\'' +
+                ", action='" + action + '\'' +
+                ", period='" + period + '\'' +
+                ", failedRuleDate=" + failedRuleDate +
+                ", mobileOperatorId=" + mobileOperatorId +
+                ", taxPaid=" + taxPaid +
+                ", featureName='" + featureName + '\'' +
+                ", recordTime=" + recordTime +
+                ", actualImei='" + actualImei + '\'' +
+                ", recordType='" + recordType + '\'' +
+                ", imei='" + imei + '\'' +
+                ", rawCdrFileName='" + rawCdrFileName + '\'' +
+                ", imeiArrivalTime=" + imeiArrivalTime +
+                ", source='" + source + '\'' +
+                ", updateRawCdrFileName='" + updateRawCdrFileName + '\'' +
+                ", updateImeiArrivalTime=" + updateImeiArrivalTime +
+                ", updateSource='" + updateSource + '\'' +
+                ", serverOrigin='" + serverOrigin + '\'' +
+                ", validityFlag=" + validityFlag +
+                ", isTypeApproved=" + isTypeApproved +
+                ", actualOperator='" + actualOperator + '\'' +
+                ", testImei='" + testImei + '\'' +
+                ", deviceType='" + deviceType + '\'' +
+                ", isUsed='" + isUsed + '\'' +
+                ", reason='" + reason + '\'' +
+                ", gdceImeiStatus=" + gdceImeiStatus +
+                ", gdceModifiedTime=" + gdceModifiedTime +
+                ", trcImeiStatus=" + trcImeiStatus +
+                ", trcModifiedTime=" + trcModifiedTime +
+                ", customsStatus=" + customsStatus +
+                ", localManufacturerStatus=" + localManufacturerStatus +
+                '}';
     }
 
     public Integer getId() {
@@ -372,12 +422,12 @@ public class ActiveUniqueImei implements Serializable{
         this.validityFlag = validityFlag;
     }
 
-    public Integer getIsTypeApprovedFlag() {
-        return isTypeApprovedFlag;
+    public Integer getIsTypeApproved() {
+        return isTypeApproved;
     }
 
-    public void setIsTypeApprovedFlag(Integer isTypeApprovedFlag) {
-        this.isTypeApprovedFlag = isTypeApprovedFlag;
+    public void setIsTypeApproved(Integer isTypeApproved) {
+        this.isTypeApproved = isTypeApproved;
     }
 
     public String getActualOperator() {
@@ -466,55 +516,5 @@ public class ActiveUniqueImei implements Serializable{
 
     public void setLocalManufacturerStatus(Integer localManufacturerStatus) {
         this.localManufacturerStatus = localManufacturerStatus;
-    }
-
-    @Override
-    public String toString() {
-        return "ActiveUniqueImei{" +
-                "id=" + id +
-                ", createdOn=" + createdOn +
-                ", modifiedOn=" + modifiedOn +
-                ", foreginRule='" + foreginRule + '\'' +
-                ", tac='" + tac + '\'' +
-                ", msisdn='" + msisdn + '\'' +
-                ", failedRuleId=" + failedRuleId +
-                ", failedRuleName='" + failedRuleName + '\'' +
-                ", imsi='" + imsi + '\'' +
-                ", mobileOperator='" + mobileOperator + '\'' +
-                ", createFilename='" + createFilename + '\'' +
-                ", updateFilename='" + updateFilename + '\'' +
-                ", updatedOn=" + updatedOn +
-                ", systemType='" + systemType + '\'' +
-                ", action='" + action + '\'' +
-                ", period='" + period + '\'' +
-                ", failedRuleDate=" + failedRuleDate +
-                ", mobileOperatorId=" + mobileOperatorId +
-                ", taxPaid=" + taxPaid +
-                ", featureName='" + featureName + '\'' +
-                ", recordTime=" + recordTime +
-                ", actualImei='" + actualImei + '\'' +
-                ", recordType='" + recordType + '\'' +
-                ", imei='" + imei + '\'' +
-                ", rawCdrFileName='" + rawCdrFileName + '\'' +
-                ", imeiArrivalTime=" + imeiArrivalTime +
-                ", source='" + source + '\'' +
-                ", updateRawCdrFileName='" + updateRawCdrFileName + '\'' +
-                ", updateImeiArrivalTime=" + updateImeiArrivalTime +
-                ", updateSource='" + updateSource + '\'' +
-                ", serverOrigin='" + serverOrigin + '\'' +
-                ", validityFlag=" + validityFlag +
-                ", isTypeApprovedFlag=" + isTypeApprovedFlag +
-                ", actualOperator='" + actualOperator + '\'' +
-                ", testImei='" + testImei + '\'' +
-                ", deviceType='" + deviceType + '\'' +
-                ", isUsed='" + isUsed + '\'' +
-                ", reason='" + reason + '\'' +
-                ", gdceImeiStatus=" + gdceImeiStatus +
-                ", gdceModifiedTime=" + gdceModifiedTime +
-                ", trcImeiStatus=" + trcImeiStatus +
-                ", trcModifiedTime=" + trcModifiedTime +
-                ", customsStatus=" + customsStatus +
-                ", localManufacturerStatus=" + localManufacturerStatus +
-                '}';
     }
 }

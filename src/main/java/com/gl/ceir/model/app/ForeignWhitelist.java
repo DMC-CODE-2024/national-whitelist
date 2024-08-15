@@ -49,15 +49,11 @@ public class ForeignWhitelist {
     private String isTestImei;
     private String isUsedDeviceImei;
     private LocalDateTime foreignWhiteListCreatedDate;
-    private Integer gdceImeiStatus;
-    private LocalDateTime gdceModifiedTime;
-    private Integer trcImeiStatus;
-    private LocalDateTime trcModifiedTime;
 
     public ForeignWhitelist() {
     }
 
-    public ForeignWhitelist(Integer foreignWhitelistId, LocalDateTime createdOn, LocalDateTime modifiedOn, String foreignRule, String mobileOperator, String period, String taxPaid, String createdFilename, String updatedFilename, LocalDateTime updatedOn, String systemType, Integer failedRuleId, String failedRuleName, Boolean validityFlag, String tac, String action, LocalDateTime failedRuleDate, String featureName, LocalDateTime recordTime, String actualImei, String recordType, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, String listType, String typeOfEntry, String reasonForInvalidImei, String imsi, String msisdn, LocalDate createdOnDate, String deviceType, String actualOperator, String isTestImei, String isUsedDeviceImei, LocalDateTime foreignWhiteListCreatedDate, Integer gdceImeiStatus, LocalDateTime gdceModifiedTime, Integer trcImeiStatus, LocalDateTime trcModifiedTime) {
+    public ForeignWhitelist(Integer foreignWhitelistId, LocalDateTime createdOn, LocalDateTime modifiedOn, String foreignRule, String mobileOperator, String period, String taxPaid, String createdFilename, String updatedFilename, LocalDateTime updatedOn, String systemType, Integer failedRuleId, String failedRuleName, Boolean validityFlag, String tac, String action, LocalDateTime failedRuleDate, String featureName, LocalDateTime recordTime, String actualImei, String recordType, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, String listType, String typeOfEntry, String reasonForInvalidImei, String imsi, String msisdn, LocalDate createdOnDate, String deviceType, String actualOperator, String isTestImei, String isUsedDeviceImei, LocalDateTime foreignWhiteListCreatedDate) {
         this.foreignWhitelistId = foreignWhitelistId;
         this.createdOn = createdOn;
         this.modifiedOn = modifiedOn;
@@ -98,10 +94,6 @@ public class ForeignWhitelist {
         this.isTestImei = isTestImei;
         this.isUsedDeviceImei = isUsedDeviceImei;
         this.foreignWhiteListCreatedDate = foreignWhiteListCreatedDate;
-        this.gdceImeiStatus = gdceImeiStatus;
-        this.gdceModifiedTime = gdceModifiedTime;
-        this.trcImeiStatus = trcImeiStatus;
-        this.trcModifiedTime = trcModifiedTime;
     }
 
     public Integer getForeignWhitelistId() {
@@ -424,38 +416,6 @@ public class ForeignWhitelist {
         this.foreignWhiteListCreatedDate = foreignWhiteListCreatedDate;
     }
 
-    public Integer getGdceImeiStatus() {
-        return gdceImeiStatus;
-    }
-
-    public void setGdceImeiStatus(Integer gdceImeiStatus) {
-        this.gdceImeiStatus = gdceImeiStatus;
-    }
-
-    public LocalDateTime getGdceModifiedTime() {
-        return gdceModifiedTime;
-    }
-
-    public void setGdceModifiedTime(LocalDateTime gdceModifiedTime) {
-        this.gdceModifiedTime = gdceModifiedTime;
-    }
-
-    public Integer getTrcImeiStatus() {
-        return trcImeiStatus;
-    }
-
-    public void setTrcImeiStatus(Integer trcImeiStatus) {
-        this.trcImeiStatus = trcImeiStatus;
-    }
-
-    public LocalDateTime getTrcModifiedTime() {
-        return trcModifiedTime;
-    }
-
-    public void setTrcModifiedTime(LocalDateTime trcModifiedTime) {
-        this.trcModifiedTime = trcModifiedTime;
-    }
-
     @Override
     public String toString() {
         return "ForeignWhitelist{" +
@@ -499,10 +459,6 @@ public class ForeignWhitelist {
                 ", isTestImei='" + isTestImei + '\'' +
                 ", isUsedDeviceImei='" + isUsedDeviceImei + '\'' +
                 ", foreignWhiteListCreatedDate=" + foreignWhiteListCreatedDate +
-                ", gdceImeiStatus=" + gdceImeiStatus +
-                ", gdceModifiedTime=" + gdceModifiedTime +
-                ", trcImeiStatus=" + trcImeiStatus +
-                ", trcModifiedTime=" + trcModifiedTime +
                 '}';
     }
 }

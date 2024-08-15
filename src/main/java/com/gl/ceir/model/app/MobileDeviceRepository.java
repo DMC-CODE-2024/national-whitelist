@@ -101,7 +101,7 @@ public class MobileDeviceRepository {
     @Column(name = "launch_date")
     private LocalDateTime launchDate;
 
-    @Column(name = "is_type_approved_flag")
+    @Column(name = "is_type_approved")
     private Boolean isTypeApprovedFlag;
 
     public Integer getId() {

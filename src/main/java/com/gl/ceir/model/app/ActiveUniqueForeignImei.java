@@ -45,7 +45,7 @@ public class ActiveUniqueForeignImei {
     private String updateSource;
     private String serverOrigin;
     private Boolean validityFlag;
-    private Integer isTypeApprovedFlag;
+    private Integer isTypeApproved;
     private String testImei;
     private String actualOperator;
     private String deviceType;
@@ -69,7 +69,7 @@ public class ActiveUniqueForeignImei {
     public ActiveUniqueForeignImei() {
     }
 
-    public ActiveUniqueForeignImei(Integer id, LocalDateTime createdOn, LocalDateTime modifiedOn, String foreginRule, String tac, String msisdn, Integer failedRuleId, String failedRuleName, String imsi, String mobileOperator, String createFilename, String updateFilename, LocalDateTime updatedOn, String systemType, String action, String period, LocalDateTime failedRuleDate, Integer mobileOperatorId, Integer taxPaid, String featureName, LocalDateTime recordTime, String actualImei, String recordType, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, Boolean validityFlag, Integer isTypeApprovedFlag, String testImei, String actualOperator, String deviceType, String isUsed, String reason, Integer gdceImeiStatus, LocalDateTime gdceModifiedTime, Integer trcImeiStatus, LocalDateTime trcModifiedTime, Integer customsStatus, Integer localManufacturerStatus) {
+    public ActiveUniqueForeignImei(Integer id, LocalDateTime createdOn, LocalDateTime modifiedOn, String foreginRule, String tac, String msisdn, Integer failedRuleId, String failedRuleName, String imsi, String mobileOperator, String createFilename, String updateFilename, LocalDateTime updatedOn, String systemType, String action, String period, LocalDateTime failedRuleDate, Integer mobileOperatorId, Integer taxPaid, String featureName, LocalDateTime recordTime, String actualImei, String recordType, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, Boolean validityFlag, Integer isTypeApproved, String testImei, String actualOperator, String deviceType, String isUsed, String reason, Integer gdceImeiStatus, LocalDateTime gdceModifiedTime, Integer trcImeiStatus, LocalDateTime trcModifiedTime, Integer customsStatus, Integer localManufacturerStatus) {
         this.id = id;
         this.createdOn = createdOn;
         this.modifiedOn = modifiedOn;
@@ -102,7 +102,7 @@ public class ActiveUniqueForeignImei {
         this.updateSource = updateSource;
         this.serverOrigin = serverOrigin;
         this.validityFlag = validityFlag;
-        this.isTypeApprovedFlag = isTypeApprovedFlag;
+        this.isTypeApproved = isTypeApproved;
         this.testImei = testImei;
         this.actualOperator = actualOperator;
         this.deviceType = deviceType;
@@ -372,12 +372,12 @@ public class ActiveUniqueForeignImei {
         this.validityFlag = validityFlag;
     }
 
-    public Integer getIsTypeApprovedFlag() {
-        return isTypeApprovedFlag;
+    public Integer getIsTypeApproved() {
+        return isTypeApproved;
     }
 
-    public void setIsTypeApprovedFlag(Integer isTypeApprovedFlag) {
-        this.isTypeApprovedFlag = isTypeApprovedFlag;
+    public void setIsTypeApproved(Integer isTypeApproved) {
+        this.isTypeApproved = isTypeApproved;
     }
 
     public String getTestImei() {
@@ -503,7 +503,7 @@ public class ActiveUniqueForeignImei {
                 ", updateSource='" + updateSource + '\'' +
                 ", serverOrigin='" + serverOrigin + '\'' +
                 ", validityFlag=" + validityFlag +
-                ", isTypeApprovedFlag=" + isTypeApprovedFlag +
+                ", isTypeApproved=" + isTypeApproved +
                 ", testImei='" + testImei + '\'' +
                 ", actualOperator='" + actualOperator + '\'' +
                 ", deviceType='" + deviceType + '\'' +

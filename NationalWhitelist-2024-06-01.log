@@ -1,0 +1,8 @@
+[INFO ] 2024-06-01 17:35:15.204 [main] NaitionalWhitelistApplicationTests - Starting NaitionalWhitelistApplicationTests using Java 11.0.22 on Radhays-MacBook-Pro.local with PID 47357 (started by radhayanand in /Users/radhayanand/goldilocks)
+[INFO ] 2024-06-01 17:35:15.206 [main] NaitionalWhitelistApplicationTests - The following 1 profile is active: "oracle"
+[INFO ] 2024-06-01 17:35:19.066 [main] NaitionalWhitelistApplicationTests - Started NaitionalWhitelistApplicationTests in 3.984 seconds (JVM running for 4.78)
+[INFO ] 2024-02-26 21:27:53.588 [main] NaitionalWhitelistApplicationTests - Starting NaitionalWhitelistApplicationTests using Java 11.0.22 on Radhays-MacBook-Pro.local with PID 50590 (started by radhayanand in /Users/radhayanand/goldilocks)
+[INFO ] 2024-02-26 21:27:53.589 [main] NaitionalWhitelistApplicationTests - The following 1 profile is active: "oracle"
+[INFO ] 2024-02-26 21:27:58.823 [main] NaitionalWhitelistApplicationTests - Started NaitionalWhitelistApplicationTests in 5.356 seconds (JVM running for 5.982)
+[ERROR] 2024-02-26 21:27:59.941 [main] DbConnectionChecker - alert013: DB connection failed for app while getting DB configuration value
+[ERROR] 2024-02-26 21:28:01.069 [main] DbConnectionChecker - alert013: DB connection failed for aud while getting DB configuration value

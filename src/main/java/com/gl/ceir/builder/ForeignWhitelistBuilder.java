@@ -55,10 +55,6 @@ public class ForeignWhitelistBuilder {
             nationalWhitelist.setForeignWhiteListCreatedDate(LocalDateTime.now());
             nationalWhitelist.setIsUsedDeviceImei(activeUniqueImei.getIsUsed());
             nationalWhitelist.setForeignRule(activeUniqueImei.getForeginRule());
-            nationalWhitelist.setTrcImeiStatus(evaluateTrcFinalValue(activeUniqueImei.getTrcImeiStatus(), rules));
-            nationalWhitelist.setTrcModifiedTime(activeUniqueImei.getTrcModifiedTime());
-            nationalWhitelist.setGdceImeiStatus(evaluateFinalValue(activeUniqueImei.getGdceImeiStatus(), activeUniqueImei.getLocalManufacturerStatus(), rules));
-            nationalWhitelist.setGdceModifiedTime(LocalDateTime.now());
 
             nationalWhitelistList.add(nationalWhitelist);
         }

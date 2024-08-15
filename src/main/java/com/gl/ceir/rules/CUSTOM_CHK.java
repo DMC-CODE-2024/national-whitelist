@@ -3,9 +3,13 @@ package com.gl.ceir.rules;
 import com.gl.ceir.dto.RuleEngineDto;
 import com.gl.ceir.model.app.*;
 import com.gl.ceir.repository.app.GdceDataRepository;
+import com.gl.custom.CustomCheck;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +18,10 @@ import java.util.Optional;
 public class CUSTOM_CHK implements RulesInterface {
     @Autowired
     private GdceDataRepository gdceDataRepository;
+
+    @Autowired
+    private DataSource appDataSource;
+
     @Override
     public RuleEngineDto<ActiveUniqueImei, ExceptionList> validateActiveUniqueImei(RuleEngineDto<ActiveUniqueImei, ExceptionList> ruleEngineDto) {
         List<ActiveUniqueImei> accepted = new ArrayList<>();
@@ -22,7 +30,17 @@ public class CUSTOM_CHK implements RulesInterface {
             if (gdceDataOpt.isPresent()) {
                 imei.setCustomsStatus(1);
             } else {
-                imei.setCustomsStatus(0);
+                try (Connection connection = appDataSource.getConnection()) {
+                    boolean res = CustomCheck.identifyCustomComplianceStatus(connection, imei.getImei(), "NWL");
+                    if(res){
+                        imei.setCustomsStatus(1);
+                    } else {
+                        imei.setCustomsStatus(0);
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    imei.setCustomsStatus(0);
+                }
             }
             accepted.add(imei);
         }

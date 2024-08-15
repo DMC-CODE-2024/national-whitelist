@@ -16,8 +16,8 @@ public class TYPE_APPROVED implements RulesInterface {
         List<ExceptionList> exceptionLists = ruleEngineDto.getExceptionList();
 
         for (ActiveUniqueImei activeUniqueImei : ruleEngineDto.getNationalWhitelistAccepted()) {
-            if (activeUniqueImei.getIsTypeApprovedFlag() != null) {
-                if (activeUniqueImei.getIsTypeApprovedFlag() == 1) {
+            if (activeUniqueImei.getIsTypeApproved() != null) {
+                if (activeUniqueImei.getIsTypeApproved() == 1) {
                     activeUniqueImei.setTrcImeiStatus(1);
                 } else {
                     activeUniqueImei.setTrcImeiStatus(0);
@@ -42,8 +42,8 @@ public class TYPE_APPROVED implements RulesInterface {
         List<ForeignExceptionList> exceptionLists = ruleEngineDto.getExceptionList();
 
         for (ActiveUniqueForeignImei activeUniqueImei : ruleEngineDto.getNationalWhitelistAccepted()) {
-            if (activeUniqueImei.getIsTypeApprovedFlag() != null) {
-                if (activeUniqueImei.getIsTypeApprovedFlag() == 1) {
+            if (activeUniqueImei.getIsTypeApproved() != null) {
+                if (activeUniqueImei.getIsTypeApproved() == 1) {
                     activeUniqueImei.setTrcImeiStatus(1);
                 } else {
                     activeUniqueImei.setTrcImeiStatus(0);
