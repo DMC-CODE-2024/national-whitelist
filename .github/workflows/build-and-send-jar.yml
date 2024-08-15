@@ -1,0 +1,47 @@
+name: Build and Send JAR
+
+on:
+  workflow_dispatch:
+    inputs:
+      recipient_email:
+        description: 'Email address to send the JAR to'
+        required: true
+
+jobs:
+  build-and-email:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set Up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+
+      - name: Build with Maven
+        run: mvn clean package
+
+      - name: Retrieve Built JAR
+        id: retrieve_jar
+        run: |
+          JAR_PATH=$(find target -name "*.jar" | head -n 1)
+          echo "::set-output name=jar_path::$JAR_PATH"
+
+      - name: Send Email with JAR Attachment
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: 'smtp.gmail.com'  # Replace with your SMTP server
+          server_port: 587
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          subject: 'Built Spring Boot JAR'
+          body: 'Please find the attached Spring Boot JAR file.'
+          to: ${{ github.event.inputs.recipient_email }}
+          from: ${{ secrets.SENDER_EMAIL }}
+          content_type: 'text/plain'
+          attachments: ${{ steps.retrieve_jar.outputs.jar_path }}
+          secure: true
+
