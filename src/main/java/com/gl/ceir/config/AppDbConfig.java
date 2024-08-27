@@ -73,6 +73,13 @@ public class AppDbConfig {
                     .password(env.getProperty("spring.datasource.oracle.password"))
                     .driverClassName(env.getProperty("spring.datasource.oracle.driver-class-name"))
                     .build();
+        } else if ("app_edr".equals(env.getProperty("spring.profiles.active"))) {
+            return DataSourceBuilder.create()
+                    .url(env.getProperty("app_edr.datasource.url"))
+                    .username(env.getProperty("app_edr.datasource.username"))
+                    .password(env.getProperty("app_edr.datasource.password"))
+                    .driverClassName(env.getProperty("app_edr.datasource.driver-class-name"))
+                    .build();
         } else {
             return DataSourceBuilder.create()
                     .url(env.getProperty("spring.datasource.url"))

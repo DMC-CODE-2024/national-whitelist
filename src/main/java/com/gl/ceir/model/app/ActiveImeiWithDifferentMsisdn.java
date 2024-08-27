@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "active_imei_with_different_msisdn")
+@Table(name = "active_imei_with_different_msisdn", schema = "app")
 public class ActiveImeiWithDifferentMsisdn implements Serializable {
 
     @Id
@@ -101,7 +101,6 @@ public class ActiveImeiWithDifferentMsisdn implements Serializable {
     @Column(name = "server_origin")
     private String serverOrigin;
 
-    @Column(name = "validity_flag")
     private Boolean validityFlag;
 
     @Column(name = "test_imei")

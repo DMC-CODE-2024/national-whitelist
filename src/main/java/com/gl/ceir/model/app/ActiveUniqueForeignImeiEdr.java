@@ -1,53 +1,78 @@
 package com.gl.ceir.model.app;
-
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "active_unique_foreign_imei", schema = "app")
-public class ActiveUniqueForeignImei {
+@Table(name = "active_unique_foreign_imei", schema = "app_edr")
+public class ActiveUniqueForeignImeiEdr implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "created_on")
     private LocalDateTime createdOn;
+
+    @Column(name = "modified_on")
     private LocalDateTime modifiedOn;
-    private String foreginRule;
+
+    @Column(name = "foregin_rule")
+    private String foreignRule;
+
     private String tac;
     private String msisdn;
-    private Integer failedRuleId;
+
+    @Column(name = "failed_rule_id")
+    private String failedRuleId;
+
     private String failedRuleName;
-    private String imsi;
+
+    @Column(name = "imsi")
+    private Long imsi;  // Changed to Long to match `bigint` type
+
     private String mobileOperator;
     private String createFilename;
     private String updateFilename;
+
+    @Column(name = "updated_on")
     private LocalDateTime updatedOn;
-    private String systemType;
+
+    private String protocol;
     private String action;
     private String period;
-    private LocalDateTime failedRuleDate;
+
+    @Column(name = "failed_rule_date")
+    private String failedRuleDate;  // Assuming this needs to be a String, as defined
+
     private Integer mobileOperatorId;
     private Integer taxPaid;
     private String featureName;
+
+    @Column(name = "record_time")
     private LocalDateTime recordTime;
+
     private String actualImei;
-    private String recordType;
+
+    @Column(name = "timestamp")
+    private LocalDateTime timestamp; // renamed from "timestamp" to avoid SQL keyword conflict
+
     private String imei;
     private String rawCdrFileName;
+
+    @Column(name = "imei_arrival_time")
     private LocalDateTime imeiArrivalTime;
+
     private String source;
     private String updateRawCdrFileName;
+
+    @Column(name = "update_imei_arrival_time")
     private LocalDateTime updateImeiArrivalTime;
+
     private String updateSource;
     private String serverOrigin;
-    private Boolean validityFlag;
-    private String testImei;
     private String actualOperator;
-    private String deviceType;
+    private String testImei;
     private String isUsed;
     @Transient
     private String reason;
@@ -64,15 +89,16 @@ public class ActiveUniqueForeignImei {
     @Transient
     private Integer localManufacturerStatus;
 
+    // Getters and setters for all fields
 
-    public ActiveUniqueForeignImei() {
+    public ActiveUniqueForeignImeiEdr() {
     }
 
-    public ActiveUniqueForeignImei(Integer id, LocalDateTime createdOn, LocalDateTime modifiedOn, String foreginRule, String tac, String msisdn, Integer failedRuleId, String failedRuleName, String imsi, String mobileOperator, String createFilename, String updateFilename, LocalDateTime updatedOn, String systemType, String action, String period, LocalDateTime failedRuleDate, Integer mobileOperatorId, Integer taxPaid, String featureName, LocalDateTime recordTime, String actualImei, String recordType, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, Boolean validityFlag, String testImei, String actualOperator, String deviceType, String isUsed, String reason, Integer gdceImeiStatus, LocalDateTime gdceModifiedTime, Integer trcImeiStatus, LocalDateTime trcModifiedTime, Integer customsStatus, Integer localManufacturerStatus) {
+    public ActiveUniqueForeignImeiEdr(Integer id, LocalDateTime createdOn, LocalDateTime modifiedOn, String foreignRule, String tac, String msisdn, String failedRuleId, String failedRuleName, Long imsi, String mobileOperator, String createFilename, String updateFilename, LocalDateTime updatedOn, String protocol, String action, String period, String failedRuleDate, Integer mobileOperatorId, Integer taxPaid, String featureName, LocalDateTime recordTime, String actualImei, LocalDateTime timestamp, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, String actualOperator, String testImei, String isUsed, String reason, Integer gdceImeiStatus, LocalDateTime gdceModifiedTime, Integer trcImeiStatus, LocalDateTime trcModifiedTime, Integer customsStatus, Integer localManufacturerStatus) {
         this.id = id;
         this.createdOn = createdOn;
         this.modifiedOn = modifiedOn;
-        this.foreginRule = foreginRule;
+        this.foreignRule = foreignRule;
         this.tac = tac;
         this.msisdn = msisdn;
         this.failedRuleId = failedRuleId;
@@ -82,7 +108,7 @@ public class ActiveUniqueForeignImei {
         this.createFilename = createFilename;
         this.updateFilename = updateFilename;
         this.updatedOn = updatedOn;
-        this.systemType = systemType;
+        this.protocol = protocol;
         this.action = action;
         this.period = period;
         this.failedRuleDate = failedRuleDate;
@@ -91,7 +117,7 @@ public class ActiveUniqueForeignImei {
         this.featureName = featureName;
         this.recordTime = recordTime;
         this.actualImei = actualImei;
-        this.recordType = recordType;
+        this.timestamp = timestamp;
         this.imei = imei;
         this.rawCdrFileName = rawCdrFileName;
         this.imeiArrivalTime = imeiArrivalTime;
@@ -100,10 +126,8 @@ public class ActiveUniqueForeignImei {
         this.updateImeiArrivalTime = updateImeiArrivalTime;
         this.updateSource = updateSource;
         this.serverOrigin = serverOrigin;
-        this.validityFlag = validityFlag;
-        this.testImei = testImei;
         this.actualOperator = actualOperator;
-        this.deviceType = deviceType;
+        this.testImei = testImei;
         this.isUsed = isUsed;
         this.reason = reason;
         this.gdceImeiStatus = gdceImeiStatus;
@@ -138,12 +162,12 @@ public class ActiveUniqueForeignImei {
         this.modifiedOn = modifiedOn;
     }
 
-    public String getForeginRule() {
-        return foreginRule;
+    public String getForeignRule() {
+        return foreignRule;
     }
 
-    public void setForeginRule(String foreginRule) {
-        this.foreginRule = foreginRule;
+    public void setForeignRule(String foreignRule) {
+        this.foreignRule = foreignRule;
     }
 
     public String getTac() {
@@ -162,11 +186,11 @@ public class ActiveUniqueForeignImei {
         this.msisdn = msisdn;
     }
 
-    public Integer getFailedRuleId() {
+    public String getFailedRuleId() {
         return failedRuleId;
     }
 
-    public void setFailedRuleId(Integer failedRuleId) {
+    public void setFailedRuleId(String failedRuleId) {
         this.failedRuleId = failedRuleId;
     }
 
@@ -178,11 +202,11 @@ public class ActiveUniqueForeignImei {
         this.failedRuleName = failedRuleName;
     }
 
-    public String getImsi() {
+    public Long getImsi() {
         return imsi;
     }
 
-    public void setImsi(String imsi) {
+    public void setImsi(Long imsi) {
         this.imsi = imsi;
     }
 
@@ -218,12 +242,12 @@ public class ActiveUniqueForeignImei {
         this.updatedOn = updatedOn;
     }
 
-    public String getSystemType() {
-        return systemType;
+    public String getProtocol() {
+        return protocol;
     }
 
-    public void setSystemType(String systemType) {
-        this.systemType = systemType;
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
     }
 
     public String getAction() {
@@ -242,11 +266,11 @@ public class ActiveUniqueForeignImei {
         this.period = period;
     }
 
-    public LocalDateTime getFailedRuleDate() {
+    public String getFailedRuleDate() {
         return failedRuleDate;
     }
 
-    public void setFailedRuleDate(LocalDateTime failedRuleDate) {
+    public void setFailedRuleDate(String failedRuleDate) {
         this.failedRuleDate = failedRuleDate;
     }
 
@@ -290,12 +314,12 @@ public class ActiveUniqueForeignImei {
         this.actualImei = actualImei;
     }
 
-    public String getRecordType() {
-        return recordType;
+    public LocalDateTime getTimestamp() {
+        return timestamp;
     }
 
-    public void setRecordType(String recordType) {
-        this.recordType = recordType;
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
     }
 
     public String getImei() {
@@ -362,22 +386,6 @@ public class ActiveUniqueForeignImei {
         this.serverOrigin = serverOrigin;
     }
 
-    public Boolean getValidityFlag() {
-        return validityFlag;
-    }
-
-    public void setValidityFlag(Boolean validityFlag) {
-        this.validityFlag = validityFlag;
-    }
-
-    public String getTestImei() {
-        return testImei;
-    }
-
-    public void setTestImei(String testImei) {
-        this.testImei = testImei;
-    }
-
     public String getActualOperator() {
         return actualOperator;
     }
@@ -386,12 +394,12 @@ public class ActiveUniqueForeignImei {
         this.actualOperator = actualOperator;
     }
 
-    public String getDeviceType() {
-        return deviceType;
+    public String getTestImei() {
+        return testImei;
     }
 
-    public void setDeviceType(String deviceType) {
-        this.deviceType = deviceType;
+    public void setTestImei(String testImei) {
+        this.testImei = testImei;
     }
 
     public String getIsUsed() {
@@ -460,30 +468,30 @@ public class ActiveUniqueForeignImei {
 
     @Override
     public String toString() {
-        return "ActiveUniqueForeignImei{" +
+        return "ActiveUniqueForeignImeiEdr{" +
                 "id=" + id +
                 ", createdOn=" + createdOn +
                 ", modifiedOn=" + modifiedOn +
-                ", foreginRule='" + foreginRule + '\'' +
+                ", foreignRule='" + foreignRule + '\'' +
                 ", tac='" + tac + '\'' +
                 ", msisdn='" + msisdn + '\'' +
-                ", failedRuleId=" + failedRuleId +
+                ", failedRuleId='" + failedRuleId + '\'' +
                 ", failedRuleName='" + failedRuleName + '\'' +
-                ", imsi='" + imsi + '\'' +
+                ", imsi=" + imsi +
                 ", mobileOperator='" + mobileOperator + '\'' +
                 ", createFilename='" + createFilename + '\'' +
                 ", updateFilename='" + updateFilename + '\'' +
                 ", updatedOn=" + updatedOn +
-                ", systemType='" + systemType + '\'' +
+                ", protocol='" + protocol + '\'' +
                 ", action='" + action + '\'' +
                 ", period='" + period + '\'' +
-                ", failedRuleDate=" + failedRuleDate +
+                ", failedRuleDate='" + failedRuleDate + '\'' +
                 ", mobileOperatorId=" + mobileOperatorId +
                 ", taxPaid=" + taxPaid +
                 ", featureName='" + featureName + '\'' +
                 ", recordTime=" + recordTime +
                 ", actualImei='" + actualImei + '\'' +
-                ", recordType='" + recordType + '\'' +
+                ", timestamp=" + timestamp +
                 ", imei='" + imei + '\'' +
                 ", rawCdrFileName='" + rawCdrFileName + '\'' +
                 ", imeiArrivalTime=" + imeiArrivalTime +
@@ -492,10 +500,8 @@ public class ActiveUniqueForeignImei {
                 ", updateImeiArrivalTime=" + updateImeiArrivalTime +
                 ", updateSource='" + updateSource + '\'' +
                 ", serverOrigin='" + serverOrigin + '\'' +
-                ", validityFlag=" + validityFlag +
-                ", testImei='" + testImei + '\'' +
                 ", actualOperator='" + actualOperator + '\'' +
-                ", deviceType='" + deviceType + '\'' +
+                ", testImei='" + testImei + '\'' +
                 ", isUsed='" + isUsed + '\'' +
                 ", reason='" + reason + '\'' +
                 ", gdceImeiStatus=" + gdceImeiStatus +

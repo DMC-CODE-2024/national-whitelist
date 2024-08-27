@@ -1,6 +1,7 @@
 package com.gl.ceir.builder;
 
 import com.gl.ceir.config.AppDbConfig;
+import com.gl.ceir.dto.ActiveUniqueImeiDto;
 import com.gl.ceir.model.app.ActiveUniqueImei;
 import com.gl.ceir.model.app.NationalWhitelist;
 import com.gl.custom.CustomCheck;
@@ -21,14 +22,14 @@ public class NationalWhitelistBuilder {
     @Autowired
     private DataSource appDataSource;
 
-    public static List<NationalWhitelist> fromActiveUniqueImei(List<ActiveUniqueImei> activeUniqueImeiList, List<String> rules, boolean amnestyPeriodFlag) {
+    public static List<NationalWhitelist> fromActiveUniqueImei(List<ActiveUniqueImeiDto> activeUniqueImeiList, List<String> rules, boolean amnestyPeriodFlag) {
         List<NationalWhitelist> nationalWhitelistList = new ArrayList<>();
 
-        for (ActiveUniqueImei activeUniqueImei : activeUniqueImeiList) {
+        for (ActiveUniqueImeiDto activeUniqueImei : activeUniqueImeiList) {
             NationalWhitelist nationalWhitelist = new NationalWhitelist();
             nationalWhitelist.setCreatedOn(activeUniqueImei.getCreatedOn());
             nationalWhitelist.setModifiedOn(activeUniqueImei.getModifiedOn());
-            nationalWhitelist.setForeignRule(activeUniqueImei.getForeginRule());
+            nationalWhitelist.setForeignRule(activeUniqueImei.getForeignRule());
             nationalWhitelist.setTac(activeUniqueImei.getTac());
             nationalWhitelist.setMobileOperator(activeUniqueImei.getMobileOperator());
             nationalWhitelist.setCreatedFilename(activeUniqueImei.getCreateFilename());
@@ -63,11 +64,12 @@ public class NationalWhitelistBuilder {
             nationalWhitelist.setNationalWhiteListCreatedDate(LocalDateTime.now());
             nationalWhitelist.setReasonForInvalidImei(activeUniqueImei.getReason());
             nationalWhitelist.setIsUsedDeviceImei(activeUniqueImei.getIsUsed());
-            nationalWhitelist.setForeignRule(activeUniqueImei.getForeginRule());
             nationalWhitelist.setTrcImeiStatus(evaluateTrcFinalValue(activeUniqueImei.getTrcImeiStatus(), rules, activeUniqueImei.getValidityFlag()));
             nationalWhitelist.setTrcModifiedTime(activeUniqueImei.getTrcModifiedTime());
             nationalWhitelist.setGdceImeiStatus(evaluateGdceFinalValue(activeUniqueImei.getCustomsStatus(), activeUniqueImei.getLocalManufacturerStatus(), rules, amnestyPeriodFlag));
             nationalWhitelist.setGdceModifiedTime(LocalDateTime.now());
+            nationalWhitelist.setTimestamp(activeUniqueImei.getTimestamp());
+            nationalWhitelist.setProtocol(activeUniqueImei.getProtocol());
 
             nationalWhitelistList.add(nationalWhitelist);
         }

@@ -1,5 +1,7 @@
 package com.gl.ceir.builder;
 
+import com.gl.ceir.dto.ActiveForeignImeiWithDifferentImsiDto;
+import com.gl.ceir.dto.ActiveUniqueForeignImeiDto;
 import com.gl.ceir.model.app.ActiveForeignImeiWithDifferentMsisdn;
 import com.gl.ceir.model.app.ActiveUniqueForeignImei;
 import com.gl.ceir.model.app.ForeignExceptionList;
@@ -8,7 +10,7 @@ import java.time.LocalDateTime;
 
 public class ForeignExceptionBuilder {
 
-    public static ForeignExceptionList fromActiveUniqueImei(ActiveUniqueForeignImei activeUniqueImei) {
+    public static ForeignExceptionList fromActiveUniqueImei(ActiveUniqueForeignImeiDto activeUniqueImei) {
         ForeignExceptionList exceptionList = new ForeignExceptionList();
 
         exceptionList.setCreatedOn(activeUniqueImei.getCreatedOn());
@@ -44,13 +46,13 @@ public class ForeignExceptionBuilder {
         exceptionList.setIsTestImei(activeUniqueImei.getTestImei());
         exceptionList.setExceptionListCreatedDate(LocalDateTime.now());
         exceptionList.setListType("active_unique_foreign_imei");
-        exceptionList.setForeignRule(activeUniqueImei.getForeginRule());
+        exceptionList.setForeignRule(activeUniqueImei.getForeignRule());
         exceptionList.setIsUsedDeviceImei(activeUniqueImei.getIsUsed());
 
         return exceptionList;
     }
 
-    public static ForeignExceptionList fromActiveImeiWithDifferentMsisdn(ActiveForeignImeiWithDifferentMsisdn activeImeiWithDifferentMsisdn) {
+    public static ForeignExceptionList fromActiveImeiWithDifferentMsisdn(ActiveForeignImeiWithDifferentImsiDto activeImeiWithDifferentMsisdn) {
         ForeignExceptionList exceptionList = new ForeignExceptionList();
 
         exceptionList.setCreatedOn(activeImeiWithDifferentMsisdn.getCreatedOn());

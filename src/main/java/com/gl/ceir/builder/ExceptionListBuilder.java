@@ -1,6 +1,7 @@
 package com.gl.ceir.builder;
 
 
+import com.gl.ceir.dto.ActiveUniqueImeiDto;
 import com.gl.ceir.model.app.ActiveImeiWithDifferentMsisdn;
 import com.gl.ceir.model.app.ActiveUniqueImei;
 import com.gl.ceir.model.app.ExceptionList;
@@ -9,7 +10,7 @@ import java.time.LocalDateTime;
 
 public class ExceptionListBuilder {
 
-    public static ExceptionList fromActiveUniqueImei(ActiveUniqueImei activeUniqueImei) {
+    public static ExceptionList fromActiveUniqueImei(ActiveUniqueImeiDto activeUniqueImei) {
         ExceptionList exceptionList = new ExceptionList();
 
         exceptionList.setCreatedOn(activeUniqueImei.getCreatedOn());
@@ -45,7 +46,7 @@ public class ExceptionListBuilder {
         exceptionList.setIsTestImei(activeUniqueImei.getTestImei());
         exceptionList.setExceptionListCreatedDate(LocalDateTime.now());
         exceptionList.setListType("active_unique_imei");
-        exceptionList.setForeignRule(activeUniqueImei.getForeginRule());
+        exceptionList.setForeignRule(activeUniqueImei.getForeignRule());
         exceptionList.setIsUsedDeviceImei(activeUniqueImei.getIsUsed());
 
         return exceptionList;

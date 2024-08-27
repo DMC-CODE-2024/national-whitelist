@@ -1,5 +1,8 @@
 package com.gl.ceir.rules;
 
+import com.gl.ceir.dto.ActiveForeignImeiWithDifferentImsiDto;
+import com.gl.ceir.dto.ActiveUniqueForeignImeiDto;
+import com.gl.ceir.dto.ActiveUniqueImeiDto;
 import com.gl.ceir.dto.RuleEngineDto;
 import com.gl.ceir.model.app.*;
 import com.gl.ceir.repository.app.LocalManufacturedDeviceDataRepository;
@@ -15,9 +18,9 @@ public class EXISTS_IN_LOCAL_MANUFACTURER_DB implements RulesInterface {
     @Autowired
     private LocalManufacturedDeviceDataRepository localManufacturedDeviceDataRepository;
     @Override
-    public RuleEngineDto<ActiveUniqueImei, ExceptionList> validateActiveUniqueImei(RuleEngineDto<ActiveUniqueImei, ExceptionList> ruleEngineDto) {
-        List<ActiveUniqueImei> accepted = new ArrayList<>();
-        for (ActiveUniqueImei imei : ruleEngineDto.getNationalWhitelistAccepted()) {
+    public RuleEngineDto<ActiveUniqueImeiDto, ExceptionList> validateActiveUniqueImei(RuleEngineDto<ActiveUniqueImeiDto, ExceptionList> ruleEngineDto) {
+        List<ActiveUniqueImeiDto> accepted = new ArrayList<>();
+        for (ActiveUniqueImeiDto imei : ruleEngineDto.getNationalWhitelistAccepted()) {
             Optional<LocalManufacturedDeviceData> localDataOpt = localManufacturedDeviceDataRepository.findByImei(imei.getImei());
             if (localDataOpt.isPresent()) {
                 imei.setLocalManufacturerStatus(1);
@@ -35,9 +38,9 @@ public class EXISTS_IN_LOCAL_MANUFACTURER_DB implements RulesInterface {
     }
 
     @Override
-    public RuleEngineDto<ActiveUniqueForeignImei, ForeignExceptionList> validateActiveUniqueForeignImei(RuleEngineDto<ActiveUniqueForeignImei, ForeignExceptionList> ruleEngineDto) {
-        List<ActiveUniqueForeignImei> accepted = new ArrayList<>();
-        for (ActiveUniqueForeignImei imei : ruleEngineDto.getNationalWhitelistAccepted()) {
+    public RuleEngineDto<ActiveUniqueForeignImeiDto, ForeignExceptionList> validateActiveUniqueForeignImei(RuleEngineDto<ActiveUniqueForeignImeiDto, ForeignExceptionList> ruleEngineDto) {
+        List<ActiveUniqueForeignImeiDto> accepted = new ArrayList<>();
+        for (ActiveUniqueForeignImeiDto imei : ruleEngineDto.getNationalWhitelistAccepted()) {
             Optional<LocalManufacturedDeviceData> localDataOpt = localManufacturedDeviceDataRepository.findByImei(imei.getImei());
             if (localDataOpt.isPresent()) {
                 imei.setLocalManufacturerStatus(1);
@@ -50,7 +53,8 @@ public class EXISTS_IN_LOCAL_MANUFACTURER_DB implements RulesInterface {
     }
 
     @Override
-    public RuleEngineDto<ActiveForeignImeiWithDifferentMsisdn, ForeignExceptionList> validateActiveForeignImeiWithDifferentMsisdn(RuleEngineDto<ActiveForeignImeiWithDifferentMsisdn, ForeignExceptionList> ruleEngineDto) {
+    public RuleEngineDto<ActiveForeignImeiWithDifferentImsiDto, ForeignExceptionList> validateActiveForeignImeiWithDifferentMsisdn(RuleEngineDto<ActiveForeignImeiWithDifferentImsiDto, ForeignExceptionList> ruleEngineDto) {
         return null;
     }
+
 }

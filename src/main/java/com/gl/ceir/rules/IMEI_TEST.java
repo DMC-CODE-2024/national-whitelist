@@ -2,6 +2,9 @@ package com.gl.ceir.rules;
 
 import com.gl.ceir.builder.ExceptionListBuilder;
 import com.gl.ceir.builder.ForeignExceptionBuilder;
+import com.gl.ceir.dto.ActiveForeignImeiWithDifferentImsiDto;
+import com.gl.ceir.dto.ActiveUniqueForeignImeiDto;
+import com.gl.ceir.dto.ActiveUniqueImeiDto;
 import com.gl.ceir.dto.RuleEngineDto;
 import com.gl.ceir.model.app.*;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,12 +20,12 @@ public class IMEI_TEST implements RulesInterface {
     private String prefixes;
 
     @Override
-    public RuleEngineDto<ActiveUniqueImei, ExceptionList> validateActiveUniqueImei(RuleEngineDto<ActiveUniqueImei, ExceptionList> ruleEngineDto) {
-        List<ActiveUniqueImei> accepted = new ArrayList<>();
+    public RuleEngineDto<ActiveUniqueImeiDto, ExceptionList> validateActiveUniqueImei(RuleEngineDto<ActiveUniqueImeiDto, ExceptionList> ruleEngineDto) {
+        List<ActiveUniqueImeiDto> accepted = new ArrayList<>();
         List<ExceptionList> exceptionLists = ruleEngineDto.getExceptionList();
         String[] prefixArray = prefixes.split(",");
 
-        for (ActiveUniqueImei activeUniqueImei : ruleEngineDto.getNationalWhitelistAccepted()) {
+        for (ActiveUniqueImeiDto activeUniqueImei : ruleEngineDto.getNationalWhitelistAccepted()) {
             if (activeUniqueImei.getReason() == null) {
                 if (startsWithAnyPrefix(activeUniqueImei.getActualImei(), prefixArray)) {
                     ExceptionList exceptionList = ExceptionListBuilder.fromActiveUniqueImei(activeUniqueImei);
@@ -63,13 +66,13 @@ public class IMEI_TEST implements RulesInterface {
     }
 
     @Override
-    public RuleEngineDto<ActiveUniqueForeignImei, ForeignExceptionList> validateActiveUniqueForeignImei(
-            RuleEngineDto<ActiveUniqueForeignImei, ForeignExceptionList> ruleEngineDto) {
-        List<ActiveUniqueForeignImei> accepted = new ArrayList<>();
+    public RuleEngineDto<ActiveUniqueForeignImeiDto, ForeignExceptionList> validateActiveUniqueForeignImei(
+            RuleEngineDto<ActiveUniqueForeignImeiDto, ForeignExceptionList> ruleEngineDto) {
+        List<ActiveUniqueForeignImeiDto> accepted = new ArrayList<>();
         List<ForeignExceptionList> exceptionLists = ruleEngineDto.getExceptionList();
         String[] prefixArray = prefixes.split(","); // Assuming 'prefixes' is available from properties
 
-        for (ActiveUniqueForeignImei activeUniqueImei : ruleEngineDto.getNationalWhitelistAccepted()) {
+        for (ActiveUniqueForeignImeiDto activeUniqueImei : ruleEngineDto.getNationalWhitelistAccepted()) {
             if (activeUniqueImei.getReason() == null) {
                 if (startsWithAnyPrefix(activeUniqueImei.getActualImei(), prefixArray)) {
                     ForeignExceptionList exceptionList = ForeignExceptionBuilder.fromActiveUniqueImei(activeUniqueImei);
@@ -92,13 +95,13 @@ public class IMEI_TEST implements RulesInterface {
     }
 
     @Override
-    public RuleEngineDto<ActiveForeignImeiWithDifferentMsisdn, ForeignExceptionList> validateActiveForeignImeiWithDifferentMsisdn(
-            RuleEngineDto<ActiveForeignImeiWithDifferentMsisdn, ForeignExceptionList> ruleEngineDto) {
-        List<ActiveForeignImeiWithDifferentMsisdn> accepted = new ArrayList<>();
+    public RuleEngineDto<ActiveForeignImeiWithDifferentImsiDto, ForeignExceptionList> validateActiveForeignImeiWithDifferentMsisdn(
+            RuleEngineDto<ActiveForeignImeiWithDifferentImsiDto, ForeignExceptionList> ruleEngineDto) {
+        List<ActiveForeignImeiWithDifferentImsiDto> accepted = new ArrayList<>();
         List<ForeignExceptionList> exceptionLists = ruleEngineDto.getExceptionList();
         String[] prefixArray = prefixes.split(",");
 
-        for (ActiveForeignImeiWithDifferentMsisdn activeUniqueImei : ruleEngineDto.getNationalWhitelistAccepted()) {
+        for (ActiveForeignImeiWithDifferentImsiDto activeUniqueImei : ruleEngineDto.getNationalWhitelistAccepted()) {
             if (startsWithAnyPrefix(activeUniqueImei.getActualImei(), prefixArray)) {
                 ForeignExceptionList exceptionList = ForeignExceptionBuilder.fromActiveImeiWithDifferentMsisdn(activeUniqueImei);
                 if (!exceptionLists.contains(exceptionList)) {

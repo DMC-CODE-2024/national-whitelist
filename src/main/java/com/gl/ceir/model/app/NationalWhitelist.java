@@ -53,11 +53,13 @@ public class NationalWhitelist {
     private LocalDateTime gdceModifiedTime;
     private Integer trcImeiStatus;
     private LocalDateTime trcModifiedTime;
+    private LocalDateTime timestamp;
+    private String protocol;
 
     public NationalWhitelist() {
     }
 
-    public NationalWhitelist(Integer nationalWhitelistId, LocalDateTime createdOn, LocalDateTime modifiedOn, String foreignRule, String mobileOperator, String period, String taxPaid, String createdFilename, String updatedFilename, LocalDateTime updatedOn, String systemType, Integer failedRuleId, String failedRuleName, Boolean validityFlag, String tac, String action, LocalDateTime failedRuleDate, String featureName, LocalDateTime recordTime, String actualImei, String recordType, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, String listType, String reasonForInvalidImei, String imsi, String msisdn, LocalDate createdOnDate, String deviceType, String actualOperator, String isTestImei, String isUsedDeviceImei, LocalDateTime nationalWhiteListCreatedDate, Integer gdceImeiStatus, LocalDateTime gdceModifiedTime, Integer trcImeiStatus, LocalDateTime trcModifiedTime) {
+    public NationalWhitelist(Integer nationalWhitelistId, LocalDateTime createdOn, LocalDateTime modifiedOn, String foreignRule, String mobileOperator, String period, String taxPaid, String createdFilename, String updatedFilename, LocalDateTime updatedOn, String systemType, Integer failedRuleId, String failedRuleName, Boolean validityFlag, String tac, String action, LocalDateTime failedRuleDate, String featureName, LocalDateTime recordTime, String actualImei, String recordType, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, String listType, String reasonForInvalidImei, String imsi, String msisdn, LocalDate createdOnDate, String deviceType, String actualOperator, String isTestImei, String isUsedDeviceImei, LocalDateTime nationalWhiteListCreatedDate, Integer gdceImeiStatus, LocalDateTime gdceModifiedTime, Integer trcImeiStatus, LocalDateTime trcModifiedTime, LocalDateTime timestamp, String protocol) {
         this.nationalWhitelistId = nationalWhitelistId;
         this.createdOn = createdOn;
         this.modifiedOn = modifiedOn;
@@ -101,6 +103,8 @@ public class NationalWhitelist {
         this.gdceModifiedTime = gdceModifiedTime;
         this.trcImeiStatus = trcImeiStatus;
         this.trcModifiedTime = trcModifiedTime;
+        this.timestamp = timestamp;
+        this.protocol = protocol;
     }
 
     public Integer getNationalWhitelistId() {
@@ -447,6 +451,22 @@ public class NationalWhitelist {
         this.trcModifiedTime = trcModifiedTime;
     }
 
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
+    }
+
     @Override
     public String toString() {
         return "NationalWhitelist{" +
@@ -493,6 +513,8 @@ public class NationalWhitelist {
                 ", gdceModifiedTime=" + gdceModifiedTime +
                 ", trcImeiStatus=" + trcImeiStatus +
                 ", trcModifiedTime=" + trcModifiedTime +
+                ", timestamp=" + timestamp +
+                ", protocol='" + protocol + '\'' +
                 '}';
     }
 }

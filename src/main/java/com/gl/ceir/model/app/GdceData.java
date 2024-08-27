@@ -11,7 +11,7 @@ public class GdceData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "created_on", nullable = false, updatable = false, insertable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "created_on")
     private LocalDateTime createdOn;
 
     @Column(name = "importer_id", length = 25)
@@ -37,6 +37,9 @@ public class GdceData {
 
     @Column(name = "is_custom_tax_paid")
     private Integer isCustomTaxPaid;
+
+    public GdceData() {
+    }
 
     public GdceData(Integer id, LocalDateTime createdOn, String importerId, String importerName, String imei, String serialNumber, LocalDateTime registrationDate, LocalDateTime dateOfActualImport, Integer isUsed, Integer isCustomTaxPaid) {
         this.id = id;

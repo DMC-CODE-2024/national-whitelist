@@ -2,6 +2,9 @@ package com.gl.ceir.rules;
 
 import com.gl.ceir.builder.ExceptionListBuilder;
 import com.gl.ceir.builder.ForeignExceptionBuilder;
+import com.gl.ceir.dto.ActiveForeignImeiWithDifferentImsiDto;
+import com.gl.ceir.dto.ActiveUniqueForeignImeiDto;
+import com.gl.ceir.dto.ActiveUniqueImeiDto;
 import com.gl.ceir.dto.RuleEngineDto;
 import com.gl.ceir.model.app.*;
 import org.springframework.stereotype.Service;
@@ -12,10 +15,10 @@ import java.util.List;
 @Service
 public class VALID_TAC implements RulesInterface {
     @Override
-    public RuleEngineDto<ActiveUniqueImei, ExceptionList> validateActiveUniqueImei(RuleEngineDto<ActiveUniqueImei, ExceptionList> ruleEngineDto) {
-        List<ActiveUniqueImei> accepted = new ArrayList<>();
+    public RuleEngineDto<ActiveUniqueImeiDto, ExceptionList> validateActiveUniqueImei(RuleEngineDto<ActiveUniqueImeiDto, ExceptionList> ruleEngineDto) {
+        List<ActiveUniqueImeiDto> accepted = new ArrayList<>();
         List<ExceptionList> exceptionLists = ruleEngineDto.getExceptionList();
-        for(ActiveUniqueImei activeUniqueImei: ruleEngineDto.getNationalWhitelistAccepted()) {
+        for(ActiveUniqueImeiDto activeUniqueImei: ruleEngineDto.getNationalWhitelistAccepted()) {
             if(activeUniqueImei.getReason() == null) {
                 if (activeUniqueImei.getValidityFlag()) {
                     accepted.add(activeUniqueImei);
@@ -57,10 +60,10 @@ public class VALID_TAC implements RulesInterface {
     }
     //
     @Override
-    public RuleEngineDto<ActiveUniqueForeignImei, ForeignExceptionList> validateActiveUniqueForeignImei(RuleEngineDto<ActiveUniqueForeignImei, ForeignExceptionList> ruleEngineDto) {
-        List<ActiveUniqueForeignImei> accepted = new ArrayList<>();
+    public RuleEngineDto<ActiveUniqueForeignImeiDto, ForeignExceptionList> validateActiveUniqueForeignImei(RuleEngineDto<ActiveUniqueForeignImeiDto, ForeignExceptionList> ruleEngineDto) {
+        List<ActiveUniqueForeignImeiDto> accepted = new ArrayList<>();
         List<ForeignExceptionList> exceptionLists = ruleEngineDto.getExceptionList();
-        for(ActiveUniqueForeignImei activeUniqueImei: ruleEngineDto.getNationalWhitelistAccepted()) {
+        for(ActiveUniqueForeignImeiDto activeUniqueImei: ruleEngineDto.getNationalWhitelistAccepted()) {
             if(activeUniqueImei.getReason() == null) {
                 if (activeUniqueImei.getValidityFlag()) {
                     accepted.add(activeUniqueImei);
@@ -83,10 +86,10 @@ public class VALID_TAC implements RulesInterface {
     }
 
     @Override
-    public RuleEngineDto<ActiveForeignImeiWithDifferentMsisdn, ForeignExceptionList> validateActiveForeignImeiWithDifferentMsisdn(RuleEngineDto<ActiveForeignImeiWithDifferentMsisdn, ForeignExceptionList> ruleEngineDto) {
-        List<ActiveForeignImeiWithDifferentMsisdn> accepted = new ArrayList<>();
+    public RuleEngineDto<ActiveForeignImeiWithDifferentImsiDto, ForeignExceptionList> validateActiveForeignImeiWithDifferentMsisdn(RuleEngineDto<ActiveForeignImeiWithDifferentImsiDto, ForeignExceptionList> ruleEngineDto) {
+        List<ActiveForeignImeiWithDifferentImsiDto> accepted = new ArrayList<>();
         List<ForeignExceptionList> exceptionLists = ruleEngineDto.getExceptionList();
-        for(ActiveForeignImeiWithDifferentMsisdn activeUniqueImei: ruleEngineDto.getNationalWhitelistAccepted()) {
+        for(ActiveForeignImeiWithDifferentImsiDto activeUniqueImei: ruleEngineDto.getNationalWhitelistAccepted()) {
             if(activeUniqueImei.getValidityFlag()) {
                 accepted.add(activeUniqueImei);
             } else {

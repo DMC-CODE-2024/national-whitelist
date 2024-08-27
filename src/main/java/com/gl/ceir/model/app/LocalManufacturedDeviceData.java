@@ -14,20 +14,23 @@ public class LocalManufacturedDeviceData {
     @Column(name = "created_on", nullable = false)
     private Timestamp createdOn;
 
-    @Column(name = "imei", length = 20, nullable = false, unique = true)
+    @Column(name = "imei")
     private String imei;
 
-    @Column(name = "serial_number", length = 15, nullable = false)
+    @Column(name = "serial_number")
     private String serialNumber;
 
-    @Column(name = "manufacturer_id", length = 20, nullable = false)
+    @Column(name = "manufacturer_id")
     private String manufacturerId;
 
-    @Column(name = "manufacturer_name", length = 50, nullable = false)
+    @Column(name = "manufacturer_name")
     private String manufacturerName;
 
-    @Column(name = "manufacturering_date", length = 15, nullable = false)
+    @Column(name = "manufacturering_date")
     private String manufacturingDate;
+
+    public LocalManufacturedDeviceData() {
+    }
 
     public LocalManufacturedDeviceData(Integer id, Timestamp createdOn, String imei, String serialNumber, String manufacturerId, String manufacturerName, String manufacturingDate) {
         this.id = id;

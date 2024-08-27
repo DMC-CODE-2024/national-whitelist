@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "active_unique_imei")
+@Table(name = "active_unique_imei", schema = "app")
 public class ActiveUniqueImei implements Serializable{
 
     @Id

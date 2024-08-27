@@ -1,5 +1,6 @@
 package com.gl.ceir.builder;
 
+import com.gl.ceir.dto.ActiveUniqueForeignImeiDto;
 import com.gl.ceir.model.app.ActiveUniqueForeignImei;
 import com.gl.ceir.model.app.ForeignWhitelist;
 
@@ -11,15 +12,15 @@ import java.util.List;
 import java.util.Optional;
 
 public class ForeignWhitelistBuilder {
-    public static List<ForeignWhitelist> fromActiveUniqueImei(List<ActiveUniqueForeignImei> activeUniqueImeiList, List<String> rules) {
+    public static List<ForeignWhitelist> fromActiveUniqueImei(List<ActiveUniqueForeignImeiDto> activeUniqueImeiList, List<String> rules) {
         List<ForeignWhitelist> nationalWhitelistList = new ArrayList<>();
 
-        for (ActiveUniqueForeignImei activeUniqueImei : activeUniqueImeiList) {
+        for (ActiveUniqueForeignImeiDto activeUniqueImei : activeUniqueImeiList) {
             ForeignWhitelist nationalWhitelist = new ForeignWhitelist();
 
             nationalWhitelist.setCreatedOn(activeUniqueImei.getCreatedOn());
             nationalWhitelist.setModifiedOn(activeUniqueImei.getModifiedOn());
-            nationalWhitelist.setForeignRule(activeUniqueImei.getForeginRule());
+            nationalWhitelist.setForeignRule(activeUniqueImei.getForeignRule());
             nationalWhitelist.setTac(activeUniqueImei.getTac());
             nationalWhitelist.setMobileOperator(activeUniqueImei.getMobileOperator());
             nationalWhitelist.setCreatedFilename(activeUniqueImei.getCreateFilename());
@@ -54,7 +55,6 @@ public class ForeignWhitelistBuilder {
             nationalWhitelist.setReasonForInvalidImei(activeUniqueImei.getReason());
             nationalWhitelist.setForeignWhiteListCreatedDate(LocalDateTime.now());
             nationalWhitelist.setIsUsedDeviceImei(activeUniqueImei.getIsUsed());
-            nationalWhitelist.setForeignRule(activeUniqueImei.getForeginRule());
 
             nationalWhitelistList.add(nationalWhitelist);
         }

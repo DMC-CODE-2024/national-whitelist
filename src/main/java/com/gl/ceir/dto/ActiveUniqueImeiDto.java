@@ -1,22 +1,16 @@
-package com.gl.ceir.model.app;
+package com.gl.ceir.dto;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import java.io.Serializable;
-import java.time.LocalDate;
+import com.gl.ceir.model.app.ActiveUniqueEdr;
+import com.gl.ceir.model.app.ActiveUniqueImei;
+
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "active_unique_foreign_imei", schema = "app")
-public class ActiveUniqueForeignImei {
+public class ActiveUniqueImeiDto {
 
-    @Id
     private Integer id;
     private LocalDateTime createdOn;
     private LocalDateTime modifiedOn;
-    private String foreginRule;
+    private String foreignRule;
     private String tac;
     private String msisdn;
     private Integer failedRuleId;
@@ -45,34 +39,28 @@ public class ActiveUniqueForeignImei {
     private String updateSource;
     private String serverOrigin;
     private Boolean validityFlag;
-    private String testImei;
+    private Integer isTypeApproved;
     private String actualOperator;
+    private String testImei;
     private String deviceType;
     private String isUsed;
-    @Transient
     private String reason;
-    @Transient
     private Integer gdceImeiStatus;
-    @Transient
     private LocalDateTime gdceModifiedTime;
-    @Transient
     private Integer trcImeiStatus;
-    @Transient
     private LocalDateTime trcModifiedTime;
-    @Transient
     private Integer customsStatus;
-    @Transient
     private Integer localManufacturerStatus;
+    private LocalDateTime timestamp;
+    private String protocol;
 
+    public ActiveUniqueImeiDto() { }
 
-    public ActiveUniqueForeignImei() {
-    }
-
-    public ActiveUniqueForeignImei(Integer id, LocalDateTime createdOn, LocalDateTime modifiedOn, String foreginRule, String tac, String msisdn, Integer failedRuleId, String failedRuleName, String imsi, String mobileOperator, String createFilename, String updateFilename, LocalDateTime updatedOn, String systemType, String action, String period, LocalDateTime failedRuleDate, Integer mobileOperatorId, Integer taxPaid, String featureName, LocalDateTime recordTime, String actualImei, String recordType, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, Boolean validityFlag, String testImei, String actualOperator, String deviceType, String isUsed, String reason, Integer gdceImeiStatus, LocalDateTime gdceModifiedTime, Integer trcImeiStatus, LocalDateTime trcModifiedTime, Integer customsStatus, Integer localManufacturerStatus) {
+    public ActiveUniqueImeiDto(Integer id, LocalDateTime createdOn, LocalDateTime modifiedOn, String foreignRule, String tac, String msisdn, Integer failedRuleId, String failedRuleName, String imsi, String mobileOperator, String createFilename, String updateFilename, LocalDateTime updatedOn, String systemType, String action, String period, LocalDateTime failedRuleDate, Integer mobileOperatorId, Integer taxPaid, String featureName, LocalDateTime recordTime, String actualImei, String recordType, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, Boolean validityFlag, Integer isTypeApproved, String actualOperator, String testImei, String deviceType, String isUsed, String reason, Integer gdceImeiStatus, LocalDateTime gdceModifiedTime, Integer trcImeiStatus, LocalDateTime trcModifiedTime, Integer customsStatus, Integer localManufacturerStatus, LocalDateTime timestamp, String protocol) {
         this.id = id;
         this.createdOn = createdOn;
         this.modifiedOn = modifiedOn;
-        this.foreginRule = foreginRule;
+        this.foreignRule = foreignRule;
         this.tac = tac;
         this.msisdn = msisdn;
         this.failedRuleId = failedRuleId;
@@ -101,8 +89,9 @@ public class ActiveUniqueForeignImei {
         this.updateSource = updateSource;
         this.serverOrigin = serverOrigin;
         this.validityFlag = validityFlag;
-        this.testImei = testImei;
+        this.isTypeApproved = isTypeApproved;
         this.actualOperator = actualOperator;
+        this.testImei = testImei;
         this.deviceType = deviceType;
         this.isUsed = isUsed;
         this.reason = reason;
@@ -112,6 +101,8 @@ public class ActiveUniqueForeignImei {
         this.trcModifiedTime = trcModifiedTime;
         this.customsStatus = customsStatus;
         this.localManufacturerStatus = localManufacturerStatus;
+        this.timestamp = timestamp;
+        this.protocol = protocol;
     }
 
     public Integer getId() {
@@ -138,12 +129,12 @@ public class ActiveUniqueForeignImei {
         this.modifiedOn = modifiedOn;
     }
 
-    public String getForeginRule() {
-        return foreginRule;
+    public String getForeignRule() {
+        return foreignRule;
     }
 
-    public void setForeginRule(String foreginRule) {
-        this.foreginRule = foreginRule;
+    public void setForeignRule(String foreignRule) {
+        this.foreignRule = foreignRule;
     }
 
     public String getTac() {
@@ -370,12 +361,12 @@ public class ActiveUniqueForeignImei {
         this.validityFlag = validityFlag;
     }
 
-    public String getTestImei() {
-        return testImei;
+    public Integer getIsTypeApproved() {
+        return isTypeApproved;
     }
 
-    public void setTestImei(String testImei) {
-        this.testImei = testImei;
+    public void setIsTypeApproved(Integer isTypeApproved) {
+        this.isTypeApproved = isTypeApproved;
     }
 
     public String getActualOperator() {
@@ -384,6 +375,14 @@ public class ActiveUniqueForeignImei {
 
     public void setActualOperator(String actualOperator) {
         this.actualOperator = actualOperator;
+    }
+
+    public String getTestImei() {
+        return testImei;
+    }
+
+    public void setTestImei(String testImei) {
+        this.testImei = testImei;
     }
 
     public String getDeviceType() {
@@ -458,13 +457,29 @@ public class ActiveUniqueForeignImei {
         this.localManufacturerStatus = localManufacturerStatus;
     }
 
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getProtocol() {
+        return protocol;
+    }
+
+    public void setProtocol(String protocol) {
+        this.protocol = protocol;
+    }
+
     @Override
     public String toString() {
-        return "ActiveUniqueForeignImei{" +
+        return "ActiveUniqueImeiDto{" +
                 "id=" + id +
                 ", createdOn=" + createdOn +
                 ", modifiedOn=" + modifiedOn +
-                ", foreginRule='" + foreginRule + '\'' +
+                ", foreignRule='" + foreignRule + '\'' +
                 ", tac='" + tac + '\'' +
                 ", msisdn='" + msisdn + '\'' +
                 ", failedRuleId=" + failedRuleId +
@@ -493,8 +508,9 @@ public class ActiveUniqueForeignImei {
                 ", updateSource='" + updateSource + '\'' +
                 ", serverOrigin='" + serverOrigin + '\'' +
                 ", validityFlag=" + validityFlag +
-                ", testImei='" + testImei + '\'' +
+                ", isTypeApproved=" + isTypeApproved +
                 ", actualOperator='" + actualOperator + '\'' +
+                ", testImei='" + testImei + '\'' +
                 ", deviceType='" + deviceType + '\'' +
                 ", isUsed='" + isUsed + '\'' +
                 ", reason='" + reason + '\'' +
@@ -504,6 +520,186 @@ public class ActiveUniqueForeignImei {
                 ", trcModifiedTime=" + trcModifiedTime +
                 ", customsStatus=" + customsStatus +
                 ", localManufacturerStatus=" + localManufacturerStatus +
+                ", timestamp=" + timestamp +
+                ", protocol='" + protocol + '\'' +
                 '}';
+    }
+
+    public static ActiveUniqueImeiDto fromEntityForApp(ActiveUniqueImei entity) {
+        ActiveUniqueImeiDto dto = new ActiveUniqueImeiDto();
+        dto.setId(entity.getId());
+        dto.setCreatedOn(entity.getCreatedOn());
+        dto.setModifiedOn(entity.getModifiedOn());
+        dto.setForeignRule(entity.getForeginRule());
+        dto.setTac(entity.getTac());
+        dto.setMsisdn(entity.getMsisdn());
+        dto.setFailedRuleId(entity.getFailedRuleId());
+        dto.setFailedRuleName(entity.getFailedRuleName());
+        dto.setImsi(entity.getImsi());
+        dto.setMobileOperator(entity.getMobileOperator());
+        dto.setCreateFilename(entity.getCreateFilename());
+        dto.setUpdateFilename(entity.getUpdateFilename());
+        dto.setUpdatedOn(entity.getUpdatedOn());
+        dto.setSystemType(entity.getSystemType());
+        dto.setAction(entity.getAction());
+        dto.setPeriod(entity.getPeriod());
+        dto.setFailedRuleDate(entity.getFailedRuleDate());
+        dto.setMobileOperatorId(entity.getMobileOperatorId());
+        dto.setTaxPaid(entity.getTaxPaid());
+        dto.setFeatureName(entity.getFeatureName());
+        dto.setRecordTime(entity.getRecordTime());
+        dto.setActualImei(entity.getActualImei());
+        dto.setRecordType(entity.getRecordType());
+        dto.setImei(entity.getImei());
+        dto.setRawCdrFileName(entity.getRawCdrFileName());
+        dto.setImeiArrivalTime(entity.getImeiArrivalTime());
+        dto.setSource(entity.getSource());
+        dto.setUpdateRawCdrFileName(entity.getUpdateRawCdrFileName());
+        dto.setUpdateImeiArrivalTime(entity.getUpdateImeiArrivalTime());
+        dto.setUpdateSource(entity.getUpdateSource());
+        dto.setServerOrigin(entity.getServerOrigin());
+        dto.setValidityFlag(entity.getValidityFlag());
+        dto.setIsTypeApproved(entity.getIsTypeApproved());
+        dto.setActualOperator(entity.getActualOperator());
+        dto.setTestImei(entity.getTestImei());
+        dto.setDeviceType(entity.getDeviceType());
+        dto.setIsUsed(entity.getIsUsed());
+        dto.setReason(entity.getReason());
+        dto.setGdceImeiStatus(entity.getGdceImeiStatus());
+        dto.setGdceModifiedTime(entity.getGdceModifiedTime());
+        dto.setTrcImeiStatus(entity.getTrcImeiStatus());
+        dto.setTrcModifiedTime(entity.getTrcModifiedTime());
+        dto.setCustomsStatus(entity.getCustomsStatus());
+        dto.setLocalManufacturerStatus(entity.getLocalManufacturerStatus());
+        return dto;
+    }
+
+    // toEntity method
+    public static ActiveUniqueImei toEntityForApp(ActiveUniqueImeiDto dto) {
+        ActiveUniqueImei entity = new ActiveUniqueImei();
+        entity.setId(dto.getId());
+        entity.setCreatedOn(dto.getCreatedOn());
+        entity.setModifiedOn(dto.getModifiedOn());
+        entity.setForeginRule(dto.getForeignRule());
+        entity.setTac(dto.getTac());
+        entity.setMsisdn(dto.getMsisdn());
+        entity.setFailedRuleId(dto.getFailedRuleId());
+        entity.setFailedRuleName(dto.getFailedRuleName());
+        entity.setImsi(dto.getImsi());
+        entity.setMobileOperator(dto.getMobileOperator());
+        entity.setCreateFilename(dto.getCreateFilename());
+        entity.setUpdateFilename(dto.getUpdateFilename());
+        entity.setUpdatedOn(dto.getUpdatedOn());
+        entity.setSystemType(dto.getSystemType());
+        entity.setAction(dto.getAction());
+        entity.setPeriod(dto.getPeriod());
+        entity.setFailedRuleDate(dto.getFailedRuleDate());
+        entity.setMobileOperatorId(dto.getMobileOperatorId());
+        entity.setTaxPaid(dto.getTaxPaid());
+        entity.setFeatureName(dto.getFeatureName());
+        entity.setRecordTime(dto.getRecordTime());
+        entity.setActualImei(dto.getActualImei());
+        entity.setRecordType(dto.getRecordType());
+        entity.setImei(dto.getImei());
+        entity.setRawCdrFileName(dto.getRawCdrFileName());
+        entity.setImeiArrivalTime(dto.getImeiArrivalTime());
+        entity.setSource(dto.getSource());
+        entity.setUpdateRawCdrFileName(dto.getUpdateRawCdrFileName());
+        entity.setUpdateImeiArrivalTime(dto.getUpdateImeiArrivalTime());
+        entity.setUpdateSource(dto.getUpdateSource());
+        entity.setServerOrigin(dto.getServerOrigin());
+        entity.setValidityFlag(dto.getValidityFlag());
+        entity.setIsTypeApproved(dto.getIsTypeApproved());
+        entity.setActualOperator(dto.getActualOperator());
+        entity.setTestImei(dto.getTestImei());
+        entity.setDeviceType(dto.getDeviceType());
+        entity.setIsUsed(dto.getIsUsed());
+        entity.setReason(dto.getReason());
+        entity.setGdceImeiStatus(dto.getGdceImeiStatus());
+        entity.setGdceModifiedTime(dto.getGdceModifiedTime());
+        entity.setTrcImeiStatus(dto.getTrcImeiStatus());
+        entity.setTrcModifiedTime(dto.getTrcModifiedTime());
+        entity.setCustomsStatus(dto.getCustomsStatus());
+        entity.setLocalManufacturerStatus(dto.getLocalManufacturerStatus());
+        return entity;
+    }
+
+    public static ActiveUniqueImeiDto fromEntityForAppEdr(ActiveUniqueEdr entity) {
+        ActiveUniqueImeiDto dto = new ActiveUniqueImeiDto();
+        dto.setId(entity.getId());
+        dto.setCreatedOn(entity.getCreatedOn());
+        dto.setModifiedOn(entity.getModifiedOn());
+        dto.setTac(entity.getTac());
+        dto.setMsisdn(entity.getMsisdn());
+        dto.setFailedRuleId(entity.getFailedRuleId());
+        dto.setFailedRuleName(entity.getFailedRuleName());
+        dto.setImsi(entity.getImsi());
+        dto.setMobileOperator(entity.getMobileOperator());
+        dto.setCreateFilename(entity.getCreateFilename());
+        dto.setUpdateFilename(entity.getUpdateFilename());
+        dto.setUpdatedOn(entity.getUpdatedOn());
+        dto.setProtocol(entity.getProtocol());
+        dto.setAction(entity.getAction());
+        dto.setPeriod(entity.getPeriod());
+        dto.setFailedRuleDate(entity.getFailedRuleDate());
+        dto.setMobileOperatorId(entity.getMobileOperatorId());
+        dto.setTaxPaid(entity.getTaxPaid());
+        dto.setFeatureName(entity.getFeatureName());
+        dto.setRecordTime(entity.getRecordTime());
+        dto.setActualImei(entity.getActualImei());
+        dto.setTimestamp(entity.getTimestamp());
+        dto.setImei(entity.getImei());
+        dto.setRawCdrFileName(entity.getRawCdrFileName());
+        dto.setImeiArrivalTime(entity.getImeiArrivalTime());
+        dto.setSource(entity.getSource());
+        dto.setUpdateRawCdrFileName(entity.getUpdateRawCdrFileName());
+        dto.setUpdateImeiArrivalTime(entity.getUpdateImeiArrivalTime());
+        dto.setUpdateSource(entity.getUpdateSource());
+        dto.setServerOrigin(entity.getServerOrigin());
+        dto.setActualOperator(entity.getActualOperator());
+        dto.setTestImei(entity.getTestImei());
+        dto.setIsUsed(entity.getIsUsed());
+        dto.setForeignRule(entity.getForeignRule());
+        return dto;
+    }
+
+    // toEntity method for ActiveUniqueImeiDto to ActiveUniqueEdr entity
+    public static ActiveUniqueEdr toEntityForAppEdr(ActiveUniqueImeiDto dto) {
+        ActiveUniqueEdr entity = new ActiveUniqueEdr();
+        entity.setId(dto.getId());
+        entity.setCreatedOn(dto.getCreatedOn());
+        entity.setModifiedOn(dto.getModifiedOn());
+        entity.setTac(dto.getTac());
+        entity.setMsisdn(dto.getMsisdn());
+        entity.setFailedRuleId(dto.getFailedRuleId());
+        entity.setFailedRuleName(dto.getFailedRuleName());
+        entity.setImsi(dto.getImsi());
+        entity.setMobileOperator(dto.getMobileOperator());
+        entity.setCreateFilename(dto.getCreateFilename());
+        entity.setUpdateFilename(dto.getUpdateFilename());
+        entity.setUpdatedOn(dto.getUpdatedOn());
+        entity.setProtocol(dto.getProtocol());
+        entity.setAction(dto.getAction());
+        entity.setPeriod(dto.getPeriod());
+        entity.setFailedRuleDate(dto.getFailedRuleDate());
+        entity.setMobileOperatorId(dto.getMobileOperatorId());
+        entity.setTaxPaid(dto.getTaxPaid());
+        entity.setFeatureName(dto.getFeatureName());
+        entity.setRecordTime(dto.getRecordTime());
+        entity.setActualImei(dto.getActualImei());
+        entity.setTimestamp(dto.getTimestamp());
+        entity.setImei(dto.getImei());
+        entity.setRawCdrFileName(dto.getRawCdrFileName());
+        entity.setImeiArrivalTime(dto.getImeiArrivalTime());
+        entity.setSource(dto.getSource());
+        entity.setUpdateRawCdrFileName(dto.getUpdateRawCdrFileName());
+        entity.setUpdateImeiArrivalTime(dto.getUpdateImeiArrivalTime());
+        entity.setUpdateSource(dto.getUpdateSource());
+        entity.setServerOrigin(dto.getServerOrigin());
+        entity.setActualOperator(dto.getActualOperator());
+        entity.setTestImei(dto.getTestImei());
+        entity.setIsUsed(dto.getIsUsed());
+        entity.setForeignRule(dto.getForeignRule());
+        return entity;
     }
 }

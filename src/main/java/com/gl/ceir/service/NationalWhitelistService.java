@@ -30,13 +30,11 @@ public class NationalWhitelistService {
                         if (deviceTypeOptional.isPresent()) {
                             String deviceType = deviceTypeOptional.get().getValue();
                             if (deviceType.contains(entry.getDeviceType())) {
-                                if (entry.getDeviceType().equalsIgnoreCase("smartphone") || entry.getDeviceType().equalsIgnoreCase("featurephone")) {
-                                    if (entry.getGdceImeiStatus() == 1) {
-                                        nationalWhitelistRepository.save(entry);
-                                    }
-                                } else {
+                                if (entry.getGdceImeiStatus() == 1) {
                                     nationalWhitelistRepository.save(entry);
                                 }
+                            } else {
+                                nationalWhitelistRepository.save(entry);
                             }
                         } else {
                             nationalWhitelistRepository.save(entry);
