@@ -62,13 +62,6 @@ public class AuditDbConfig {
                     .password(env.getProperty("audit.datasource.oracle.password"))
                     .driverClassName(env.getProperty("audit.datasource.oracle.driver-class-name"))
                     .build();
-        } else if ("app_edr_audit".equals(env.getProperty("spring.profiles.active"))) {
-            return DataSourceBuilder.create()
-                    .url(env.getProperty("app_edr_audit.datasource.url"))
-                    .username(env.getProperty("app_edr_audit.datasource.username"))
-                    .password(env.getProperty("app_edr_audit.datasource.password"))
-                    .driverClassName(env.getProperty("app_edr_audit.datasource.driver-class-name"))
-                    .build();
         } else {
             return DataSourceBuilder.create()
                     .url(env.getProperty("audit.datasource.url"))
