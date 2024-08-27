@@ -390,7 +390,7 @@ public class ValidateRules implements Runnable{
                                     activeUniqueForeignImeiLatestDate.setValue(activeUniqueForeignImeisLastRunEndDate);
                                     systemConfigurationDbRepository.save(activeUniqueForeignImeiLatestDate);
                                 } else {
-                                    systemConfigurationDbRepository.save(new SystemConfigurationDb("nw_unique_imei_last_run_time", activeUniqueForeignImeisLastRunEndDate, "latest date when national whitelist process for unique imei ran"));
+                                    systemConfigurationDbRepository.save(new SystemConfigurationDb("nw_unique_foreign_imei_last_run_time", activeUniqueForeignImeisLastRunEndDate, "latest date when national whitelist process for unique imei ran"));
                                 }
                                 lastProgressTime = System.currentTimeMillis();
                             } else {
@@ -504,7 +504,7 @@ public class ValidateRules implements Runnable{
                                 activeUniqueForeignImeiLatestDate.setValue(activeForeignImeisDifferentMsisdnLastRunEndDate);
                                 systemConfigurationDbRepository.save(activeUniqueForeignImeiLatestDate);
                             } else {
-                                systemConfigurationDbRepository.save(new SystemConfigurationDb("nw_unique_imei_last_run_time", activeUniqueForeignImeisLastRunEndDate, "latest date when national whitelist process for unique imei ran"));
+                                systemConfigurationDbRepository.save(new SystemConfigurationDb("nw_foreign_unique_imei_diff_msisdn_last_run_time", activeUniqueForeignImeisLastRunEndDate, "latest date when national whitelist process for unique imei ran"));
                             }
                             lastProgressTime = System.currentTimeMillis();
                         } else {
