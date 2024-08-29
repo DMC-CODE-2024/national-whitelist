@@ -1,15 +1,12 @@
 package com.gl.ceir.service;
 
-import com.gl.ceir.model.app.NationalWhitelist;
-import com.gl.ceir.model.app.SystemConfigurationDb;
-import com.gl.ceir.repository.app.NationalWhitelistRepository;
+import com.gl.ceir.model.output.NationalWhitelist;
+import com.gl.ceir.model.sysParam.SystemConfigurationDb;
+import com.gl.ceir.repository.output.NationalWhitelistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 

@@ -5,6 +5,7 @@ import com.gl.ceir.dto.ActiveUniqueForeignImeiDto;
 import com.gl.ceir.dto.ActiveUniqueImeiDto;
 import com.gl.ceir.dto.RuleEngineDto;
 import com.gl.ceir.model.app.*;
+import com.gl.ceir.model.output.ForeignExceptionList;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;

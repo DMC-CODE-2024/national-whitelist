@@ -1,7 +1,7 @@
-package com.gl.ceir.repository.app;
+package com.gl.ceir.repository.sysParam;
 
 
-import com.gl.ceir.model.app.SystemConfigurationDb;
+import com.gl.ceir.model.sysParam.SystemConfigurationDb;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SystemConfigurationDbRepository extends JpaRepository<SystemConfigurationDb, Long> {

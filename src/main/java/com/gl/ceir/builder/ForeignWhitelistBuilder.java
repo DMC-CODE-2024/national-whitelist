@@ -2,11 +2,10 @@ package com.gl.ceir.builder;
 
 import com.gl.ceir.dto.ActiveUniqueForeignImeiDto;
 import com.gl.ceir.model.app.ActiveUniqueForeignImei;
-import com.gl.ceir.model.app.ForeignWhitelist;
+import com.gl.ceir.model.output.ForeignWhitelist;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

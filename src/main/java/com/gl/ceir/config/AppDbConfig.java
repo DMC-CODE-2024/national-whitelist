@@ -31,7 +31,6 @@ import java.util.Objects;
         entityManagerFactoryRef = "appEntityManagerFactory",
         transactionManagerRef = "appTransactionManager")
 @EntityScan("com.gl.ceir.model.app")
-
 public class AppDbConfig {
     @Autowired
     private Environment env;
@@ -68,17 +67,24 @@ public class AppDbConfig {
     public DataSource appDataSource() {
         if ("oracle".equals(env.getProperty("spring.profiles.active"))) {
             return DataSourceBuilder.create()
-                    .url(env.getProperty("spring.datasource.oracle.url"))
-                    .username(env.getProperty("spring.datasource.oracle.username"))
-                    .password(env.getProperty("spring.datasource.oracle.password"))
-                    .driverClassName(env.getProperty("spring.datasource.oracle.driver-class-name"))
+                    .url(env.getProperty("spring.input.datasource.oracle.url"))
+                    .username(env.getProperty("spring.input.datasource.oracle.username"))
+                    .password(env.getProperty("spring.input.datasource.oracle.password"))
+                    .driverClassName(env.getProperty("spring.input.datasource.oracle.driver-class-name"))
+                    .build();
+        } else if ("mysql".equals(env.getProperty("spring.profiles.active"))) {
+            return DataSourceBuilder.create()
+                    .url(env.getProperty("spring.input.datasource.mysql.url"))
+                    .username(env.getProperty("spring.input.datasource.mysql.username"))
+                    .password(env.getProperty("spring.input.datasource.mysql.password"))
+                    .driverClassName(env.getProperty("spring.input.datasource.driver-class-name"))
                     .build();
         } else {
             return DataSourceBuilder.create()
-                    .url(env.getProperty("spring.datasource.url"))
-                    .username(env.getProperty("spring.datasource.username"))
-                    .password(env.getProperty("spring.datasource.password"))
-                    .driverClassName(env.getProperty("spring.datasource.driver-class-name"))
+                    .url(env.getProperty("spring.input.datasource.url"))
+                    .username(env.getProperty("spring.input.datasource.username"))
+                    .password(env.getProperty("spring.input.datasource.password"))
+                    .driverClassName(env.getProperty("spring.input.datasource.driver-class-name"))
                     .build();
         }
     }

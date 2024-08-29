@@ -1,18 +1,13 @@
 package com.gl.ceir.builder;
 
-import com.gl.ceir.config.AppDbConfig;
 import com.gl.ceir.dto.ActiveUniqueImeiDto;
 import com.gl.ceir.model.app.ActiveUniqueImei;
-import com.gl.ceir.model.app.NationalWhitelist;
-import com.gl.custom.CustomCheck;
+import com.gl.ceir.model.output.NationalWhitelist;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

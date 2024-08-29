@@ -1,4 +1,4 @@
-package com.gl.ceir.model.app;
+package com.gl.ceir.model.sysParam;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.CreationTimestamp;

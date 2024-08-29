@@ -2,9 +2,7 @@ package com.gl.ceir.builder;
 
 import com.gl.ceir.dto.ActiveForeignImeiWithDifferentImsiDto;
 import com.gl.ceir.dto.ActiveUniqueForeignImeiDto;
-import com.gl.ceir.model.app.ActiveForeignImeiWithDifferentMsisdn;
-import com.gl.ceir.model.app.ActiveUniqueForeignImei;
-import com.gl.ceir.model.app.ForeignExceptionList;
+import com.gl.ceir.model.output.ForeignExceptionList;
 
 import java.time.LocalDateTime;
 

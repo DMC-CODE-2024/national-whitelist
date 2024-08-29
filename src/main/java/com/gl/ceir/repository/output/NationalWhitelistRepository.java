@@ -1,6 +1,6 @@
-package com.gl.ceir.repository.app;
+package com.gl.ceir.repository.output;
 
-import com.gl.ceir.model.app.NationalWhitelist;
+import com.gl.ceir.model.output.NationalWhitelist;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;

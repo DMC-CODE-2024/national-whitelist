@@ -7,11 +7,15 @@ import com.gl.ceir.dto.ActiveUniqueImeiDto;
 import com.gl.ceir.dto.RuleEngineDto;
 import com.gl.ceir.enums.Rules;
 import com.gl.ceir.model.app.*;
+import com.gl.ceir.model.output.ForeignExceptionList;
+import com.gl.ceir.model.output.ForeignWhitelist;
+import com.gl.ceir.model.output.NationalWhitelist;
 import com.gl.ceir.model.audit.ModulesAuditTrail;
+import com.gl.ceir.model.sysParam.SystemConfigurationDb;
 import com.gl.ceir.repository.app.*;
 import com.gl.ceir.repository.audit.ModulesAuditTrailRepository;
+import com.gl.ceir.repository.sysParam.SystemConfigurationDbRepository;
 import com.gl.ceir.rules.*;
-import com.gl.custom.CustomCheck;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +29,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
@@ -96,6 +98,7 @@ public class ValidateRules implements Runnable{
     public void run() {
         int executionStartTime = Math.toIntExact(System.currentTimeMillis() / 1000);
         String profile = env.getProperty("nwl.profiles.active");
+        String MODULE_NAME = profile + ":";
         log.info("Starting national whitelist process. Profile: "+profile);
         int moduleAudiTrailId = 0;
         int foreignModuleTrailId = 0;
@@ -112,10 +115,10 @@ public class ValidateRules implements Runnable{
         }
         LocalDateTime startTime = LocalDateTime.now();
         try {
-            ModulesAuditTrail startAudit = ModulesAuditTrailBuilder.forInsert(201, "created", "NA", "National Whitelist", "INSERT", 0,"Started National Process", "national_whitelist", startTime);
+            ModulesAuditTrail startAudit = ModulesAuditTrailBuilder.forInsert(201, "created", "NA", "National Whitelist", "INSERT", 0,"Started National Process", MODULE_NAME+"national_whitelist", startTime);
             startAudit = modulesAuditTrailRepository.save(startAudit);
             moduleAudiTrailId = startAudit.getId();
-            Optional<SystemConfigurationDb> activeUniqueImeiDate = Optional.ofNullable(systemConfigurationDbRepository.getByTag("nw_unique_imei_last_run_time"));
+            Optional<SystemConfigurationDb> activeUniqueImeiDate = Optional.ofNullable(systemConfigurationDbRepository.getByTag(profile+"_nw_unique_imei_last_run_time"));
             Optional<SystemConfigurationDb> amnestyPeriodDate = Optional.ofNullable(systemConfigurationDbRepository.getByTag("GRACE_PERIOD_END_DATE"));
             Optional<SystemConfigurationDb> allowedDeviceTypes = Optional.ofNullable(systemConfigurationDbRepository.getByTag("allowed_device_type"));// dongle,watch,smartwatch
             if (amnestyPeriodDate.isPresent()){
@@ -199,42 +202,42 @@ public class ValidateRules implements Runnable{
                                 for (RuleEngineMapping rule : rules) {
                                     switch (Rules.valueOf(rule.getName().trim())) {
                                         case TYPE_APPROVED:
-                                            ModulesAuditTrail typeApprovedAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking trc data", "national_whitelist", executionStartTime, startTime);
+                                            ModulesAuditTrail typeApprovedAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking trc data", MODULE_NAME+"national_whitelist", executionStartTime, startTime);
                                             modulesAuditTrailRepository.save(typeApprovedAudit);
                                             activeUniqueImeiDto = typeApproved.validateActiveUniqueImei(activeUniqueImeiDto);
                                             break;
                                         case CUSTOM_CHK:
-                                            ModulesAuditTrail customCheckAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking customs data", "national_whitelist", executionStartTime, startTime);
+                                            ModulesAuditTrail customCheckAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking customs data", MODULE_NAME+"national_whitelist", executionStartTime, startTime);
                                             modulesAuditTrailRepository.save(customCheckAudit);
                                             activeUniqueImeiDto = customChk.validateActiveUniqueImei(activeUniqueImeiDto);
                                             break;
                                         case EXISTS_IN_LOCAL_MANUFACTURER_DB:
-                                            ModulesAuditTrail manufacturersAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking manufacturers data", "national_whitelist", executionStartTime, startTime);
+                                            ModulesAuditTrail manufacturersAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking manufacturers data", MODULE_NAME+"national_whitelist", executionStartTime, startTime);
                                             modulesAuditTrailRepository.save(manufacturersAudit);
                                             activeUniqueImeiDto = existsInLocalManufacturerDb.validateActiveUniqueImei(activeUniqueImeiDto);
                                             break;
                                         case VALID_TAC:
-                                            ModulesAuditTrail tacAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking invalid tac for unique imei", "national_whitelist", executionStartTime, startTime);
+                                            ModulesAuditTrail tacAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking invalid tac for unique imei", MODULE_NAME+"national_whitelist", executionStartTime, startTime);
                                             modulesAuditTrailRepository.save(tacAudit);
                                             activeUniqueImeiDto = validTac.validateActiveUniqueImei(activeUniqueImeiDto);
                                             break;
                                         case IMEI_NULL:
-                                            ModulesAuditTrail imeiAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking if imei is null for unique imei", "national_whitelist", executionStartTime, startTime);
+                                            ModulesAuditTrail imeiAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking if imei is null for unique imei", MODULE_NAME+"national_whitelist", executionStartTime, startTime);
                                             modulesAuditTrailRepository.save(imeiAudit);
                                             activeUniqueImeiDto = imeiNull.validateActiveUniqueImei(activeUniqueImeiDto);
                                             break;
                                         case IMEI_TEST:
-                                            ModulesAuditTrail testAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking if test imei for unique imei", "national_whitelist", executionStartTime, startTime);
+                                            ModulesAuditTrail testAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking if test imei for unique imei", MODULE_NAME+"national_whitelist", executionStartTime, startTime);
                                             modulesAuditTrailRepository.save(testAudit);
                                             activeUniqueImeiDto = imeiTest.validateActiveUniqueImei(activeUniqueImeiDto);
                                             break;
                                         case IMEI_ALPHANUMERIC:
-                                            ModulesAuditTrail alphanumericAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking if imei alphanumeric for unique imei", "national_whitelist", executionStartTime, startTime);
+                                            ModulesAuditTrail alphanumericAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking if imei alphanumeric for unique imei", MODULE_NAME+"national_whitelist", executionStartTime, startTime);
                                             modulesAuditTrailRepository.save(alphanumericAudit);
                                             activeUniqueImeiDto = imeiAlphanumeric.validateActiveUniqueImei(activeUniqueImeiDto);
                                             break;
                                         case IMEI_LENGTH_NATIONAL_WHITELIST:
-                                            ModulesAuditTrail lengthAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking imei length for unique imei", "national_whitelist", executionStartTime, startTime);
+                                            ModulesAuditTrail lengthAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking imei length for unique imei", MODULE_NAME+"national_whitelist", executionStartTime, startTime);
                                             modulesAuditTrailRepository.save(lengthAudit);
                                             activeUniqueImeiDto = imeiLength.validateActiveUniqueImei(activeUniqueImeiDto);
                                             break;
@@ -270,15 +273,15 @@ public class ValidateRules implements Runnable{
                     }
                 }
             }
-                ModulesAuditTrail completedAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 200, "completed", "NA", "National Whitelist", "UPDATE", "Process completed for National Whitelist", "national_whitelist", executionStartTime, startTime);
+                ModulesAuditTrail completedAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 200, "completed", "NA", "National Whitelist", "UPDATE", "Process completed for National Whitelist", MODULE_NAME+"national_whitelist", executionStartTime, startTime);
                 modulesAuditTrailRepository.save(completedAudit);
 
                 // For foreign tables
-                ModulesAuditTrail foreignModuleTrail = ModulesAuditTrailBuilder.forInsert(201, "created", "NA", "National Whitelist", "INSERT", 0,"Started Foreign Whitelist Process", "foreign_whitelist", startTime);
+                ModulesAuditTrail foreignModuleTrail = ModulesAuditTrailBuilder.forInsert(201, "created", "NA", "National Whitelist", "INSERT", 0,"Started Foreign Whitelist Process", MODULE_NAME+"foreign_whitelist", startTime);
                 foreignModuleTrail = modulesAuditTrailRepository.save(foreignModuleTrail);
                 foreignModuleTrailId = foreignModuleTrail.getId();
 
-            Optional<SystemConfigurationDb> acitveUniqueForeignImeiDate =Optional.ofNullable(systemConfigurationDbRepository.getByTag("nw_unique_foreign_imei_last_run_time"));
+            Optional<SystemConfigurationDb> acitveUniqueForeignImeiDate =Optional.ofNullable(systemConfigurationDbRepository.getByTag(profile+"_nw_unique_foreign_imei_last_run_time"));
             String activeUniqueForeignImeisLastRunDate = "";
             String activeUniqueForeignImeisLastRunEndDate = "";
             boolean newForeignLastRunTimeIsUpdate = false;
@@ -346,27 +349,27 @@ public class ValidateRules implements Runnable{
                                 for (RuleEngineMapping rule : foreignRules) {
                                     switch (Rules.valueOf(rule.getName().trim())) {
                                         case VALID_TAC:
-                                            ModulesAuditTrail foreignTacAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking invalid tac for foreign unique imei", "foreign_whitelist", executionStartTime, startTime);
+                                            ModulesAuditTrail foreignTacAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking invalid tac for foreign unique imei", MODULE_NAME+"foreign_whitelist", executionStartTime, startTime);
                                             modulesAuditTrailRepository.save(foreignTacAudit);
                                             activeUniqueForeignImeiDto = validTac.validateActiveUniqueForeignImei(activeUniqueForeignImeiDto);
                                             break;
                                         case IMEI_NULL:
-                                            ModulesAuditTrail foreignNullAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking if imei is null for foreign unique imei", "foreign_whitelist", executionStartTime, startTime);
+                                            ModulesAuditTrail foreignNullAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking if imei is null for foreign unique imei", MODULE_NAME+"foreign_whitelist", executionStartTime, startTime);
                                             modulesAuditTrailRepository.save(foreignNullAudit);
                                             activeUniqueForeignImeiDto = imeiNull.validateActiveUniqueForeignImei(activeUniqueForeignImeiDto);
                                             break;
                                         case IMEI_TEST:
-                                            ModulesAuditTrail foreignTestAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking if test imei for foreign unique imei", "foreign_whitelist", executionStartTime, startTime);
+                                            ModulesAuditTrail foreignTestAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking if test imei for foreign unique imei", MODULE_NAME+"foreign_whitelist", executionStartTime, startTime);
                                             modulesAuditTrailRepository.save(foreignTestAudit);
                                             activeUniqueForeignImeiDto = imeiTest.validateActiveUniqueForeignImei(activeUniqueForeignImeiDto);
                                             break;
                                         case IMEI_LENGTH_NATIONAL_WHITELIST:
-                                            ModulesAuditTrail foreignLengthAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking imei length for foreign unique imei", "foreign_whitelist", executionStartTime, startTime);
+                                            ModulesAuditTrail foreignLengthAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking imei length for foreign unique imei", MODULE_NAME+"foreign_whitelist", executionStartTime, startTime);
                                             modulesAuditTrailRepository.save(foreignLengthAudit);
                                             activeUniqueForeignImeiDto = imeiLength.validateActiveUniqueForeignImei(activeUniqueForeignImeiDto);
                                             break;
                                         case IMEI_ALPHANUMERIC:
-                                            ModulesAuditTrail foreignAlphanumericAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking if imei alphanumeric for foreign unique imei", "foreign_whitelist", executionStartTime, startTime);
+                                            ModulesAuditTrail foreignAlphanumericAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking if imei alphanumeric for foreign unique imei", MODULE_NAME+"foreign_whitelist", executionStartTime, startTime);
                                             modulesAuditTrailRepository.save(foreignAlphanumericAudit);
                                             activeUniqueForeignImeiDto = imeiAlphanumeric.validateActiveUniqueForeignImei(activeUniqueForeignImeiDto);
                                             break;
@@ -405,7 +408,7 @@ public class ValidateRules implements Runnable{
                 }
             }
             //
-            Optional<SystemConfigurationDb> activeForeignImeisDifferentMsisdnDate = Optional.ofNullable(systemConfigurationDbRepository.getByTag("nw_foreign_unique_imei_diff_msisdn_last_run_time"));
+            Optional<SystemConfigurationDb> activeForeignImeisDifferentMsisdnDate = Optional.ofNullable(systemConfigurationDbRepository.getByTag(profile+"_nw_foreign_unique_imei_diff_msisdn_last_run_time"));
             String activeForeignImeisDifferentMsisdnLastRunDate = "";
             String activeForeignImeisDifferentMsisdnLastRunEndDate = "";
             boolean newForeignDifferentMsisdnLastRunTimeIsUpdate = false;
@@ -467,27 +470,27 @@ public class ValidateRules implements Runnable{
                             for (RuleEngineMapping rule : rules) {
                                 switch (Rules.valueOf(rule.getName().trim())) {
                                     case VALID_TAC:
-                                        ModulesAuditTrail diffMsisdnForeignTacAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking invalid tac for foreign imei with different msisdn", "foreign_whitelist", executionStartTime, startTime);
+                                        ModulesAuditTrail diffMsisdnForeignTacAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking invalid tac for foreign imei with different msisdn", MODULE_NAME+"foreign_whitelist", executionStartTime, startTime);
                                         modulesAuditTrailRepository.save(diffMsisdnForeignTacAudit);
                                         activeForeignUniqueImeiWithDifferentMsisdnDto = validTac.validateActiveForeignImeiWithDifferentMsisdn(activeForeignUniqueImeiWithDifferentMsisdnDto);
                                         break;
                                     case IMEI_NULL:
-                                        ModulesAuditTrail diffMsisdnForeignNullAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking if imei is null for foreign imei with different msisdn", "foreign_whitelist", executionStartTime, startTime);
+                                        ModulesAuditTrail diffMsisdnForeignNullAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking if imei is null for foreign imei with different msisdn", MODULE_NAME+"foreign_whitelist", executionStartTime, startTime);
                                         modulesAuditTrailRepository.save(diffMsisdnForeignNullAudit);
                                         activeForeignUniqueImeiWithDifferentMsisdnDto = imeiNull.validateActiveForeignImeiWithDifferentMsisdn(activeForeignUniqueImeiWithDifferentMsisdnDto);
                                         break;
                                     case IMEI_TEST:
-                                        ModulesAuditTrail diffMsisdnForeignTestAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking if test imei for foreign imei with different msisdn", "foreign_whitelist", executionStartTime, startTime);
+                                        ModulesAuditTrail diffMsisdnForeignTestAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking if test imei for foreign imei with different msisdn", MODULE_NAME+"foreign_whitelist", executionStartTime, startTime);
                                         modulesAuditTrailRepository.save(diffMsisdnForeignTestAudit);
                                         activeForeignUniqueImeiWithDifferentMsisdnDto = imeiTest.validateActiveForeignImeiWithDifferentMsisdn(activeForeignUniqueImeiWithDifferentMsisdnDto);
                                         break;
                                     case IMEI_LENGTH_NATIONAL_WHITELIST:
-                                        ModulesAuditTrail diffMsisdnForeignLengthAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking imei length for foreign imei with different msisdn", "foreign_whitelist", executionStartTime, startTime);
+                                        ModulesAuditTrail diffMsisdnForeignLengthAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking imei length for foreign imei with different msisdn", MODULE_NAME+"foreign_whitelist", executionStartTime, startTime);
                                         modulesAuditTrailRepository.save(diffMsisdnForeignLengthAudit);
                                         activeForeignUniqueImeiWithDifferentMsisdnDto = imeiLength.validateActiveForeignImeiWithDifferentMsisdn(activeForeignUniqueImeiWithDifferentMsisdnDto);
                                         break;
                                     case IMEI_ALPHANUMERIC:
-                                        ModulesAuditTrail diffMsisdnForeignAlphanumericAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking if imei alphanumeric for foreign imei with different msisdn", "foreign_whitelist", executionStartTime, startTime);
+                                        ModulesAuditTrail diffMsisdnForeignAlphanumericAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking if imei alphanumeric for foreign imei with different msisdn", MODULE_NAME+"foreign_whitelist", executionStartTime, startTime);
                                         modulesAuditTrailRepository.save(diffMsisdnForeignAlphanumericAudit);
                                         activeForeignUniqueImeiWithDifferentMsisdnDto = imeiAlphanumeric.validateActiveForeignImeiWithDifferentMsisdn(activeForeignUniqueImeiWithDifferentMsisdnDto);
                                         break;
@@ -517,9 +520,9 @@ public class ValidateRules implements Runnable{
                     }
                 }
             }
-            ModulesAuditTrail diffMsisdnForeignCompletedAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 200, "completed", "NA", "National Whitelist", "UPDATE", "Process completed for foreign whitelist", "foreign_whitelist", foreignWhitelistCount, executionStartTime, startTime);
+            ModulesAuditTrail diffMsisdnForeignCompletedAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 200, "completed", "NA", "National Whitelist", "UPDATE", "Process completed for foreign whitelist", MODULE_NAME+"foreign_whitelist", foreignWhitelistCount, executionStartTime, startTime);
             modulesAuditTrailRepository.save(diffMsisdnForeignCompletedAudit);
-            ModulesAuditTrail foreignExceptionModuleTrail = ModulesAuditTrailBuilder.forInsert(200, "completed", "NA", "National Whitelist", "INSERT", foreignExceptionListCount,"Process completed for foreign exception list", "foreign_whitelist", startTime);
+            ModulesAuditTrail foreignExceptionModuleTrail = ModulesAuditTrailBuilder.forInsert(200, "completed", "NA", "National Whitelist", "INSERT", foreignExceptionListCount,"Process completed for foreign exception list", MODULE_NAME+"foreign_whitelist", startTime);
             modulesAuditTrailRepository.save(foreignExceptionModuleTrail);
         } catch (DataAccessException e) {
             log.error("DB Exception: Raising alert016 "+e);
@@ -529,22 +532,22 @@ public class ValidateRules implements Runnable{
             log.error("raising alert016");
             System.out.println("raising alert016");
             if (alert.isPresent()) {
-                raiseAnAlert(alert.get().getAlertId(), msg, "national_whitelist", 0);
+                raiseAnAlert(alert.get().getAlertId(), msg, MODULE_NAME+"national_whitelist", 0);
 //                RunningAlertDb alertDb = new RunningAlertDb(alert.get().getAlertId(), alert.get().getDescription().replace("<ERROR>", msg), 0);
 //                runningAlertDbRepo.save(alertDb);
             }
             if (moduleAudiTrailId == 0) {
-                ModulesAuditTrail audit = ModulesAuditTrailBuilder.forInsert(501, "failed", msg, "National Whitelist", "INSERT", 0,"Exception during national whitelist process", "national_whitelist", startTime);
+                ModulesAuditTrail audit = ModulesAuditTrailBuilder.forInsert(501, "failed", msg, "National Whitelist", "INSERT", 0,"Exception during national whitelist process", MODULE_NAME+"national_whitelist", startTime);
                 modulesAuditTrailRepository.save(audit);
             } else {
-                ModulesAuditTrail audit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 501, "failed", msg, "National Whitelist", "UPDATE", "Exception during national whitelist process", "national_whitelist", executionStartTime, startTime);
+                ModulesAuditTrail audit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 501, "failed", msg, "National Whitelist", "UPDATE", "Exception during national whitelist process", MODULE_NAME+"national_whitelist", executionStartTime, startTime);
                 modulesAuditTrailRepository.save(audit);
             }
             if (foreignModuleTrailId == 0) {
-                ModulesAuditTrail audit = ModulesAuditTrailBuilder.forInsert(501, "failed", msg, "National Whitelist", "INSERT", 0,"Exception during exception whitelist process", "foreign_whitelist", startTime);
+                ModulesAuditTrail audit = ModulesAuditTrailBuilder.forInsert(501, "failed", msg, "National Whitelist", "INSERT", 0,"Exception during exception whitelist process", MODULE_NAME+"foreign_whitelist", startTime);
                 modulesAuditTrailRepository.save(audit);
             } else {
-                ModulesAuditTrail audit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 501, "failed", msg, "National Whitelist", "UPDATE", "Exception during exception whitelist process", "foreign_whitelist", executionStartTime, startTime);
+                ModulesAuditTrail audit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 501, "failed", msg, "National Whitelist", "UPDATE", "Exception during exception whitelist process", MODULE_NAME+"foreign_whitelist", executionStartTime, startTime);
                 modulesAuditTrailRepository.save(audit);
             }
         } catch (Exception ex) {
@@ -552,24 +555,24 @@ public class ValidateRules implements Runnable{
             String msg = ex.getMessage().length() <= 200?ex.getMessage(): ex.getMessage().substring(0, 200);
             ex.printStackTrace();
             if (moduleAudiTrailId == 0) {
-                ModulesAuditTrail audit = ModulesAuditTrailBuilder.forInsert(501, "failed", msg, "National Whitelist", "INSERT", 0,"Exception during national whitelist process", "national_whitelist", startTime);
+                ModulesAuditTrail audit = ModulesAuditTrailBuilder.forInsert(501, "failed", msg, "National Whitelist", "INSERT", 0,"Exception during national whitelist process", MODULE_NAME+"national_whitelist", startTime);
                 modulesAuditTrailRepository.save(audit);
             } else {
-                ModulesAuditTrail audit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 501, "failed", msg, "National Whitelist", "UPDATE", "Exception during national whitelist process", "national_whitelist", executionStartTime, startTime);
+                ModulesAuditTrail audit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 501, "failed", msg, "National Whitelist", "UPDATE", "Exception during national whitelist process", MODULE_NAME+"national_whitelist", executionStartTime, startTime);
                 modulesAuditTrailRepository.save(audit);
             }
             if (foreignModuleTrailId == 0) {
-                ModulesAuditTrail audit = ModulesAuditTrailBuilder.forInsert(501, "failed", msg, "National Whitelist", "INSERT", 0,"Exception during exception whitelist process", "foreign_whitelist", startTime);
+                ModulesAuditTrail audit = ModulesAuditTrailBuilder.forInsert(501, "failed", msg, "National Whitelist", "INSERT", 0,"Exception during exception whitelist process", MODULE_NAME+"foreign_whitelist", startTime);
                 modulesAuditTrailRepository.save(audit);
             } else {
-                ModulesAuditTrail audit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 501, "failed", msg, "National Whitelist", "UPDATE", "Exception during exception whitelist process", "foreign_whitelist", executionStartTime, startTime);
+                ModulesAuditTrail audit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 501, "failed", msg, "National Whitelist", "UPDATE", "Exception during exception whitelist process", MODULE_NAME+"foreign_whitelist", executionStartTime, startTime);
                 modulesAuditTrailRepository.save(audit);
             }
             Optional<CfgFeatureAlert> alert = cfgFeatureAlertRepository.findByAlertId("alert1209");
             log.error("raising alert1209");
             System.out.println("raising alert1209");
             if (alert.isPresent()) {
-                raiseAnAlert(alert.get().getAlertId(), msg, "national_whitelist", 0);
+                raiseAnAlert(alert.get().getAlertId(), msg, MODULE_NAME+"national_whitelist", 0);
 //                RunningAlertDb alertDb = new RunningAlertDb(alert.get().getAlertId(), alert.get().getDescription().replace("<ERROR>", msg), 0);
 //                runningAlertDbRepo.save(alertDb);
             }

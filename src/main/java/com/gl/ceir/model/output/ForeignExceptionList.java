@@ -1,4 +1,4 @@
-package com.gl.ceir.model.app;
+package com.gl.ceir.model.output;
 
 import javax.persistence.*;
 import java.io.Serializable;
