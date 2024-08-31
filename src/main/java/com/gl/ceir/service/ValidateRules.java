@@ -97,7 +97,7 @@ public class ValidateRules implements Runnable{
     @Override
     public void run() {
         int executionStartTime = Math.toIntExact(System.currentTimeMillis() / 1000);
-        String profile = env.getProperty("nwl.profiles.active");
+        String profile = env.getProperty("nwl.input.schema");
         String MODULE_NAME = profile + ":";
         log.info("Starting national whitelist process. Profile: "+profile);
         int moduleAudiTrailId = 0;
