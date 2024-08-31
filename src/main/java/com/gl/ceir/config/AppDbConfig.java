@@ -73,19 +73,25 @@ public class AppDbConfig {
                     .driverClassName(env.getProperty("spring.input.datasource.oracle.driver-class-name"))
                     .build();
         } else if ("mysql".equals(env.getProperty("spring.profiles.active"))) {
-            return DataSourceBuilder.create()
-                    .url(env.getProperty("spring.input.datasource.mysql.url"))
-                    .username(env.getProperty("spring.input.datasource.mysql.username"))
-                    .password(env.getProperty("spring.input.datasource.mysql.password"))
-                    .driverClassName(env.getProperty("spring.input.datasource.driver-class-name"))
-                    .build();
+            if ("app".equals(env.getProperty("nwl.input.schema"))) {
+                return DataSourceBuilder.create()
+                        .url(env.getProperty("app.datasource.url"))
+                        .username(env.getProperty("app.datasource.username"))
+                        .password(env.getProperty("app.datasource.password"))
+                        .driverClassName(env.getProperty("app.datasource.driver-class-name"))
+                        .build();
+            } else if ("app_edr".equals(env.getProperty("nwl.input.schema"))) {
+                return DataSourceBuilder.create()
+                        .url(env.getProperty("app_edr.datasource.url"))
+                        .username(env.getProperty("app_edr.datasource.username"))
+                        .password(env.getProperty("app_edr.datasource.password"))
+                        .driverClassName(env.getProperty("app_edr.datasource.driver-class-name"))
+                        .build();
+            } else {
+                return null;
+            }
         } else {
-            return DataSourceBuilder.create()
-                    .url(env.getProperty("spring.input.datasource.url"))
-                    .username(env.getProperty("spring.input.datasource.username"))
-                    .password(env.getProperty("spring.input.datasource.password"))
-                    .driverClassName(env.getProperty("spring.input.datasource.driver-class-name"))
-                    .build();
+            return null;
         }
     }
 

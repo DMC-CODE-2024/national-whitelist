@@ -66,18 +66,13 @@ public class SysParamDbConfig {
                     .build();
         } else if ("mysql".equals(env.getProperty("spring.profiles.active"))) {
             return DataSourceBuilder.create()
-                    .url(env.getProperty("spring.sys.datasource.mysql.url"))
-                    .username(env.getProperty("spring.sys.datasource.mysql.username"))
-                    .password(env.getProperty("spring.sys.datasource.mysql.password"))
-                    .driverClassName(env.getProperty("spring.sys.datasource.driver-class-name"))
+                    .url(env.getProperty("app.datasource.url"))
+                    .username(env.getProperty("app.datasource.username"))
+                    .password(env.getProperty("app.datasource.password"))
+                    .driverClassName(env.getProperty("app.datasource.driver-class-name"))
                     .build();
         } else {
-            return DataSourceBuilder.create()
-                    .url(env.getProperty("spring.sys.datasource.url"))
-                    .username(env.getProperty("spring.sys.datasource.username"))
-                    .password(env.getProperty("spring.sys.datasource.password"))
-                    .driverClassName(env.getProperty("spring.sys.datasource.driver-class-name"))
-                    .build();
+            return null;
         }
     }
 
