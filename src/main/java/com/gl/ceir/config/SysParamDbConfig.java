@@ -29,7 +29,7 @@ import java.util.Objects;
         basePackages = {"com.gl.ceir.repository.sysParam"},
         entityManagerFactoryRef = "appSysEntityManagerFactory",
         transactionManagerRef = "appSysTransactionManager")
-@EntityScan("com.gl.ceir.model.sysParam")
+@EntityScan("com.gl.ceir.repository.sysParam.sysParam")
 public class SysParamDbConfig {
     @Autowired
     private Environment env;

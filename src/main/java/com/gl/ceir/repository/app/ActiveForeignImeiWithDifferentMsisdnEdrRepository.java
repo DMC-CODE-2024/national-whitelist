@@ -18,4 +18,9 @@ public interface ActiveForeignImeiWithDifferentMsisdnEdrRepository extends JpaRe
 
     @Query(value = "SELECT min(created_on) from active_foreign_imei_with_different_imsi", nativeQuery = true)
     public String getEarliestActiveTimestamp();
+
+    @Query(value = "SELECT a FROM ActiveForeignImeiWithDifferentImsi a WHERE a.createdOn BETWEEN :startDate AND :endDate")
+    Page<ActiveForeignImeiWithDifferentImsi> findAllByCreatedOnBetween(@Param("startDate") LocalDateTime startDate,
+                                                                       @Param("endDate") LocalDateTime endDate,
+                                                                       Pageable pageable);
 }

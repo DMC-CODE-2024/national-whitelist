@@ -6,7 +6,8 @@ import com.gl.ceir.dto.ActiveUniqueImeiDto;
 import com.gl.ceir.dto.RuleEngineDto;
 import com.gl.ceir.model.app.*;
 import com.gl.ceir.model.output.ForeignExceptionList;
-import com.gl.ceir.repository.app.LocalManufacturedDeviceDataRepository;
+import com.gl.ceir.model.sysParam.LocalManufacturedDeviceData;
+import com.gl.ceir.repository.sysParam.LocalManufacturedDeviceDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.gl.ceir.repository.app;
+package com.gl.ceir.repository.sysParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

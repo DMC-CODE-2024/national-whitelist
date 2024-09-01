@@ -18,4 +18,9 @@ public interface ActiveUniqueForeignImeiEdrRepository extends JpaRepository<Acti
 
     @Query(value = "SELECT min(created_on) from active_unique_foreign_imei", nativeQuery = true)
     public String getEarliestActiveTimestamp();
+
+    @Query(value = "SELECT a FROM ActiveUniqueForeignImeiEdr a WHERE a.createdOn BETWEEN :startDate AND :endDate")
+    Page<ActiveUniqueForeignImeiEdr> findAllByCreatedOnBetween(@Param("startDate") LocalDateTime startDate,
+                                                               @Param("endDate") LocalDateTime endDate,
+                                                               Pageable pageable);
 }

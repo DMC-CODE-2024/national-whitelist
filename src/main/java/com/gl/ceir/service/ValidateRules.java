@@ -11,9 +11,14 @@ import com.gl.ceir.model.output.ForeignExceptionList;
 import com.gl.ceir.model.output.ForeignWhitelist;
 import com.gl.ceir.model.output.NationalWhitelist;
 import com.gl.ceir.model.audit.ModulesAuditTrail;
+import com.gl.ceir.repository.sysParam.GenericRepository;
+import com.gl.ceir.model.sysParam.CfgFeatureAlert;
+import com.gl.ceir.model.sysParam.RuleEngineMapping;
 import com.gl.ceir.model.sysParam.SystemConfigurationDb;
 import com.gl.ceir.repository.app.*;
 import com.gl.ceir.repository.audit.ModulesAuditTrailRepository;
+import com.gl.ceir.repository.sysParam.CfgFeatureAlertRepository;
+import com.gl.ceir.repository.sysParam.RuleEngineMappingRepository;
 import com.gl.ceir.repository.sysParam.SystemConfigurationDbRepository;
 import com.gl.ceir.rules.*;
 import org.apache.logging.log4j.LogManager;
@@ -93,11 +98,14 @@ public class ValidateRules implements Runnable{
     TYPE_APPROVED typeApproved;
     @Autowired
     EXISTS_IN_LOCAL_MANUFACTURER_DB existsInLocalManufacturerDb;
+    @Autowired
+    CommonService commonService;
 
     @Override
     public void run() {
         int executionStartTime = Math.toIntExact(System.currentTimeMillis() / 1000);
         String profile = env.getProperty("nwl.input.schema");
+        Boolean usage = Boolean.valueOf(env.getProperty("mdr_separate_usage"));
         String MODULE_NAME = profile + ":";
         log.info("Starting national whitelist process. Profile: "+profile);
         int moduleAudiTrailId = 0;
@@ -184,7 +192,12 @@ public class ValidateRules implements Runnable{
                                     .collect(Collectors.toList());
                             totalPages = activeUniqueImeis.getTotalPages();
                         } else if ("app_edr".equals(profile)) {
-                            Page<ActiveUniqueEdr> activeUniqueImeis = activeUniqueImeiEdrRepository.findAllLatestUniqueImeiInLastXDays(convertStringToDateTime(activeUniqueImeisLastRunDate), convertStringToDateTime(activeUniqueImeisLastRunEndDate), pageable);
+                            Page<ActiveUniqueEdr> activeUniqueImeis = null;
+                            if (usage) {
+                                activeUniqueImeis = commonService.findAllLatestUniqueImeiInLastXDaysWithDeviceInfo(convertStringToDateTime(activeUniqueImeisLastRunDate), convertStringToDateTime(activeUniqueImeisLastRunEndDate), pageable);
+                            } else {
+                                activeUniqueImeis = activeUniqueImeiEdrRepository.findAllLatestUniqueImeiInLastXDays(convertStringToDateTime(activeUniqueImeisLastRunDate), convertStringToDateTime(activeUniqueImeisLastRunEndDate), pageable);
+                            }
                             if (activeUniqueImeis.isEmpty()) {
                                 break;
                             }
@@ -331,7 +344,12 @@ public class ValidateRules implements Runnable{
                                     .collect(Collectors.toList());
                             totalPages = activeUniqueForeignImeis.getTotalPages();
                         } else if ("app_edr".equals(profile)) {
-                            Page<ActiveUniqueForeignImeiEdr> activeUniqueForeignImeis = activeUniqueForeignImeiEdrRepository.findAllLatestUniqueImeiInLastXDays(convertStringToDateTime(activeUniqueForeignImeisLastRunDate), convertStringToDateTime(activeUniqueForeignImeisLastRunEndDate), pageable);
+                            Page<ActiveUniqueForeignImeiEdr> activeUniqueForeignImeis = null;
+                            if (usage) {
+                                activeUniqueForeignImeis = commonService.findAllLatestForeignImeiInLastXDaysWithDeviceInfo(convertStringToDateTime(activeUniqueForeignImeisLastRunDate), convertStringToDateTime(activeUniqueForeignImeisLastRunEndDate), pageable);
+                            } else {
+                                activeUniqueForeignImeis = activeUniqueForeignImeiEdrRepository.findAllLatestUniqueImeiInLastXDays(convertStringToDateTime(activeUniqueForeignImeisLastRunDate), convertStringToDateTime(activeUniqueForeignImeisLastRunEndDate), pageable);
+                            }
                             if (activeUniqueForeignImeis.isEmpty()) {
                                 break;
                             }
@@ -451,7 +469,12 @@ public class ValidateRules implements Runnable{
                                 .collect(Collectors.toList());
                         totalPages = activeForeignImeiWithDifferentMsisdns.getTotalPages();
                     } else if ("app_edr".equals(profile)) {
-                        Page<ActiveForeignImeiWithDifferentImsi> activeForeignImeiWithDifferentMsisdns = activeForeignImeiWithDifferentMsisdnEdrRepository.findAllLatestDifferentImeiInLastXDays(convertStringToDateTime(activeForeignImeisDifferentMsisdnLastRunDate), convertStringToDateTime(activeForeignImeisDifferentMsisdnLastRunEndDate), pageable);
+                        Page<ActiveForeignImeiWithDifferentImsi> activeForeignImeiWithDifferentMsisdns = null;
+                        if (usage) {
+                            activeForeignImeiWithDifferentMsisdns = commonService.findAllLatestDifferentImeiInLastXDaysWithDeviceInfo(convertStringToDateTime(activeForeignImeisDifferentMsisdnLastRunDate), convertStringToDateTime(activeForeignImeisDifferentMsisdnLastRunEndDate), pageable);
+                        } else {
+                            activeForeignImeiWithDifferentMsisdns = activeForeignImeiWithDifferentMsisdnEdrRepository.findAllLatestDifferentImeiInLastXDays(convertStringToDateTime(activeForeignImeisDifferentMsisdnLastRunDate), convertStringToDateTime(activeForeignImeisDifferentMsisdnLastRunEndDate), pageable);
+                        }
                         if (activeForeignImeiWithDifferentMsisdns.isEmpty()) {
                             break;
                         }

@@ -1,7 +1,7 @@
 package com.gl.ceir.service;
 
-import com.gl.ceir.model.app.CfgFeatureAlert;
-import com.gl.ceir.repository.app.CfgFeatureAlertRepository;
+import com.gl.ceir.model.sysParam.CfgFeatureAlert;
+import com.gl.ceir.repository.sysParam.CfgFeatureAlertRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

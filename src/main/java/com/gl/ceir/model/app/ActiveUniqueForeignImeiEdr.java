@@ -88,7 +88,24 @@ public class ActiveUniqueForeignImeiEdr implements Serializable {
     private Integer customsStatus;
     @Transient
     private Integer localManufacturerStatus;
+    private Boolean validityFlag;
+    private String deviceType;
 
+    public Boolean getValidityFlag() {
+        return validityFlag;
+    }
+
+    public void setValidityFlag(Boolean validityFlag) {
+        this.validityFlag = validityFlag;
+    }
+
+    public String getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
+    }
     // Getters and setters for all fields
 
     public ActiveUniqueForeignImeiEdr() {

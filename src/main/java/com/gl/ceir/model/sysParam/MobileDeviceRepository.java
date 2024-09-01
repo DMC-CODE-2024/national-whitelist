@@ -1,4 +1,4 @@
-package com.gl.ceir.model.app;
+package com.gl.ceir.model.sysParam;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -100,6 +100,14 @@ public class MobileDeviceRepository {
 
     @Column(name = "launch_date")
     private LocalDateTime launchDate;
+
+    public Boolean getTypeApprovedFlag() {
+        return isTypeApprovedFlag;
+    }
+
+    public void setTypeApprovedFlag(Boolean typeApprovedFlag) {
+        isTypeApprovedFlag = typeApprovedFlag;
+    }
 
     @Column(name = "is_type_approved")
     private Boolean isTypeApprovedFlag;

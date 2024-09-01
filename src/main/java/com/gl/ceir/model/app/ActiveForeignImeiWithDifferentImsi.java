@@ -70,7 +70,15 @@ public class ActiveForeignImeiWithDifferentImsi implements Serializable {
     private String testImei;
     private String isUsed;
     private Boolean validityFlag;
+    private String deviceType;
 
+    public String getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
+    }
     // Getters and setters for all fields
 
     public ActiveForeignImeiWithDifferentImsi() {

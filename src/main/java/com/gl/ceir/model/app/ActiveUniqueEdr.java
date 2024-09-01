@@ -86,6 +86,33 @@ public class ActiveUniqueEdr implements Serializable {
     private Integer customsStatus;
     @Transient
     private Integer localManufacturerStatus;
+    private Boolean validityFlag;
+    private Integer isTypeApproved;
+    private String deviceType;
+
+    public Integer getIsTypeApproved() {
+        return isTypeApproved;
+    }
+
+    public void setIsTypeApproved(Integer isTypeApproved) {
+        this.isTypeApproved = isTypeApproved;
+    }
+
+    public String getDeviceType() {
+        return deviceType;
+    }
+
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
+    }
+
+    public Boolean getValidityFlag() {
+        return validityFlag;
+    }
+
+    public void setValidityFlag(Boolean validityFlag) {
+        this.validityFlag = validityFlag;
+    }
 
     public ActiveUniqueEdr() {
     }

@@ -1,4 +1,4 @@
-package com.gl.ceir.model.app;
+package com.gl.ceir.model.sysParam;
 
 import com.sun.istack.NotNull;
 
