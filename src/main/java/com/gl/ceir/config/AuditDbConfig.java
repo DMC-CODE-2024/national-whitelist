@@ -64,18 +64,13 @@ public class AuditDbConfig {
                     .build();
         } else if ("mysql".equals(env.getProperty("spring.profiles.active"))) {
             return DataSourceBuilder.create()
-                    .url(env.getProperty("audit.datasource.mysql.url"))
-                    .username(env.getProperty("audit.datasource.mysql.username"))
-                    .password(env.getProperty("audit.datasource.mysql.password"))
-                    .driverClassName(env.getProperty("audit.datasource.mysql.driver-class-name"))
-                    .build();
-        } else {
-            return DataSourceBuilder.create()
                     .url(env.getProperty("audit.datasource.url"))
                     .username(env.getProperty("audit.datasource.username"))
                     .password(env.getProperty("audit.datasource.password"))
                     .driverClassName(env.getProperty("audit.datasource.driver-class-name"))
                     .build();
+        } else {
+            return null;
         }
     }
 
