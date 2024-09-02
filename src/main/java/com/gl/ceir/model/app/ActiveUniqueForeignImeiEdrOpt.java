@@ -5,8 +5,8 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "active_foreign_imei_with_different_imsi", schema = "app_edr")
-public class ActiveForeignImeiWithDifferentImsi implements Serializable {
+@Table(name = "active_unique_foreign_imei", schema = "app_edr")
+public class ActiveUniqueForeignImeiEdrOpt implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,14 +18,20 @@ public class ActiveForeignImeiWithDifferentImsi implements Serializable {
     @Column(name = "modified_on")
     private LocalDateTime modifiedOn;
 
+    @Column(name = "foregin_rule")
+    private String foreignRule;
+
     private String tac;
     private String msisdn;
 
     @Column(name = "failed_rule_id")
-    private Integer failedRuleId;
+    private String failedRuleId;
 
     private String failedRuleName;
-    private String imsi;
+
+    @Column(name = "imsi")
+    private Long imsi;  // Changed to Long to match `bigint` type
+
     private String mobileOperator;
     private String createFilename;
     private String updateFilename;
@@ -38,7 +44,7 @@ public class ActiveForeignImeiWithDifferentImsi implements Serializable {
     private String period;
 
     @Column(name = "failed_rule_date")
-    private LocalDateTime failedRuleDate;
+    private String failedRuleDate;  // Assuming this needs to be a String, as defined
 
     private Integer mobileOperatorId;
     private Integer taxPaid;
@@ -50,7 +56,7 @@ public class ActiveForeignImeiWithDifferentImsi implements Serializable {
     private String actualImei;
 
     @Column(name = "timestamp")
-    private LocalDateTime timestamp;
+    private LocalDateTime timestamp; // renamed from "timestamp" to avoid SQL keyword conflict
 
     private String imei;
     private String rawCdrFileName;
@@ -69,28 +75,29 @@ public class ActiveForeignImeiWithDifferentImsi implements Serializable {
     private String actualOperator;
     private String testImei;
     private String isUsed;
-    @Column(name = "validity_flag", nullable = true)
-    private Boolean validityFlag;
+    @Transient
+    private String reason;
+    @Transient
+    private Integer gdceImeiStatus;
+    @Transient
+    private LocalDateTime gdceModifiedTime;
+    @Transient
+    private Integer trcImeiStatus;
+    @Transient
+    private LocalDateTime trcModifiedTime;
+    @Transient
+    private Integer customsStatus;
+    @Transient
+    private Integer localManufacturerStatus;
 
-    @Column(name = "device_type", nullable = true)
-    private String deviceType;
-
-    public String getDeviceType() {
-        return deviceType;
+    public ActiveUniqueForeignImeiEdrOpt() {
     }
 
-    public void setDeviceType(String deviceType) {
-        this.deviceType = deviceType;
-    }
-    // Getters and setters for all fields
-
-    public ActiveForeignImeiWithDifferentImsi() {
-    }
-
-    public ActiveForeignImeiWithDifferentImsi(Integer id, LocalDateTime createdOn, LocalDateTime modifiedOn, String tac, String msisdn, Integer failedRuleId, String failedRuleName, String imsi, String mobileOperator, String createFilename, String updateFilename, LocalDateTime updatedOn, String protocol, String action, String period, LocalDateTime failedRuleDate, Integer mobileOperatorId, Integer taxPaid, String featureName, LocalDateTime recordTime, String actualImei, LocalDateTime timestamp, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, String actualOperator, String testImei, String isUsed, Boolean validityFlag) {
+    public ActiveUniqueForeignImeiEdrOpt(Integer id, LocalDateTime createdOn, LocalDateTime modifiedOn, String foreignRule, String tac, String msisdn, String failedRuleId, String failedRuleName, Long imsi, String mobileOperator, String createFilename, String updateFilename, LocalDateTime updatedOn, String protocol, String action, String period, String failedRuleDate, Integer mobileOperatorId, Integer taxPaid, String featureName, LocalDateTime recordTime, String actualImei, LocalDateTime timestamp, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, String actualOperator, String testImei, String isUsed, String reason, Integer gdceImeiStatus, LocalDateTime gdceModifiedTime, Integer trcImeiStatus, LocalDateTime trcModifiedTime, Integer customsStatus, Integer localManufacturerStatus) {
         this.id = id;
         this.createdOn = createdOn;
         this.modifiedOn = modifiedOn;
+        this.foreignRule = foreignRule;
         this.tac = tac;
         this.msisdn = msisdn;
         this.failedRuleId = failedRuleId;
@@ -121,7 +128,13 @@ public class ActiveForeignImeiWithDifferentImsi implements Serializable {
         this.actualOperator = actualOperator;
         this.testImei = testImei;
         this.isUsed = isUsed;
-        this.validityFlag = validityFlag;
+        this.reason = reason;
+        this.gdceImeiStatus = gdceImeiStatus;
+        this.gdceModifiedTime = gdceModifiedTime;
+        this.trcImeiStatus = trcImeiStatus;
+        this.trcModifiedTime = trcModifiedTime;
+        this.customsStatus = customsStatus;
+        this.localManufacturerStatus = localManufacturerStatus;
     }
 
     public Integer getId() {
@@ -148,6 +161,14 @@ public class ActiveForeignImeiWithDifferentImsi implements Serializable {
         this.modifiedOn = modifiedOn;
     }
 
+    public String getForeignRule() {
+        return foreignRule;
+    }
+
+    public void setForeignRule(String foreignRule) {
+        this.foreignRule = foreignRule;
+    }
+
     public String getTac() {
         return tac;
     }
@@ -164,11 +185,11 @@ public class ActiveForeignImeiWithDifferentImsi implements Serializable {
         this.msisdn = msisdn;
     }
 
-    public Integer getFailedRuleId() {
+    public String getFailedRuleId() {
         return failedRuleId;
     }
 
-    public void setFailedRuleId(Integer failedRuleId) {
+    public void setFailedRuleId(String failedRuleId) {
         this.failedRuleId = failedRuleId;
     }
 
@@ -180,11 +201,11 @@ public class ActiveForeignImeiWithDifferentImsi implements Serializable {
         this.failedRuleName = failedRuleName;
     }
 
-    public String getImsi() {
+    public Long getImsi() {
         return imsi;
     }
 
-    public void setImsi(String imsi) {
+    public void setImsi(Long imsi) {
         this.imsi = imsi;
     }
 
@@ -244,11 +265,11 @@ public class ActiveForeignImeiWithDifferentImsi implements Serializable {
         this.period = period;
     }
 
-    public LocalDateTime getFailedRuleDate() {
+    public String getFailedRuleDate() {
         return failedRuleDate;
     }
 
-    public void setFailedRuleDate(LocalDateTime failedRuleDate) {
+    public void setFailedRuleDate(String failedRuleDate) {
         this.failedRuleDate = failedRuleDate;
     }
 
@@ -388,25 +409,74 @@ public class ActiveForeignImeiWithDifferentImsi implements Serializable {
         this.isUsed = isUsed;
     }
 
-    public Boolean getValidityFlag() {
-        return validityFlag;
+    public String getReason() {
+        return reason;
     }
 
-    public void setValidityFlag(Boolean validityFlag) {
-        this.validityFlag = validityFlag;
+    public void setReason(String reason) {
+        this.reason = reason;
+    }
+
+    public Integer getGdceImeiStatus() {
+        return gdceImeiStatus;
+    }
+
+    public void setGdceImeiStatus(Integer gdceImeiStatus) {
+        this.gdceImeiStatus = gdceImeiStatus;
+    }
+
+    public LocalDateTime getGdceModifiedTime() {
+        return gdceModifiedTime;
+    }
+
+    public void setGdceModifiedTime(LocalDateTime gdceModifiedTime) {
+        this.gdceModifiedTime = gdceModifiedTime;
+    }
+
+    public Integer getTrcImeiStatus() {
+        return trcImeiStatus;
+    }
+
+    public void setTrcImeiStatus(Integer trcImeiStatus) {
+        this.trcImeiStatus = trcImeiStatus;
+    }
+
+    public LocalDateTime getTrcModifiedTime() {
+        return trcModifiedTime;
+    }
+
+    public void setTrcModifiedTime(LocalDateTime trcModifiedTime) {
+        this.trcModifiedTime = trcModifiedTime;
+    }
+
+    public Integer getCustomsStatus() {
+        return customsStatus;
+    }
+
+    public void setCustomsStatus(Integer customsStatus) {
+        this.customsStatus = customsStatus;
+    }
+
+    public Integer getLocalManufacturerStatus() {
+        return localManufacturerStatus;
+    }
+
+    public void setLocalManufacturerStatus(Integer localManufacturerStatus) {
+        this.localManufacturerStatus = localManufacturerStatus;
     }
 
     @Override
     public String toString() {
-        return "ActiveForeignImeiWithDifferentImsi{" +
+        return "ActiveUniqueForeignImeiEdr{" +
                 "id=" + id +
                 ", createdOn=" + createdOn +
                 ", modifiedOn=" + modifiedOn +
+                ", foreignRule='" + foreignRule + '\'' +
                 ", tac='" + tac + '\'' +
                 ", msisdn='" + msisdn + '\'' +
-                ", failedRuleId=" + failedRuleId +
+                ", failedRuleId='" + failedRuleId + '\'' +
                 ", failedRuleName='" + failedRuleName + '\'' +
-                ", imsi='" + imsi + '\'' +
+                ", imsi=" + imsi +
                 ", mobileOperator='" + mobileOperator + '\'' +
                 ", createFilename='" + createFilename + '\'' +
                 ", updateFilename='" + updateFilename + '\'' +
@@ -414,7 +484,7 @@ public class ActiveForeignImeiWithDifferentImsi implements Serializable {
                 ", protocol='" + protocol + '\'' +
                 ", action='" + action + '\'' +
                 ", period='" + period + '\'' +
-                ", failedRuleDate=" + failedRuleDate +
+                ", failedRuleDate='" + failedRuleDate + '\'' +
                 ", mobileOperatorId=" + mobileOperatorId +
                 ", taxPaid=" + taxPaid +
                 ", featureName='" + featureName + '\'' +
@@ -432,7 +502,13 @@ public class ActiveForeignImeiWithDifferentImsi implements Serializable {
                 ", actualOperator='" + actualOperator + '\'' +
                 ", testImei='" + testImei + '\'' +
                 ", isUsed='" + isUsed + '\'' +
-                ", validityFlag=" + validityFlag +
+                ", reason='" + reason + '\'' +
+                ", gdceImeiStatus=" + gdceImeiStatus +
+                ", gdceModifiedTime=" + gdceModifiedTime +
+                ", trcImeiStatus=" + trcImeiStatus +
+                ", trcModifiedTime=" + trcModifiedTime +
+                ", customsStatus=" + customsStatus +
+                ", localManufacturerStatus=" + localManufacturerStatus +
                 '}';
     }
 }

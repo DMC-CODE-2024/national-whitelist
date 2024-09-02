@@ -21,6 +21,6 @@ public interface ActiveUniqueImeiEdrRepository extends JpaRepository<ActiveUniqu
                                                      @Param("endDate") LocalDateTime endDate,
                                                      Pageable pageable);
 
-    @Query(value = "SELECT min(created_on) from active_unique_imei", nativeQuery = true)
+    @Query(value = "SELECT MIN(a.createdOn) FROM ActiveUniqueEdr a")
     public String getEarliestActiveTimestamp();
 }

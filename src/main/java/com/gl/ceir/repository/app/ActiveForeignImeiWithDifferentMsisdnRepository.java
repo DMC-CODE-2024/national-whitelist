@@ -17,6 +17,6 @@ public interface ActiveForeignImeiWithDifferentMsisdnRepository extends JpaRepos
     @Query(value = "SELECT  a.*, CASE WHEN m.device_id IS NULL THEN 'false' ELSE 'true' END AS validity_flag, m.device_type FROM active_foreign_imei_with_different_msisdn a LEFT JOIN mobile_device_repository m ON a.tac = m.device_id WHERE a.created_on <= :endDate AND a.created_on >= :startDate", nativeQuery = true)
     public Page<ActiveForeignImeiWithDifferentMsisdn> findAllLatestDifferentImeiInLastXDays(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, Pageable pageable);
 
-    @Query(value = "SELECT min(created_on) from active_foreign_imei_with_different_msisdn", nativeQuery = true)
+    @Query(value = "SELECT MIN(a.createdOn) FROM ActiveForeignImeiWithDifferentMsisdn a")
     public String getEarliestActiveTimestamp();
 }

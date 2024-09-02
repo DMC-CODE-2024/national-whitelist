@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "active_foreign_imei_with_different_imsi", schema = "app_edr")
-public class ActiveForeignImeiWithDifferentImsi implements Serializable {
+public class ActiveForeignImeiWithDifferentImsiOpt implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -69,60 +69,6 @@ public class ActiveForeignImeiWithDifferentImsi implements Serializable {
     private String actualOperator;
     private String testImei;
     private String isUsed;
-    @Column(name = "validity_flag", nullable = true)
-    private Boolean validityFlag;
-
-    @Column(name = "device_type", nullable = true)
-    private String deviceType;
-
-    public String getDeviceType() {
-        return deviceType;
-    }
-
-    public void setDeviceType(String deviceType) {
-        this.deviceType = deviceType;
-    }
-    // Getters and setters for all fields
-
-    public ActiveForeignImeiWithDifferentImsi() {
-    }
-
-    public ActiveForeignImeiWithDifferentImsi(Integer id, LocalDateTime createdOn, LocalDateTime modifiedOn, String tac, String msisdn, Integer failedRuleId, String failedRuleName, String imsi, String mobileOperator, String createFilename, String updateFilename, LocalDateTime updatedOn, String protocol, String action, String period, LocalDateTime failedRuleDate, Integer mobileOperatorId, Integer taxPaid, String featureName, LocalDateTime recordTime, String actualImei, LocalDateTime timestamp, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, String actualOperator, String testImei, String isUsed, Boolean validityFlag) {
-        this.id = id;
-        this.createdOn = createdOn;
-        this.modifiedOn = modifiedOn;
-        this.tac = tac;
-        this.msisdn = msisdn;
-        this.failedRuleId = failedRuleId;
-        this.failedRuleName = failedRuleName;
-        this.imsi = imsi;
-        this.mobileOperator = mobileOperator;
-        this.createFilename = createFilename;
-        this.updateFilename = updateFilename;
-        this.updatedOn = updatedOn;
-        this.protocol = protocol;
-        this.action = action;
-        this.period = period;
-        this.failedRuleDate = failedRuleDate;
-        this.mobileOperatorId = mobileOperatorId;
-        this.taxPaid = taxPaid;
-        this.featureName = featureName;
-        this.recordTime = recordTime;
-        this.actualImei = actualImei;
-        this.timestamp = timestamp;
-        this.imei = imei;
-        this.rawCdrFileName = rawCdrFileName;
-        this.imeiArrivalTime = imeiArrivalTime;
-        this.source = source;
-        this.updateRawCdrFileName = updateRawCdrFileName;
-        this.updateImeiArrivalTime = updateImeiArrivalTime;
-        this.updateSource = updateSource;
-        this.serverOrigin = serverOrigin;
-        this.actualOperator = actualOperator;
-        this.testImei = testImei;
-        this.isUsed = isUsed;
-        this.validityFlag = validityFlag;
-    }
 
     public Integer getId() {
         return id;
@@ -388,17 +334,48 @@ public class ActiveForeignImeiWithDifferentImsi implements Serializable {
         this.isUsed = isUsed;
     }
 
-    public Boolean getValidityFlag() {
-        return validityFlag;
+    public ActiveForeignImeiWithDifferentImsiOpt(Integer id, LocalDateTime createdOn, LocalDateTime modifiedOn, String tac, String msisdn, Integer failedRuleId, String failedRuleName, String imsi, String mobileOperator, String createFilename, String updateFilename, LocalDateTime updatedOn, String protocol, String action, String period, LocalDateTime failedRuleDate, Integer mobileOperatorId, Integer taxPaid, String featureName, LocalDateTime recordTime, String actualImei, LocalDateTime timestamp, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, String actualOperator, String testImei, String isUsed) {
+        this.id = id;
+        this.createdOn = createdOn;
+        this.modifiedOn = modifiedOn;
+        this.tac = tac;
+        this.msisdn = msisdn;
+        this.failedRuleId = failedRuleId;
+        this.failedRuleName = failedRuleName;
+        this.imsi = imsi;
+        this.mobileOperator = mobileOperator;
+        this.createFilename = createFilename;
+        this.updateFilename = updateFilename;
+        this.updatedOn = updatedOn;
+        this.protocol = protocol;
+        this.action = action;
+        this.period = period;
+        this.failedRuleDate = failedRuleDate;
+        this.mobileOperatorId = mobileOperatorId;
+        this.taxPaid = taxPaid;
+        this.featureName = featureName;
+        this.recordTime = recordTime;
+        this.actualImei = actualImei;
+        this.timestamp = timestamp;
+        this.imei = imei;
+        this.rawCdrFileName = rawCdrFileName;
+        this.imeiArrivalTime = imeiArrivalTime;
+        this.source = source;
+        this.updateRawCdrFileName = updateRawCdrFileName;
+        this.updateImeiArrivalTime = updateImeiArrivalTime;
+        this.updateSource = updateSource;
+        this.serverOrigin = serverOrigin;
+        this.actualOperator = actualOperator;
+        this.testImei = testImei;
+        this.isUsed = isUsed;
     }
 
-    public void setValidityFlag(Boolean validityFlag) {
-        this.validityFlag = validityFlag;
+    public ActiveForeignImeiWithDifferentImsiOpt() {
     }
 
     @Override
     public String toString() {
-        return "ActiveForeignImeiWithDifferentImsi{" +
+        return "ActiveForeignImeiWithDifferentImsiOpt{" +
                 "id=" + id +
                 ", createdOn=" + createdOn +
                 ", modifiedOn=" + modifiedOn +
@@ -432,8 +409,6 @@ public class ActiveForeignImeiWithDifferentImsi implements Serializable {
                 ", actualOperator='" + actualOperator + '\'' +
                 ", testImei='" + testImei + '\'' +
                 ", isUsed='" + isUsed + '\'' +
-                ", validityFlag=" + validityFlag +
                 '}';
     }
 }
-

@@ -88,7 +88,10 @@ public class ActiveUniqueForeignImeiEdr implements Serializable {
     private Integer customsStatus;
     @Transient
     private Integer localManufacturerStatus;
+    @Column(name = "validity_flag", nullable = true)
     private Boolean validityFlag;
+
+    @Column(name = "device_type", nullable = true)
     private String deviceType;
 
     public Boolean getValidityFlag() {

@@ -660,6 +660,9 @@ public class ActiveUniqueImeiDto {
         dto.setTestImei(entity.getTestImei());
         dto.setIsUsed(entity.getIsUsed());
         dto.setForeignRule(entity.getForeignRule());
+        dto.setValidityFlag(entity.getValidityFlag());
+        dto.setIsTypeApproved(entity.getIsTypeApproved());
+        dto.setDeviceType(entity.getDeviceType());
         return dto;
     }
 

@@ -638,6 +638,8 @@ public class ActiveUniqueForeignImeiDto {
         dto.setActualOperator(entity.getActualOperator());
         dto.setTestImei(entity.getTestImei());
         dto.setIsUsed(entity.getIsUsed());
+        dto.setValidityFlag(entity.getValidityFlag());
+        dto.setDeviceType(entity.getDeviceType());
         return dto;
     }
 

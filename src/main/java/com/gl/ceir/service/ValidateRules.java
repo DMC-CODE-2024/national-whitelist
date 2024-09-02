@@ -158,7 +158,12 @@ public class ValidateRules implements Runnable{
                         }
                     }
             } else {
-                String inputDateString = activeUniqueImeiRepository.getEarliestActiveTimestamp();
+                String inputDateString = "";
+                if ("app".equals(profile)) {
+                    inputDateString = activeUniqueImeiRepository.getEarliestActiveTimestamp();
+                } else if ("app_edr".equals(profile)) {
+                    inputDateString = activeUniqueImeiEdrRepository.getEarliestActiveTimestamp();
+                }
                 if (inputDateString != null){
                     activeUniqueImeisLastRunDate = formatDateString(inputDateString);
                     if (compareDates(addOneDayToDate(activeUniqueImeisLastRunDate), cdrProcessingTimestamp) > 0) {
@@ -168,7 +173,7 @@ public class ValidateRules implements Runnable{
                     }
                     newLastRunTimeIsUpdate = false;
 
-//                    systemConfigurationDbRepository.save(new SystemConfigurationDb("nw_unique_imei_last_run_time", activeUniqueImeisLastRunEndDate, "latest date when national whitelist process for unique imei ran"));
+//                    systemConfigurationDbRepository.save(new SystemConfigurationDb(profile+"_nw_unique_imei_last_run_time", activeUniqueImeisLastRunEndDate, "latest date when national whitelist process for unique imei ran", "National Whitelist"));
                 }
             }
             List<RuleEngineMapping> rules = ruleEngineMappingRepository.getByFeatureAndUserTypeOrderByRuleOrder("national_whitelist", "default", "Enabled");
@@ -261,13 +266,6 @@ public class ValidateRules implements Runnable{
                                 if (!activeUniqueImeiDto.getNationalWhitelistAccepted().isEmpty()) {
                                     List<NationalWhitelist> nationalWhitelists = NationalWhitelistBuilder.fromActiveUniqueImei(activeUniqueImeiDto.getNationalWhitelistAccepted(), ruleNames, amnestyPeriodFlag);
                                     nationalWhitelistService.saveNationalWhitelists(nationalWhitelists, amnestyPeriodFlag, allowedDeviceTypes);
-                                    if (newLastRunTimeIsUpdate) {
-                                        SystemConfigurationDb activeUniqueImeiLatestDate = activeUniqueImeiDate.get();
-                                        activeUniqueImeiLatestDate.setValue(activeUniqueImeisLastRunEndDate);
-                                        systemConfigurationDbRepository.save(activeUniqueImeiLatestDate);
-                                    } else {
-                                        systemConfigurationDbRepository.save(new SystemConfigurationDb("nw_unique_imei_last_run_time", activeUniqueImeisLastRunEndDate, "latest date when national whitelist process for unique imei ran"));
-                                    }
                                 }
 //                            lastProgressTime = System.currentTimeMillis();
 //                            if (!activeUniqueImeiDto.getExceptionList().isEmpty()) {
@@ -283,6 +281,13 @@ public class ValidateRules implements Runnable{
                         } else {
                             throw new Exception("No rules enabled for national whitelist");
                         }
+                    }
+                    if (newLastRunTimeIsUpdate) {
+                        SystemConfigurationDb activeUniqueImeiLatestDate = activeUniqueImeiDate.get();
+                        activeUniqueImeiLatestDate.setValue(activeUniqueImeisLastRunEndDate);
+                        systemConfigurationDbRepository.save(activeUniqueImeiLatestDate);
+                    } else {
+                        systemConfigurationDbRepository.save(new SystemConfigurationDb(profile+"_nw_unique_imei_last_run_time", activeUniqueImeisLastRunEndDate, "latest date when national whitelist process for unique imei ran", "National Whitelist"));
                     }
                 }
             }
@@ -313,14 +318,20 @@ public class ValidateRules implements Runnable{
                     }
                 }
             } else {
-                activeUniqueForeignImeisLastRunDate = formatDateString(activeUniqueForeignImeiRepository.getEarliestActiveTimestamp());
+                String inputDateString = "";
+                if ("app".equals(profile)) {
+                    inputDateString = activeUniqueForeignImeiRepository.getEarliestActiveTimestamp();
+                } else if ("app_edr".equals(profile)) {
+                    inputDateString = activeUniqueForeignImeiEdrRepository.getEarliestActiveTimestamp();
+                }
+                activeUniqueForeignImeisLastRunDate = formatDateString(inputDateString);
                 if (compareDates(addOneDayToDate(activeUniqueForeignImeisLastRunDate), cdrProcessingTimestamp) > 0) {
                     activeUniqueForeignImeisLastRunEndDate = addOneDayToDate(activeUniqueForeignImeisLastRunDate);
                 } else {
                     activeUniqueForeignImeisLastRunEndDate = cdrProcessingTimestamp;
                 }
                 newForeignLastRunTimeIsUpdate = false;
-//                systemConfigurationDbRepository.save(new SystemConfigurationDb("nw_unique_foreign_imei_last_run_time", activeUniqueForeignImeisLastRunEndDate, "latest date when foreign whitelist process for unique imei ran"));
+//                systemConfigurationDbRepository.save(new SystemConfigurationDb(profile+"_nw_unique_foreign_imei_last_run_time", activeUniqueForeignImeisLastRunEndDate, "latest date when foreign whitelist process for unique imei ran", "National Whitelist"));
             }
             List<RuleEngineMapping> foreignRules = ruleEngineMappingRepository.
                     getByFeatureAndUserTypeOrderByRuleOrder("foreign_whitelist", "default", "Enabled");
@@ -406,13 +417,6 @@ public class ValidateRules implements Runnable{
                                     foreignExceptionListCount = foreignExceptionListCount + activeUniqueForeignImeiDto.getExceptionList().size();
                                 }
                                 lastProgressTime = System.currentTimeMillis();
-                                if (newForeignLastRunTimeIsUpdate) {
-                                    SystemConfigurationDb activeUniqueForeignImeiLatestDate = acitveUniqueForeignImeiDate.get();
-                                    activeUniqueForeignImeiLatestDate.setValue(activeUniqueForeignImeisLastRunEndDate);
-                                    systemConfigurationDbRepository.save(activeUniqueForeignImeiLatestDate);
-                                } else {
-                                    systemConfigurationDbRepository.save(new SystemConfigurationDb("nw_unique_foreign_imei_last_run_time", activeUniqueForeignImeisLastRunEndDate, "latest date when national whitelist process for unique imei ran"));
-                                }
                                 lastProgressTime = System.currentTimeMillis();
                             } else {
                                 log.info("No active unique foreign imei found for " + activeUniqueForeignImeisLastRunDate);
@@ -422,6 +426,13 @@ public class ValidateRules implements Runnable{
                         } else {
                             throw new Exception("No rules enabled for foreign whitelist");
                         }
+                    }
+                    if (newForeignLastRunTimeIsUpdate) {
+                        SystemConfigurationDb activeUniqueForeignImeiLatestDate = acitveUniqueForeignImeiDate.get();
+                        activeUniqueForeignImeiLatestDate.setValue(activeUniqueForeignImeisLastRunEndDate);
+                        systemConfigurationDbRepository.save(activeUniqueForeignImeiLatestDate);
+                    } else {
+                        systemConfigurationDbRepository.save(new SystemConfigurationDb(profile+"_nw_unique_foreign_imei_last_run_time", activeUniqueForeignImeisLastRunEndDate, "latest date when national whitelist process for unique imei ran", "National Whitelist"));
                     }
                 }
             }
@@ -444,14 +455,20 @@ public class ValidateRules implements Runnable{
                     }
                 }
             } else {
-                activeForeignImeisDifferentMsisdnLastRunDate = formatDateString(activeForeignImeiWithDifferentMsisdnRepository.getEarliestActiveTimestamp());
+                String inputDateString = "";
+                if ("app".equals(profile)) {
+                    inputDateString = activeForeignImeiWithDifferentMsisdnRepository.getEarliestActiveTimestamp();
+                } else if ("app_edr".equals(profile)) {
+                    inputDateString = activeForeignImeiWithDifferentMsisdnEdrRepository.getEarliestActiveTimestamp();
+                }
+                activeForeignImeisDifferentMsisdnLastRunDate = formatDateString(inputDateString);
                 if (compareDates(addOneDayToDate(activeForeignImeisDifferentMsisdnLastRunDate), cdrProcessingTimestamp) > 0) {
                     activeForeignImeisDifferentMsisdnLastRunEndDate = addOneDayToDate(activeForeignImeisDifferentMsisdnLastRunDate);
                 } else {
                     activeForeignImeisDifferentMsisdnLastRunEndDate = cdrProcessingTimestamp;
                 }
                 newForeignDifferentMsisdnLastRunTimeIsUpdate = false;
-//                systemConfigurationDbRepository.save(new SystemConfigurationDb("nw_foreign_unique_imei_diff_msisdn_last_run_time", activeForeignImeisDifferentMsisdnLastRunEndDate, "latest date when foreign whitelist process for imei with different msisdn ran"));
+//                systemConfigurationDbRepository.save(new SystemConfigurationDb(profile+"_nw_foreign_unique_imei_diff_msisdn_last_run_time", activeForeignImeisDifferentMsisdnLastRunEndDate, "latest date when foreign whitelist process for imei with different msisdn ran", "National Whitelist"));
             }
             int compareDatesActiveForeignImeisDifferentMsisdn = compareDates(activeForeignImeisDifferentMsisdnLastRunDate, cdrProcessingTimestamp);
             if (compareDatesActiveForeignImeisDifferentMsisdn > 0) {
@@ -525,13 +542,6 @@ public class ValidateRules implements Runnable{
                                 foreignExceptionListService.saveExceptionLists(activeForeignUniqueImeiWithDifferentMsisdnDto.getExceptionList());
                                 foreignExceptionListCount = foreignExceptionListCount + activeForeignUniqueImeiWithDifferentMsisdnDto.getExceptionList().size();
                             }
-                            if (newForeignDifferentMsisdnLastRunTimeIsUpdate) {
-                                SystemConfigurationDb activeUniqueForeignImeiLatestDate = activeForeignImeisDifferentMsisdnDate.get();
-                                activeUniqueForeignImeiLatestDate.setValue(activeForeignImeisDifferentMsisdnLastRunEndDate);
-                                systemConfigurationDbRepository.save(activeUniqueForeignImeiLatestDate);
-                            } else {
-                                systemConfigurationDbRepository.save(new SystemConfigurationDb("nw_foreign_unique_imei_diff_msisdn_last_run_time", activeUniqueForeignImeisLastRunEndDate, "latest date when national whitelist process for unique imei ran"));
-                            }
                             lastProgressTime = System.currentTimeMillis();
                         } else {
                             log.info("No active foreign imei with different msisdn found for " + activeForeignImeisDifferentMsisdnLastRunDate);
@@ -541,6 +551,13 @@ public class ValidateRules implements Runnable{
                     } else {
                         throw new Exception("No rules enabled for foreign whitelist");
                     }
+                }
+                if (newForeignDifferentMsisdnLastRunTimeIsUpdate) {
+                    SystemConfigurationDb activeUniqueForeignImeiLatestDate = activeForeignImeisDifferentMsisdnDate.get();
+                    activeUniqueForeignImeiLatestDate.setValue(activeForeignImeisDifferentMsisdnLastRunEndDate);
+                    systemConfigurationDbRepository.save(activeUniqueForeignImeiLatestDate);
+                } else {
+                    systemConfigurationDbRepository.save(new SystemConfigurationDb(profile+"_nw_foreign_unique_imei_diff_msisdn_last_run_time", activeUniqueForeignImeisLastRunEndDate, "latest date when national whitelist process for unique imei ran", "National Whitelist"));
                 }
             }
             ModulesAuditTrail diffMsisdnForeignCompletedAudit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 200, "completed", "NA", "National Whitelist", "UPDATE", "Process completed for foreign whitelist", MODULE_NAME+"foreign_whitelist", foreignWhitelistCount, executionStartTime, startTime);

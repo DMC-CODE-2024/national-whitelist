@@ -16,6 +16,6 @@ public interface ActiveUniqueForeignImeiRepository extends JpaRepository<ActiveU
     @Query(value = "SELECT  a.*, CASE WHEN m.device_id IS NULL THEN 'false' ELSE 'true' END AS validity_flag, m.device_type FROM active_unique_foreign_imei a LEFT JOIN mobile_device_repository m ON a.tac = m.device_id WHERE a.created_on <= :endDate AND a.created_on >= :startDate", nativeQuery = true)
     public Page<ActiveUniqueForeignImei> findAllLatestUniqueImeiInLastXDays(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime date, Pageable pageable);
 
-    @Query(value = "SELECT min(created_on) from active_unique_foreign_imei", nativeQuery = true)
+    @Query(value = "SELECT MIN(a.createdOn) FROM ActiveUniqueForeignImei a")
     public String getEarliestActiveTimestamp();
 }

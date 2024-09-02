@@ -55,10 +55,11 @@ public class SystemConfigurationDb implements Serializable {
 		super();
 	}
 
-	public SystemConfigurationDb(String tag, String value, String description) {
+	public SystemConfigurationDb(String tag, String value, String description, String featureName) {
 		this.tag = tag;
 		this.value = value;
 		this.description = description;
+		this.featureName =featureName;
 	}
 
 	public Integer getId() {

@@ -1,21 +1,20 @@
 package com.gl.ceir.service;
 
-import com.gl.ceir.model.app.ActiveForeignImeiWithDifferentImsi;
-import com.gl.ceir.model.app.ActiveUniqueEdr;
-import com.gl.ceir.model.app.ActiveUniqueForeignImeiEdr;
+import com.gl.ceir.model.app.*;
 import com.gl.ceir.model.sysParam.MobileDeviceRepository;
-import com.gl.ceir.repository.app.ActiveForeignImeiWithDifferentMsisdnEdrRepository;
-import com.gl.ceir.repository.app.ActiveUniqueForeignImeiEdrRepository;
-import com.gl.ceir.repository.app.ActiveUniqueImeiEdrRepository;
+import com.gl.ceir.repository.app.*;
 import com.gl.ceir.repository.sysParam.MobileDeviceRepoRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -23,20 +22,26 @@ import java.util.stream.Collectors;
 public class CommonService {
 
     @Autowired
-    private ActiveUniqueImeiEdrRepository activeUniqueImeiRepository;
+    private ModelMapper modelMapper;
+    @Autowired
+    private ActiveUniqueImeiEdrOptRepository activeUniqueImeiRepository;
     @Autowired
     private MobileDeviceRepoRepository mobileDeviceRepository;
     @Autowired
-    ActiveUniqueForeignImeiEdrRepository activeUniqueForeignImeiEdrRepository;
+    ActiveUniqueForeignImeiEdrOptRepository activeUniqueForeignImeiEdrRepository;
     @Autowired
-    ActiveForeignImeiWithDifferentMsisdnEdrRepository activeForeignImeiWithDifferentMsisdnEdrRepository;
+    ActiveForeignImeiWithDifferentMsisdnEdrOptRepository activeForeignImeiWithDifferentMsisdnEdrRepository;
 
     public Page<ActiveUniqueEdr> findAllLatestUniqueImeiInLastXDaysWithDeviceInfo(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
         // Fetch ActiveUniqueImei records within the date range
-        Page<ActiveUniqueEdr> activeUniqueImeis = activeUniqueImeiRepository.findAllByCreatedOnBetween(startDate, endDate, pageable);
+        Page<ActiveUniqueEdrOpt> activeUniqueImeisOpt = activeUniqueImeiRepository.findAllByCreatedOnBetween(startDate, endDate, pageable);
+
+        List<ActiveUniqueEdr> activeUniqueImeis = activeUniqueImeisOpt.stream()
+                .map(imei -> modelMapper.map(imei, ActiveUniqueEdr.class))
+                .collect(Collectors.toList());
 
         // Extract TACs from ActiveUniqueImei records
-        List<String> tacs = activeUniqueImeis.stream().map(ActiveUniqueEdr::getTac).collect(Collectors.toList());
+        List<String> tacs = activeUniqueImeis.stream().map(ActiveUniqueEdr::getTac).filter(Objects::nonNull).collect(Collectors.toList());
 
         // Fetch corresponding MobileDeviceRepository records
         List<MobileDeviceRepository> mobileDevices = mobileDeviceRepository.findByDeviceIdIn(tacs);
@@ -59,15 +64,19 @@ public class CommonService {
             }
         }
 
-        return activeUniqueImeis;
+        return new PageImpl<>(activeUniqueImeis, pageable, activeUniqueImeisOpt.getTotalElements());
     }
 
     public Page<ActiveUniqueForeignImeiEdr> findAllLatestForeignImeiInLastXDaysWithDeviceInfo(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
         // Fetch ActiveUniqueForeignImeiEdr records within the date range
-        Page<ActiveUniqueForeignImeiEdr> activeUniqueForeignImeis = activeUniqueForeignImeiEdrRepository.findAllByCreatedOnBetween(startDate, endDate, pageable);
+        Page<ActiveUniqueForeignImeiEdrOpt> activeUniqueForeignImeisOpt = activeUniqueForeignImeiEdrRepository.findAllByCreatedOnBetween(startDate, endDate, pageable);
+
+        List<ActiveUniqueForeignImeiEdr> activeUniqueForeignImeis = activeUniqueForeignImeisOpt.stream()
+                .map(imei -> modelMapper.map(imei, ActiveUniqueForeignImeiEdr.class))
+                .collect(Collectors.toList());
 
         // Extract TACs from ActiveUniqueForeignImeiEdr records
-        List<String> tacs = activeUniqueForeignImeis.stream().map(ActiveUniqueForeignImeiEdr::getTac).collect(Collectors.toList());
+        List<String> tacs = activeUniqueForeignImeis.stream().map(ActiveUniqueForeignImeiEdr::getTac).filter(Objects::nonNull).collect(Collectors.toList());
 
         // Fetch corresponding MobileDeviceRepository records
         List<MobileDeviceRepository> mobileDevices = mobileDeviceRepository.findByDeviceIdIn(tacs);
@@ -88,15 +97,19 @@ public class CommonService {
             }
         }
 
-        return activeUniqueForeignImeis;
+        return new PageImpl<>(activeUniqueForeignImeis, pageable, activeUniqueForeignImeisOpt.getTotalElements());
     }
 
     public Page<ActiveForeignImeiWithDifferentImsi> findAllLatestDifferentImeiInLastXDaysWithDeviceInfo(LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
         // Fetch ActiveForeignImeiWithDifferentImsi records within the date range
-        Page<ActiveForeignImeiWithDifferentImsi> activeForeignImeis = activeForeignImeiWithDifferentMsisdnEdrRepository.findAllByCreatedOnBetween(startDate, endDate, pageable);
+        Page<ActiveForeignImeiWithDifferentImsiOpt> activeForeignImeisOpt = activeForeignImeiWithDifferentMsisdnEdrRepository.findAllByCreatedOnBetween(startDate, endDate, pageable);
+
+        List<ActiveForeignImeiWithDifferentImsi> activeForeignImeis = activeForeignImeisOpt.stream()
+                .map(imei -> modelMapper.map(imei, ActiveForeignImeiWithDifferentImsi.class))
+                .collect(Collectors.toList());
 
         // Extract TACs from ActiveForeignImeiWithDifferentImsi records
-        List<String> tacs = activeForeignImeis.stream().map(ActiveForeignImeiWithDifferentImsi::getTac).collect(Collectors.toList());
+        List<String> tacs = activeForeignImeis.stream().map(ActiveForeignImeiWithDifferentImsi::getTac).filter(Objects::nonNull).collect(Collectors.toList());
 
         // Fetch corresponding MobileDeviceRepository records
         List<MobileDeviceRepository> mobileDevices = mobileDeviceRepository.findByDeviceIdIn(tacs);
@@ -117,7 +130,7 @@ public class CommonService {
             }
         }
 
-        return activeForeignImeis;
+        return new PageImpl<>(activeForeignImeis, pageable, activeForeignImeisOpt.getTotalElements());
     }
 }
 

@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "active_unique_edr", schema = "app_edr")
+@Table(name = "active_unique_imei", schema = "app_edr")
 public class ActiveUniqueEdr implements Serializable {
 
     @Id
@@ -86,8 +86,13 @@ public class ActiveUniqueEdr implements Serializable {
     private Integer customsStatus;
     @Transient
     private Integer localManufacturerStatus;
+    @Column(name = "validity_flag", nullable = true)
     private Boolean validityFlag;
+
+    @Column(name = "is_type_approved", nullable = true)
     private Integer isTypeApproved;
+
+    @Column(name = "device_type", nullable = true)
     private String deviceType;
 
     public Integer getIsTypeApproved() {
