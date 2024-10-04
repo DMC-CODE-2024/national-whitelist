@@ -9,12 +9,12 @@ public class ModulesAuditTrailBuilder {
 
     public static ModulesAuditTrail forInsert(Integer statusCode, String status,
                                                          String errorMessage, String featureName,
-                                                         String action, Integer count, String info, String moduleName, LocalDateTime startTime) {
+                                                         String action, Integer count, String info, String moduleName, LocalDateTime startTime, int executionTime) {
         ModulesAuditTrail modulesAuditTrail = new ModulesAuditTrail();
 
         modulesAuditTrail.setCreatedOn(startTime);
         modulesAuditTrail.setModifiedOn(LocalDateTime.now());
-        modulesAuditTrail.setExecutionTime(Math.toIntExact(System.currentTimeMillis() / 1000));
+        modulesAuditTrail.setExecutionTime(Math.toIntExact(System.currentTimeMillis() / 1000) - executionTime);
         modulesAuditTrail.setStatusCode(statusCode);
         modulesAuditTrail.setStatus(status);
         modulesAuditTrail.setErrorMessage(errorMessage);
@@ -70,6 +70,7 @@ public class ModulesAuditTrailBuilder {
 
         return modulesAuditTrail;
     }
+
     public static String getHostname() {
         try {
             InetAddress localHost = InetAddress.getLocalHost();

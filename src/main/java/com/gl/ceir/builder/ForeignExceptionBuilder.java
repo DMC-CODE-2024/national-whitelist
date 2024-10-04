@@ -46,6 +46,7 @@ public class ForeignExceptionBuilder {
         exceptionList.setListType("active_unique_foreign_imei");
         exceptionList.setForeignRule(activeUniqueImei.getForeignRule());
         exceptionList.setIsUsedDeviceImei(activeUniqueImei.getIsUsed());
+        exceptionList.setDeviceType(activeUniqueImei.getDeviceType());
 
         return exceptionList;
     }

@@ -54,6 +54,7 @@ public class ForeignWhitelistBuilder {
             nationalWhitelist.setReasonForInvalidImei(activeUniqueImei.getReason());
             nationalWhitelist.setForeignWhiteListCreatedDate(LocalDateTime.now());
             nationalWhitelist.setIsUsedDeviceImei(activeUniqueImei.getIsUsed());
+            nationalWhitelist.setDeviceType(activeUniqueImei.getDeviceType());
 
             nationalWhitelistList.add(nationalWhitelist);
         }

@@ -14,14 +14,17 @@ public class ForeignExceptionListService {
     ForeignExceptionListRepository foreignExceptionListRepository;
 
 //    @Transactional
-    public void saveExceptionLists(List<ForeignExceptionList> nationalWhitelists) {
+    public int saveExceptionLists(List<ForeignExceptionList> nationalWhitelists) {
+        int count = 0;
         for (ForeignExceptionList entry : nationalWhitelists) {
             try {
                 foreignExceptionListRepository.save(entry);
+                count++;
             } catch (DataIntegrityViolationException ex) {
                 // Ignore duplicate entry constraint violation
 //                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             }
         }
+        return count;
     }
 }

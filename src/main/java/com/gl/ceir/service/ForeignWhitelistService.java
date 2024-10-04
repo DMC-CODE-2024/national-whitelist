@@ -14,14 +14,17 @@ public class ForeignWhitelistService {
     ForeignWhitelistRepository foreignWhitelistRepository;
 
 //    @Transactional
-    public void saveNationalWhitelists(List<ForeignWhitelist> nationalWhitelists, boolean amnestyPeriodFlag) {
+    public int saveNationalWhitelists(List<ForeignWhitelist> nationalWhitelists, boolean amnestyPeriodFlag) {
+        int count = 0;
         for (ForeignWhitelist entry : nationalWhitelists) {
             try {
                 if (amnestyPeriodFlag) {
                     foreignWhitelistRepository.save(entry);
+                    count++;
                 } else {
                     if (Boolean.TRUE.equals(entry.getValidityFlag())) {
                         foreignWhitelistRepository.save(entry);
+                        count++;
                     }
                 }
             } catch (DataIntegrityViolationException ex) {
@@ -29,5 +32,6 @@ public class ForeignWhitelistService {
 //                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             }
         }
+        return count;
     }
 }

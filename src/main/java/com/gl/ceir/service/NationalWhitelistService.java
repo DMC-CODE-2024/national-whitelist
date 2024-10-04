@@ -17,11 +17,13 @@ public class NationalWhitelistService {
 
 
 //    @Transactional
-    public void saveNationalWhitelists(List<NationalWhitelist> nationalWhitelists, boolean amnestyPeriod, Optional<SystemConfigurationDb> deviceTypeOptional) {
+    public int saveNationalWhitelists(List<NationalWhitelist> nationalWhitelists, boolean amnestyPeriod, Optional<SystemConfigurationDb> deviceTypeOptional) {
+        int count = 0;
         for (NationalWhitelist entry : nationalWhitelists) {
             try {
                 if (amnestyPeriod) {
                     nationalWhitelistRepository.save(entry);
+                    count++;
                 } else {
                     if (Boolean.TRUE.equals(entry.getValidityFlag())) {
                         if (deviceTypeOptional.isPresent()) {
@@ -29,12 +31,15 @@ public class NationalWhitelistService {
                             if (deviceType.contains(entry.getDeviceType())) {
                                 if (entry.getGdceImeiStatus() == 1) {
                                     nationalWhitelistRepository.save(entry);
+                                    count++;
                                 }
                             } else {
                                 nationalWhitelistRepository.save(entry);
+                                count++;
                             }
                         } else {
                             nationalWhitelistRepository.save(entry);
+                            count++;
                         }
                     }
                 }
@@ -43,5 +48,6 @@ public class NationalWhitelistService {
 //                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             }
         }
+        return count;
     }
 }

@@ -65,6 +65,7 @@ public class NationalWhitelistBuilder {
             nationalWhitelist.setGdceModifiedTime(LocalDateTime.now());
             nationalWhitelist.setTimestamp(activeUniqueImei.getTimestamp());
             nationalWhitelist.setProtocol(activeUniqueImei.getProtocol());
+            nationalWhitelist.setDeviceType(activeUniqueImei.getDeviceType());
 
             nationalWhitelistList.add(nationalWhitelist);
         }
