@@ -1,0 +1,4 @@
+[INFO ] 2024-10-07 02:41:41.579 [main] NaitionalWhitelistApplication - Starting NaitionalWhitelistApplication using Java 21.0.3 with PID 94297 (/Users/radhayanand/goldilocks/target/classes started by radhayanand in /Users/radhayanand/goldilocks)
+[INFO ] 2024-10-07 02:41:41.581 [main] NaitionalWhitelistApplication - The following 1 profile is active: "mysql"
+[INFO ] 2024-10-07 02:41:48.360 [main] NaitionalWhitelistApplication - Started NaitionalWhitelistApplication in 6.94 seconds (process running for 7.377)
+[INFO ] 2024-10-07 02:41:48.527 [Thread-1] ValidateRules - Starting national whitelist process. Profile: app

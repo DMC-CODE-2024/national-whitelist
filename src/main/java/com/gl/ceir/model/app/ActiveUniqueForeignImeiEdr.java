@@ -1,5 +1,5 @@
 package com.gl.ceir.model.app;
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 

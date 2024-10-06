@@ -1,6 +1,6 @@
 package com.gl.ceir.model.sysParam;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.sql.Timestamp;
 
 @Entity

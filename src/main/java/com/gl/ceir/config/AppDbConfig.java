@@ -8,7 +8,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy;
-import org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -98,7 +97,7 @@ public class AppDbConfig {
 
     protected Map<String, Object> jpaProperties() {
         Map<String, Object> props = new HashMap<>();
-        props.put("hibernate.physical_naming_strategy", SpringPhysicalNamingStrategy.class.getName());
+        props.put("hibernate.physical_naming_strategy", "org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy");
         props.put("hibernate.implicit_naming_strategy", SpringImplicitNamingStrategy.class.getName());
 
         String activeProfile = env.getProperty("spring.profiles.active");

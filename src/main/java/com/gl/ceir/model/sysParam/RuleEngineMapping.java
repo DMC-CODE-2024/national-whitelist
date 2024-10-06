@@ -1,8 +1,8 @@
 package com.gl.ceir.model.sysParam;
 
-import com.sun.istack.NotNull;
+import javax.validation.constraints.NotNull;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity

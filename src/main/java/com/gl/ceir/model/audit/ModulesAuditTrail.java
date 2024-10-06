@@ -1,6 +1,6 @@
 package com.gl.ceir.model.audit;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
