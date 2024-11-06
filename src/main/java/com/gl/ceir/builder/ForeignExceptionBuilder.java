@@ -7,10 +7,8 @@ import com.gl.ceir.model.output.ForeignExceptionList;
 import java.time.LocalDateTime;
 
 public class ForeignExceptionBuilder {
-
     public static ForeignExceptionList fromActiveUniqueImei(ActiveUniqueForeignImeiDto activeUniqueImei) {
         ForeignExceptionList exceptionList = new ForeignExceptionList();
-
         exceptionList.setCreatedOn(activeUniqueImei.getCreatedOn());
         exceptionList.setModifiedOn(activeUniqueImei.getModifiedOn());
         exceptionList.setTac(activeUniqueImei.getTac());
@@ -24,8 +22,6 @@ public class ForeignExceptionBuilder {
         exceptionList.setSystemType(activeUniqueImei.getSystemType());
         exceptionList.setAction(activeUniqueImei.getAction());
         exceptionList.setPeriod(activeUniqueImei.getPeriod());
-        exceptionList.setFailedRuleDate(activeUniqueImei.getFailedRuleDate());
-        exceptionList.setTaxPaid(activeUniqueImei.getTaxPaid());
         exceptionList.setFeatureName(activeUniqueImei.getFeatureName());
         exceptionList.setRecordTime(activeUniqueImei.getRecordTime());
         exceptionList.setActualImei(activeUniqueImei.getActualImei());
@@ -41,19 +37,16 @@ public class ForeignExceptionBuilder {
         exceptionList.setValidityFlag(activeUniqueImei.getValidityFlag());
         exceptionList.setExceptionListCreatedDate(LocalDateTime.now());
         exceptionList.setActualOperator(activeUniqueImei.getActualOperator());
-        exceptionList.setIsTestImei(activeUniqueImei.getTestImei());
+        exceptionList.setIsTestImei(activeUniqueImei.getIsTestImei());
         exceptionList.setExceptionListCreatedDate(LocalDateTime.now());
         exceptionList.setListType("active_unique_foreign_imei");
-        exceptionList.setForeignRule(activeUniqueImei.getForeignRule());
         exceptionList.setIsUsedDeviceImei(activeUniqueImei.getIsUsed());
         exceptionList.setDeviceType(activeUniqueImei.getDeviceType());
-
         return exceptionList;
     }
 
     public static ForeignExceptionList fromActiveImeiWithDifferentMsisdn(ActiveForeignImeiWithDifferentImsiDto activeImeiWithDifferentMsisdn) {
         ForeignExceptionList exceptionList = new ForeignExceptionList();
-
         exceptionList.setCreatedOn(activeImeiWithDifferentMsisdn.getCreatedOn());
         exceptionList.setModifiedOn(activeImeiWithDifferentMsisdn.getModifiedOn());
         exceptionList.setTac(activeImeiWithDifferentMsisdn.getTac());
@@ -67,8 +60,6 @@ public class ForeignExceptionBuilder {
         exceptionList.setSystemType(activeImeiWithDifferentMsisdn.getSystemType());
         exceptionList.setAction(activeImeiWithDifferentMsisdn.getAction());
         exceptionList.setPeriod(activeImeiWithDifferentMsisdn.getPeriod());
-        exceptionList.setFailedRuleDate(activeImeiWithDifferentMsisdn.getFailedRuleDate());
-        exceptionList.setTaxPaid(activeImeiWithDifferentMsisdn.getTaxPaid());
         exceptionList.setFeatureName(activeImeiWithDifferentMsisdn.getFeatureName());
         exceptionList.setRecordTime(activeImeiWithDifferentMsisdn.getRecordTime());
         exceptionList.setActualImei(activeImeiWithDifferentMsisdn.getActualImei());
@@ -84,11 +75,10 @@ public class ForeignExceptionBuilder {
         exceptionList.setValidityFlag(activeImeiWithDifferentMsisdn.getValidityFlag());
         exceptionList.setExceptionListCreatedDate(LocalDateTime.now());
         exceptionList.setActualOperator(activeImeiWithDifferentMsisdn.getActualOperator());
-        exceptionList.setIsTestImei(activeImeiWithDifferentMsisdn.getTestImei());
+        exceptionList.setIsTestImei(activeImeiWithDifferentMsisdn.getIsTestImei());
         exceptionList.setExceptionListCreatedDate(LocalDateTime.now());
         exceptionList.setListType("active_foreign_imei_with_different_msisdn");
         exceptionList.setIsUsedDeviceImei(activeImeiWithDifferentMsisdn.getIsUsed());
-
         return exceptionList;
     }
 }

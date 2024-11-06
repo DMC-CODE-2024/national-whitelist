@@ -6,15 +6,11 @@ import java.net.InetAddress;
 import java.time.LocalDateTime;
 
 public class ModulesAuditTrailBuilder {
-
-    public static ModulesAuditTrail forInsert(Integer statusCode, String status,
-                                                         String errorMessage, String featureName,
-                                                         String action, Integer count, String info, String moduleName, LocalDateTime startTime, int executionTime) {
+    public static ModulesAuditTrail forInsert(Integer statusCode, String status, String errorMessage, String featureName, String action, Integer count, String info, String moduleName, LocalDateTime startTime, int executionTime) {
         ModulesAuditTrail modulesAuditTrail = new ModulesAuditTrail();
-
         modulesAuditTrail.setCreatedOn(startTime);
         modulesAuditTrail.setModifiedOn(LocalDateTime.now());
-        modulesAuditTrail.setExecutionTime(Math.toIntExact(System.currentTimeMillis() / 1000) - executionTime);
+        modulesAuditTrail.setExecutionTime(Integer.valueOf(Math.toIntExact(System.currentTimeMillis() / 1000L) - executionTime));
         modulesAuditTrail.setStatusCode(statusCode);
         modulesAuditTrail.setStatus(status);
         modulesAuditTrail.setErrorMessage(errorMessage);
@@ -24,19 +20,15 @@ public class ModulesAuditTrailBuilder {
         modulesAuditTrail.setCount(count);
         modulesAuditTrail.setInfo(info);
         modulesAuditTrail.setServerName(getHostname());
-
         return modulesAuditTrail;
     }
 
-    public static ModulesAuditTrail forUpdate(int id, Integer statusCode, String status,
-                                              String errorMessage, String featureName,
-                                              String action, String info, String moduleName, int count, int executionTime, LocalDateTime startTime) {
+    public static ModulesAuditTrail forUpdate(int id, Integer statusCode, String status, String errorMessage, String featureName, String action, String info, String moduleName, int count, int executionTime, LocalDateTime startTime) {
         ModulesAuditTrail modulesAuditTrail = new ModulesAuditTrail();
-
         modulesAuditTrail.setId(id);
         modulesAuditTrail.setCreatedOn(startTime);
         modulesAuditTrail.setModifiedOn(LocalDateTime.now());
-        modulesAuditTrail.setExecutionTime(Math.toIntExact(System.currentTimeMillis() / 1000) - executionTime);
+        modulesAuditTrail.setExecutionTime(Integer.valueOf(Math.toIntExact(System.currentTimeMillis() / 1000L) - executionTime));
         modulesAuditTrail.setStatusCode(statusCode);
         modulesAuditTrail.setStatus(status);
         modulesAuditTrail.setErrorMessage(errorMessage);
@@ -44,21 +36,17 @@ public class ModulesAuditTrailBuilder {
         modulesAuditTrail.setFeatureName(featureName);
         modulesAuditTrail.setAction(action);
         modulesAuditTrail.setInfo(info);
-        modulesAuditTrail.setCount(count);
+        modulesAuditTrail.setCount(Integer.valueOf(count));
         modulesAuditTrail.setServerName(getHostname());
-
         return modulesAuditTrail;
     }
 
-    public static ModulesAuditTrail forUpdate(int id, Integer statusCode, String status,
-                                              String errorMessage, String featureName,
-                                              String action, String info, String moduleName, int executionTime, LocalDateTime startTime) {
+    public static ModulesAuditTrail forUpdate(int id, Integer statusCode, String status, String errorMessage, String featureName, String action, String info, String moduleName, int executionTime, LocalDateTime startTime) {
         ModulesAuditTrail modulesAuditTrail = new ModulesAuditTrail();
-
         modulesAuditTrail.setId(id);
         modulesAuditTrail.setCreatedOn(startTime);
         modulesAuditTrail.setModifiedOn(LocalDateTime.now());
-        modulesAuditTrail.setExecutionTime(Math.toIntExact(System.currentTimeMillis() / 1000) - executionTime);
+        modulesAuditTrail.setExecutionTime(Integer.valueOf(Math.toIntExact(System.currentTimeMillis() / 1000L) - executionTime));
         modulesAuditTrail.setStatusCode(statusCode);
         modulesAuditTrail.setStatus(status);
         modulesAuditTrail.setErrorMessage(errorMessage);
@@ -67,7 +55,6 @@ public class ModulesAuditTrailBuilder {
         modulesAuditTrail.setAction(action);
         modulesAuditTrail.setInfo(info);
         modulesAuditTrail.setServerName(getHostname());
-
         return modulesAuditTrail;
     }
 
@@ -79,5 +66,4 @@ public class ModulesAuditTrailBuilder {
             return "NA";
         }
     }
-
 }

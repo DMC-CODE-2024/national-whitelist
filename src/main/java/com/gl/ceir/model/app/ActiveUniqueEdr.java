@@ -1,16 +1,15 @@
 package com.gl.ceir.model.app;
 
+import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import jakarta.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "active_unique_imei", schema = "app_edr")
 public class ActiveUniqueEdr implements Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -24,26 +23,30 @@ public class ActiveUniqueEdr implements Serializable {
     private LocalDateTime modifiedOn;
 
     private String tac;
+
     private String msisdn;
+
     private Integer failedRuleId;
+
     private String failedRuleName;
+
     private String imsi;
+
     private String mobileOperator;
+
     private String createFilename;
+
     private String updateFilename;
 
     @Column(name = "updated_on")
     private LocalDateTime updatedOn;
 
     private String protocol;
+
     private String action;
+
     private String period;
 
-    @Column(name = "failed_rule_date")
-    private LocalDateTime failedRuleDate;
-
-    private Integer mobileOperatorId;
-    private Integer taxPaid;
     private String featureName;
 
     @Column(name = "record_time")
@@ -52,40 +55,53 @@ public class ActiveUniqueEdr implements Serializable {
     private String actualImei;
 
     @Column(name = "timestamp")
-    private LocalDateTime timestamp; // renamed from "timestamp" to avoid SQL keyword conflict
+    private LocalDateTime timestamp;
 
     private String imei;
+
     private String rawCdrFileName;
 
     @Column(name = "imei_arrival_time")
     private LocalDateTime imeiArrivalTime;
 
     private String source;
+
     private String updateRawCdrFileName;
 
     @Column(name = "update_imei_arrival_time")
     private LocalDateTime updateImeiArrivalTime;
 
     private String updateSource;
+
     private String serverOrigin;
+
     private String actualOperator;
-    private String testImei;
-    private String isUsed;
-    private String foreignRule;
+
+    private Integer isTestImei;
+
+    private Integer isUsed;
+
     @Transient
     private String reason;
+
     @Transient
     private Integer gdceImeiStatus;
+
     @Transient
     private LocalDateTime gdceModifiedTime;
+
     @Transient
     private Integer trcImeiStatus;
+
     @Transient
     private LocalDateTime trcModifiedTime;
+
     @Transient
     private Integer customsStatus;
+
     @Transient
     private Integer localManufacturerStatus;
+
     @Column(name = "validity_flag", nullable = true)
     private Boolean validityFlag;
 
@@ -96,7 +112,7 @@ public class ActiveUniqueEdr implements Serializable {
     private String deviceType;
 
     public Integer getIsTypeApproved() {
-        return isTypeApproved;
+        return this.isTypeApproved;
     }
 
     public void setIsTypeApproved(Integer isTypeApproved) {
@@ -104,7 +120,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public String getDeviceType() {
-        return deviceType;
+        return this.deviceType;
     }
 
     public void setDeviceType(String deviceType) {
@@ -112,17 +128,16 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public Boolean getValidityFlag() {
-        return validityFlag;
+        return this.validityFlag;
     }
 
     public void setValidityFlag(Boolean validityFlag) {
         this.validityFlag = validityFlag;
     }
 
-    public ActiveUniqueEdr() {
-    }
+    public ActiveUniqueEdr() {}
 
-    public ActiveUniqueEdr(Integer id, LocalDateTime createdOn, LocalDateTime modifiedOn, String tac, String msisdn, Integer failedRuleId, String failedRuleName, String imsi, String mobileOperator, String createFilename, String updateFilename, LocalDateTime updatedOn, String protocol, String action, String period, LocalDateTime failedRuleDate, Integer mobileOperatorId, Integer taxPaid, String featureName, LocalDateTime recordTime, String actualImei, LocalDateTime timestamp, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, String actualOperator, String testImei, String isUsed, String foreignRule, String reason, Integer gdceImeiStatus, LocalDateTime gdceModifiedTime, Integer trcImeiStatus, LocalDateTime trcModifiedTime, Integer customsStatus, Integer localManufacturerStatus) {
+    public ActiveUniqueEdr(Integer id, LocalDateTime createdOn, LocalDateTime modifiedOn, String tac, String msisdn, Integer failedRuleId, String failedRuleName, String imsi, String mobileOperator, String createFilename, String updateFilename, LocalDateTime updatedOn, String protocol, String action, String period, String featureName, LocalDateTime recordTime, String actualImei, LocalDateTime timestamp, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, String actualOperator, Integer isTestImei, Integer isUsed, String reason, Integer gdceImeiStatus, LocalDateTime gdceModifiedTime, Integer trcImeiStatus, LocalDateTime trcModifiedTime, Integer customsStatus, Integer localManufacturerStatus, Boolean validityFlag, Integer isTypeApproved, String deviceType) {
         this.id = id;
         this.createdOn = createdOn;
         this.modifiedOn = modifiedOn;
@@ -138,9 +153,6 @@ public class ActiveUniqueEdr implements Serializable {
         this.protocol = protocol;
         this.action = action;
         this.period = period;
-        this.failedRuleDate = failedRuleDate;
-        this.mobileOperatorId = mobileOperatorId;
-        this.taxPaid = taxPaid;
         this.featureName = featureName;
         this.recordTime = recordTime;
         this.actualImei = actualImei;
@@ -154,9 +166,8 @@ public class ActiveUniqueEdr implements Serializable {
         this.updateSource = updateSource;
         this.serverOrigin = serverOrigin;
         this.actualOperator = actualOperator;
-        this.testImei = testImei;
+        this.isTestImei = isTestImei;
         this.isUsed = isUsed;
-        this.foreignRule = foreignRule;
         this.reason = reason;
         this.gdceImeiStatus = gdceImeiStatus;
         this.gdceModifiedTime = gdceModifiedTime;
@@ -164,10 +175,13 @@ public class ActiveUniqueEdr implements Serializable {
         this.trcModifiedTime = trcModifiedTime;
         this.customsStatus = customsStatus;
         this.localManufacturerStatus = localManufacturerStatus;
+        this.validityFlag = validityFlag;
+        this.isTypeApproved = isTypeApproved;
+        this.deviceType = deviceType;
     }
 
     public Integer getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Integer id) {
@@ -175,7 +189,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public LocalDateTime getCreatedOn() {
-        return createdOn;
+        return this.createdOn;
     }
 
     public void setCreatedOn(LocalDateTime createdOn) {
@@ -183,7 +197,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public LocalDateTime getModifiedOn() {
-        return modifiedOn;
+        return this.modifiedOn;
     }
 
     public void setModifiedOn(LocalDateTime modifiedOn) {
@@ -191,7 +205,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public String getTac() {
-        return tac;
+        return this.tac;
     }
 
     public void setTac(String tac) {
@@ -199,7 +213,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public String getMsisdn() {
-        return msisdn;
+        return this.msisdn;
     }
 
     public void setMsisdn(String msisdn) {
@@ -207,7 +221,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public Integer getFailedRuleId() {
-        return failedRuleId;
+        return this.failedRuleId;
     }
 
     public void setFailedRuleId(Integer failedRuleId) {
@@ -215,7 +229,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public String getFailedRuleName() {
-        return failedRuleName;
+        return this.failedRuleName;
     }
 
     public void setFailedRuleName(String failedRuleName) {
@@ -223,7 +237,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public String getImsi() {
-        return imsi;
+        return this.imsi;
     }
 
     public void setImsi(String imsi) {
@@ -231,7 +245,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public String getMobileOperator() {
-        return mobileOperator;
+        return this.mobileOperator;
     }
 
     public void setMobileOperator(String mobileOperator) {
@@ -239,7 +253,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public String getCreateFilename() {
-        return createFilename;
+        return this.createFilename;
     }
 
     public void setCreateFilename(String createFilename) {
@@ -247,7 +261,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public String getUpdateFilename() {
-        return updateFilename;
+        return this.updateFilename;
     }
 
     public void setUpdateFilename(String updateFilename) {
@@ -255,7 +269,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public LocalDateTime getUpdatedOn() {
-        return updatedOn;
+        return this.updatedOn;
     }
 
     public void setUpdatedOn(LocalDateTime updatedOn) {
@@ -263,7 +277,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public String getProtocol() {
-        return protocol;
+        return this.protocol;
     }
 
     public void setProtocol(String protocol) {
@@ -271,7 +285,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public String getAction() {
-        return action;
+        return this.action;
     }
 
     public void setAction(String action) {
@@ -279,39 +293,15 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public String getPeriod() {
-        return period;
+        return this.period;
     }
 
     public void setPeriod(String period) {
         this.period = period;
     }
 
-    public LocalDateTime getFailedRuleDate() {
-        return failedRuleDate;
-    }
-
-    public void setFailedRuleDate(LocalDateTime failedRuleDate) {
-        this.failedRuleDate = failedRuleDate;
-    }
-
-    public Integer getMobileOperatorId() {
-        return mobileOperatorId;
-    }
-
-    public void setMobileOperatorId(Integer mobileOperatorId) {
-        this.mobileOperatorId = mobileOperatorId;
-    }
-
-    public Integer getTaxPaid() {
-        return taxPaid;
-    }
-
-    public void setTaxPaid(Integer taxPaid) {
-        this.taxPaid = taxPaid;
-    }
-
     public String getFeatureName() {
-        return featureName;
+        return this.featureName;
     }
 
     public void setFeatureName(String featureName) {
@@ -319,7 +309,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public LocalDateTime getRecordTime() {
-        return recordTime;
+        return this.recordTime;
     }
 
     public void setRecordTime(LocalDateTime recordTime) {
@@ -327,7 +317,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public String getActualImei() {
-        return actualImei;
+        return this.actualImei;
     }
 
     public void setActualImei(String actualImei) {
@@ -335,7 +325,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public LocalDateTime getTimestamp() {
-        return timestamp;
+        return this.timestamp;
     }
 
     public void setTimestamp(LocalDateTime timestamp) {
@@ -343,7 +333,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public String getImei() {
-        return imei;
+        return this.imei;
     }
 
     public void setImei(String imei) {
@@ -351,7 +341,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public String getRawCdrFileName() {
-        return rawCdrFileName;
+        return this.rawCdrFileName;
     }
 
     public void setRawCdrFileName(String rawCdrFileName) {
@@ -359,7 +349,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public LocalDateTime getImeiArrivalTime() {
-        return imeiArrivalTime;
+        return this.imeiArrivalTime;
     }
 
     public void setImeiArrivalTime(LocalDateTime imeiArrivalTime) {
@@ -367,7 +357,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public String getSource() {
-        return source;
+        return this.source;
     }
 
     public void setSource(String source) {
@@ -375,7 +365,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public String getUpdateRawCdrFileName() {
-        return updateRawCdrFileName;
+        return this.updateRawCdrFileName;
     }
 
     public void setUpdateRawCdrFileName(String updateRawCdrFileName) {
@@ -383,7 +373,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public LocalDateTime getUpdateImeiArrivalTime() {
-        return updateImeiArrivalTime;
+        return this.updateImeiArrivalTime;
     }
 
     public void setUpdateImeiArrivalTime(LocalDateTime updateImeiArrivalTime) {
@@ -391,7 +381,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public String getUpdateSource() {
-        return updateSource;
+        return this.updateSource;
     }
 
     public void setUpdateSource(String updateSource) {
@@ -399,7 +389,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public String getServerOrigin() {
-        return serverOrigin;
+        return this.serverOrigin;
     }
 
     public void setServerOrigin(String serverOrigin) {
@@ -407,39 +397,31 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public String getActualOperator() {
-        return actualOperator;
+        return this.actualOperator;
     }
 
     public void setActualOperator(String actualOperator) {
         this.actualOperator = actualOperator;
     }
 
-    public String getTestImei() {
-        return testImei;
+    public Integer getIsTestImei() {
+        return this.isTestImei;
     }
 
-    public void setTestImei(String testImei) {
-        this.testImei = testImei;
+    public void setIsTestImei(Integer isTestImei) {
+        this.isTestImei = isTestImei;
     }
 
-    public String getIsUsed() {
-        return isUsed;
+    public Integer getIsUsed() {
+        return this.isUsed;
     }
 
-    public void setIsUsed(String isUsed) {
+    public void setIsUsed(Integer isUsed) {
         this.isUsed = isUsed;
     }
 
-    public String getForeignRule() {
-        return foreignRule;
-    }
-
-    public void setForeignRule(String foreignRule) {
-        this.foreignRule = foreignRule;
-    }
-
     public String getReason() {
-        return reason;
+        return this.reason;
     }
 
     public void setReason(String reason) {
@@ -447,7 +429,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public Integer getGdceImeiStatus() {
-        return gdceImeiStatus;
+        return this.gdceImeiStatus;
     }
 
     public void setGdceImeiStatus(Integer gdceImeiStatus) {
@@ -455,7 +437,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public LocalDateTime getGdceModifiedTime() {
-        return gdceModifiedTime;
+        return this.gdceModifiedTime;
     }
 
     public void setGdceModifiedTime(LocalDateTime gdceModifiedTime) {
@@ -463,7 +445,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public Integer getTrcImeiStatus() {
-        return trcImeiStatus;
+        return this.trcImeiStatus;
     }
 
     public void setTrcImeiStatus(Integer trcImeiStatus) {
@@ -471,7 +453,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public LocalDateTime getTrcModifiedTime() {
-        return trcModifiedTime;
+        return this.trcModifiedTime;
     }
 
     public void setTrcModifiedTime(LocalDateTime trcModifiedTime) {
@@ -479,7 +461,7 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public Integer getCustomsStatus() {
-        return customsStatus;
+        return this.customsStatus;
     }
 
     public void setCustomsStatus(Integer customsStatus) {
@@ -487,58 +469,14 @@ public class ActiveUniqueEdr implements Serializable {
     }
 
     public Integer getLocalManufacturerStatus() {
-        return localManufacturerStatus;
+        return this.localManufacturerStatus;
     }
 
     public void setLocalManufacturerStatus(Integer localManufacturerStatus) {
         this.localManufacturerStatus = localManufacturerStatus;
     }
 
-    @Override
     public String toString() {
-        return "ActiveUniqueEdr{" +
-                "id=" + id +
-                ", createdOn=" + createdOn +
-                ", modifiedOn=" + modifiedOn +
-                ", tac='" + tac + '\'' +
-                ", msisdn='" + msisdn + '\'' +
-                ", failedRuleId=" + failedRuleId +
-                ", failedRuleName='" + failedRuleName + '\'' +
-                ", imsi='" + imsi + '\'' +
-                ", mobileOperator='" + mobileOperator + '\'' +
-                ", createFilename='" + createFilename + '\'' +
-                ", updateFilename='" + updateFilename + '\'' +
-                ", updatedOn=" + updatedOn +
-                ", protocol='" + protocol + '\'' +
-                ", action='" + action + '\'' +
-                ", period='" + period + '\'' +
-                ", failedRuleDate=" + failedRuleDate +
-                ", mobileOperatorId=" + mobileOperatorId +
-                ", taxPaid=" + taxPaid +
-                ", featureName='" + featureName + '\'' +
-                ", recordTime=" + recordTime +
-                ", actualImei='" + actualImei + '\'' +
-                ", timestamp=" + timestamp +
-                ", imei='" + imei + '\'' +
-                ", rawCdrFileName='" + rawCdrFileName + '\'' +
-                ", imeiArrivalTime=" + imeiArrivalTime +
-                ", source='" + source + '\'' +
-                ", updateRawCdrFileName='" + updateRawCdrFileName + '\'' +
-                ", updateImeiArrivalTime=" + updateImeiArrivalTime +
-                ", updateSource='" + updateSource + '\'' +
-                ", serverOrigin='" + serverOrigin + '\'' +
-                ", actualOperator='" + actualOperator + '\'' +
-                ", testImei='" + testImei + '\'' +
-                ", isUsed='" + isUsed + '\'' +
-                ", foreignRule='" + foreignRule + '\'' +
-                ", reason='" + reason + '\'' +
-                ", gdceImeiStatus=" + gdceImeiStatus +
-                ", gdceModifiedTime=" + gdceModifiedTime +
-                ", trcImeiStatus=" + trcImeiStatus +
-                ", trcModifiedTime=" + trcModifiedTime +
-                ", customsStatus=" + customsStatus +
-                ", localManufacturerStatus=" + localManufacturerStatus +
-                '}';
+        return "ActiveUniqueEdr{id=" + this.id + ", createdOn=" + String.valueOf(this.createdOn) + ", modifiedOn=" + String.valueOf(this.modifiedOn) + ", tac='" + this.tac + "', msisdn='" + this.msisdn + "', failedRuleId=" + this.failedRuleId + ", failedRuleName='" + this.failedRuleName + "', imsi='" + this.imsi + "', mobileOperator='" + this.mobileOperator + "', createFilename='" + this.createFilename + "', updateFilename='" + this.updateFilename + "', updatedOn=" + String.valueOf(this.updatedOn) + ", protocol='" + this.protocol + "', action='" + this.action + "', period='" + this.period + "', featureName='" + this.featureName + "', recordTime=" + String.valueOf(this.recordTime) + ", actualImei='" + this.actualImei + "', timestamp=" + String.valueOf(this.timestamp) + ", imei='" + this.imei + "', rawCdrFileName='" + this.rawCdrFileName + "', imeiArrivalTime=" + String.valueOf(this.imeiArrivalTime) + ", source='" + this.source + "', updateRawCdrFileName='" + this.updateRawCdrFileName + "', updateImeiArrivalTime=" + String.valueOf(this.updateImeiArrivalTime) + ", updateSource='" + this.updateSource + "', serverOrigin='" + this.serverOrigin + "', actualOperator='" + this.actualOperator + "', isTestImei=" + this.isTestImei + ", isUsed=" + this.isUsed + ", reason='" + this.reason + "', gdceImeiStatus=" + this.gdceImeiStatus + ", gdceModifiedTime=" + String.valueOf(this.gdceModifiedTime) + ", trcImeiStatus=" + this.trcImeiStatus + ", trcModifiedTime=" + String.valueOf(this.trcModifiedTime) + ", customsStatus=" + this.customsStatus + ", localManufacturerStatus=" + this.localManufacturerStatus + ", validityFlag=" + this.validityFlag + ", isTypeApproved=" + this.isTypeApproved + ", deviceType='" + this.deviceType + "'}";
     }
 }
-

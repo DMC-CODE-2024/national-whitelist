@@ -4,10 +4,10 @@ import java.util.List;
 
 public class RuleEngineDto<T, C> {
     List<T> nationalWhitelistAccepted;
+
     List<C> exceptionList;
 
-    public RuleEngineDto() {
-    }
+    public RuleEngineDto() {}
 
     public RuleEngineDto(List<T> nationalWhitelistAccepted, List<C> exceptionList) {
         this.nationalWhitelistAccepted = nationalWhitelistAccepted;
@@ -15,7 +15,7 @@ public class RuleEngineDto<T, C> {
     }
 
     public List<T> getNationalWhitelistAccepted() {
-        return nationalWhitelistAccepted;
+        return this.nationalWhitelistAccepted;
     }
 
     public void setNationalWhitelistAccepted(List<T> nationalWhitelistAccepted) {
@@ -23,18 +23,17 @@ public class RuleEngineDto<T, C> {
     }
 
     public List<C> getExceptionList() {
-        return exceptionList;
+        return this.exceptionList;
     }
 
     public void setExceptionList(List<C> exceptionList) {
         this.exceptionList = exceptionList;
     }
 
-    @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("RuleEngineDto{");
-        sb.append("nationalWhitelistAccepted=").append(nationalWhitelistAccepted);
-        sb.append(", exceptionList=").append(exceptionList);
+        StringBuilder sb = new StringBuilder("RuleEngineDto{");
+        sb.append("nationalWhitelistAccepted=").append(this.nationalWhitelistAccepted);
+        sb.append(", exceptionList=").append(this.exceptionList);
         sb.append('}');
         return sb.toString();
     }

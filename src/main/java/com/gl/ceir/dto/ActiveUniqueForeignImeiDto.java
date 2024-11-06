@@ -6,62 +6,92 @@ import com.gl.ceir.model.app.ActiveUniqueForeignImeiEdr;
 import java.time.LocalDateTime;
 
 public class ActiveUniqueForeignImeiDto {
-
     private Integer id;
+
     private LocalDateTime createdOn;
+
     private LocalDateTime modifiedOn;
-    private String foreignRule;
+
     private String tac;
+
     private String msisdn;
+
     private Integer failedRuleId;
+
     private String failedRuleName;
+
     private String imsi;
+
     private String mobileOperator;
+
     private String createFilename;
+
     private String updateFilename;
+
     private LocalDateTime updatedOn;
+
     private String systemType;
+
     private String action;
+
     private String period;
-    private LocalDateTime failedRuleDate;
-    private Integer mobileOperatorId;
-    private Integer taxPaid;
+
     private String featureName;
+
     private LocalDateTime recordTime;
+
     private String actualImei;
+
     private String recordType;
+
     private String imei;
+
     private String rawCdrFileName;
+
     private LocalDateTime imeiArrivalTime;
+
     private String source;
+
     private String updateRawCdrFileName;
+
     private LocalDateTime updateImeiArrivalTime;
+
     private String updateSource;
+
     private String serverOrigin;
+
     private Boolean validityFlag;
+
     private Integer isTypeApproved;
-    private String testImei;
+
+    private Integer isTestImei;
+
     private String actualOperator;
+
     private String deviceType;
-    private String isUsed;
+
+    private Integer isUsed;
+
     private String reason;
+
     private Integer gdceImeiStatus;
+
     private LocalDateTime gdceModifiedTime;
+
     private Integer trcImeiStatus;
+
     private LocalDateTime trcModifiedTime;
+
     private Integer customsStatus;
+
     private Integer localManufacturerStatus;
 
-    // Getters and Setters for each field go here
+    public ActiveUniqueForeignImeiDto() {}
 
-    public ActiveUniqueForeignImeiDto() {
-    }
-
-    public ActiveUniqueForeignImeiDto(Integer id, LocalDateTime createdOn, LocalDateTime modifiedOn, String foreignRule, String tac, String msisdn, Integer failedRuleId, String failedRuleName, String imsi, String mobileOperator, String createFilename, String updateFilename, LocalDateTime updatedOn, String systemType, String action, String period, LocalDateTime failedRuleDate, Integer mobileOperatorId, Integer taxPaid, String featureName, LocalDateTime recordTime, String actualImei, String recordType, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, Boolean validityFlag, Integer isTypeApproved, String testImei, String actualOperator, String deviceType, String isUsed, String reason, Integer gdceImeiStatus, LocalDateTime gdceModifiedTime, Integer trcImeiStatus, LocalDateTime trcModifiedTime, Integer customsStatus, Integer localManufacturerStatus) {
+    public ActiveUniqueForeignImeiDto(Integer id, LocalDateTime createdOn, LocalDateTime modifiedOn, String tac, String msisdn, Integer failedRuleId, String failedRuleName, String imsi, String mobileOperator, String createFilename, String updateFilename, LocalDateTime updatedOn, String systemType, String action, String period, String featureName, LocalDateTime recordTime, String actualImei, String recordType, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, Boolean validityFlag, Integer isTypeApproved, Integer isTestImei, String actualOperator, String deviceType, Integer isUsed, String reason, Integer gdceImeiStatus, LocalDateTime gdceModifiedTime, Integer trcImeiStatus, LocalDateTime trcModifiedTime, Integer customsStatus, Integer localManufacturerStatus) {
         this.id = id;
         this.createdOn = createdOn;
         this.modifiedOn = modifiedOn;
-        this.foreignRule = foreignRule;
         this.tac = tac;
         this.msisdn = msisdn;
         this.failedRuleId = failedRuleId;
@@ -74,9 +104,6 @@ public class ActiveUniqueForeignImeiDto {
         this.systemType = systemType;
         this.action = action;
         this.period = period;
-        this.failedRuleDate = failedRuleDate;
-        this.mobileOperatorId = mobileOperatorId;
-        this.taxPaid = taxPaid;
         this.featureName = featureName;
         this.recordTime = recordTime;
         this.actualImei = actualImei;
@@ -91,7 +118,7 @@ public class ActiveUniqueForeignImeiDto {
         this.serverOrigin = serverOrigin;
         this.validityFlag = validityFlag;
         this.isTypeApproved = isTypeApproved;
-        this.testImei = testImei;
+        this.isTestImei = isTestImei;
         this.actualOperator = actualOperator;
         this.deviceType = deviceType;
         this.isUsed = isUsed;
@@ -105,7 +132,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public Integer getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Integer id) {
@@ -113,7 +140,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public LocalDateTime getCreatedOn() {
-        return createdOn;
+        return this.createdOn;
     }
 
     public void setCreatedOn(LocalDateTime createdOn) {
@@ -121,23 +148,15 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public LocalDateTime getModifiedOn() {
-        return modifiedOn;
+        return this.modifiedOn;
     }
 
     public void setModifiedOn(LocalDateTime modifiedOn) {
         this.modifiedOn = modifiedOn;
     }
 
-    public String getForeignRule() {
-        return foreignRule;
-    }
-
-    public void setForeignRule(String foreignRule) {
-        this.foreignRule = foreignRule;
-    }
-
     public String getTac() {
-        return tac;
+        return this.tac;
     }
 
     public void setTac(String tac) {
@@ -145,7 +164,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public String getMsisdn() {
-        return msisdn;
+        return this.msisdn;
     }
 
     public void setMsisdn(String msisdn) {
@@ -153,7 +172,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public Integer getFailedRuleId() {
-        return failedRuleId;
+        return this.failedRuleId;
     }
 
     public void setFailedRuleId(Integer failedRuleId) {
@@ -161,7 +180,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public String getFailedRuleName() {
-        return failedRuleName;
+        return this.failedRuleName;
     }
 
     public void setFailedRuleName(String failedRuleName) {
@@ -169,7 +188,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public String getImsi() {
-        return imsi;
+        return this.imsi;
     }
 
     public void setImsi(String imsi) {
@@ -177,7 +196,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public String getMobileOperator() {
-        return mobileOperator;
+        return this.mobileOperator;
     }
 
     public void setMobileOperator(String mobileOperator) {
@@ -185,7 +204,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public String getCreateFilename() {
-        return createFilename;
+        return this.createFilename;
     }
 
     public void setCreateFilename(String createFilename) {
@@ -193,7 +212,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public String getUpdateFilename() {
-        return updateFilename;
+        return this.updateFilename;
     }
 
     public void setUpdateFilename(String updateFilename) {
@@ -201,7 +220,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public LocalDateTime getUpdatedOn() {
-        return updatedOn;
+        return this.updatedOn;
     }
 
     public void setUpdatedOn(LocalDateTime updatedOn) {
@@ -209,7 +228,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public String getSystemType() {
-        return systemType;
+        return this.systemType;
     }
 
     public void setSystemType(String systemType) {
@@ -217,7 +236,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public String getAction() {
-        return action;
+        return this.action;
     }
 
     public void setAction(String action) {
@@ -225,39 +244,15 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public String getPeriod() {
-        return period;
+        return this.period;
     }
 
     public void setPeriod(String period) {
         this.period = period;
     }
 
-    public LocalDateTime getFailedRuleDate() {
-        return failedRuleDate;
-    }
-
-    public void setFailedRuleDate(LocalDateTime failedRuleDate) {
-        this.failedRuleDate = failedRuleDate;
-    }
-
-    public Integer getMobileOperatorId() {
-        return mobileOperatorId;
-    }
-
-    public void setMobileOperatorId(Integer mobileOperatorId) {
-        this.mobileOperatorId = mobileOperatorId;
-    }
-
-    public Integer getTaxPaid() {
-        return taxPaid;
-    }
-
-    public void setTaxPaid(Integer taxPaid) {
-        this.taxPaid = taxPaid;
-    }
-
     public String getFeatureName() {
-        return featureName;
+        return this.featureName;
     }
 
     public void setFeatureName(String featureName) {
@@ -265,7 +260,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public LocalDateTime getRecordTime() {
-        return recordTime;
+        return this.recordTime;
     }
 
     public void setRecordTime(LocalDateTime recordTime) {
@@ -273,7 +268,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public String getActualImei() {
-        return actualImei;
+        return this.actualImei;
     }
 
     public void setActualImei(String actualImei) {
@@ -281,7 +276,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public String getRecordType() {
-        return recordType;
+        return this.recordType;
     }
 
     public void setRecordType(String recordType) {
@@ -289,7 +284,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public String getImei() {
-        return imei;
+        return this.imei;
     }
 
     public void setImei(String imei) {
@@ -297,7 +292,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public String getRawCdrFileName() {
-        return rawCdrFileName;
+        return this.rawCdrFileName;
     }
 
     public void setRawCdrFileName(String rawCdrFileName) {
@@ -305,7 +300,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public LocalDateTime getImeiArrivalTime() {
-        return imeiArrivalTime;
+        return this.imeiArrivalTime;
     }
 
     public void setImeiArrivalTime(LocalDateTime imeiArrivalTime) {
@@ -313,7 +308,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public String getSource() {
-        return source;
+        return this.source;
     }
 
     public void setSource(String source) {
@@ -321,7 +316,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public String getUpdateRawCdrFileName() {
-        return updateRawCdrFileName;
+        return this.updateRawCdrFileName;
     }
 
     public void setUpdateRawCdrFileName(String updateRawCdrFileName) {
@@ -329,7 +324,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public LocalDateTime getUpdateImeiArrivalTime() {
-        return updateImeiArrivalTime;
+        return this.updateImeiArrivalTime;
     }
 
     public void setUpdateImeiArrivalTime(LocalDateTime updateImeiArrivalTime) {
@@ -337,7 +332,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public String getUpdateSource() {
-        return updateSource;
+        return this.updateSource;
     }
 
     public void setUpdateSource(String updateSource) {
@@ -345,7 +340,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public String getServerOrigin() {
-        return serverOrigin;
+        return this.serverOrigin;
     }
 
     public void setServerOrigin(String serverOrigin) {
@@ -353,7 +348,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public Boolean getValidityFlag() {
-        return validityFlag;
+        return this.validityFlag;
     }
 
     public void setValidityFlag(Boolean validityFlag) {
@@ -361,23 +356,23 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public Integer getIsTypeApproved() {
-        return isTypeApproved;
+        return this.isTypeApproved;
     }
 
     public void setIsTypeApproved(Integer isTypeApproved) {
         this.isTypeApproved = isTypeApproved;
     }
 
-    public String getTestImei() {
-        return testImei;
+    public Integer getIsTestImei() {
+        return this.isTestImei;
     }
 
-    public void setTestImei(String testImei) {
-        this.testImei = testImei;
+    public void setIsTestImei(Integer isTestImei) {
+        this.isTestImei = isTestImei;
     }
 
     public String getActualOperator() {
-        return actualOperator;
+        return this.actualOperator;
     }
 
     public void setActualOperator(String actualOperator) {
@@ -385,23 +380,23 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public String getDeviceType() {
-        return deviceType;
+        return this.deviceType;
     }
 
     public void setDeviceType(String deviceType) {
         this.deviceType = deviceType;
     }
 
-    public String getIsUsed() {
-        return isUsed;
+    public Integer getIsUsed() {
+        return this.isUsed;
     }
 
-    public void setIsUsed(String isUsed) {
+    public void setIsUsed(Integer isUsed) {
         this.isUsed = isUsed;
     }
 
     public String getReason() {
-        return reason;
+        return this.reason;
     }
 
     public void setReason(String reason) {
@@ -409,7 +404,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public Integer getGdceImeiStatus() {
-        return gdceImeiStatus;
+        return this.gdceImeiStatus;
     }
 
     public void setGdceImeiStatus(Integer gdceImeiStatus) {
@@ -417,7 +412,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public LocalDateTime getGdceModifiedTime() {
-        return gdceModifiedTime;
+        return this.gdceModifiedTime;
     }
 
     public void setGdceModifiedTime(LocalDateTime gdceModifiedTime) {
@@ -425,7 +420,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public Integer getTrcImeiStatus() {
-        return trcImeiStatus;
+        return this.trcImeiStatus;
     }
 
     public void setTrcImeiStatus(Integer trcImeiStatus) {
@@ -433,7 +428,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public LocalDateTime getTrcModifiedTime() {
-        return trcModifiedTime;
+        return this.trcModifiedTime;
     }
 
     public void setTrcModifiedTime(LocalDateTime trcModifiedTime) {
@@ -441,7 +436,7 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public Integer getCustomsStatus() {
-        return customsStatus;
+        return this.customsStatus;
     }
 
     public void setCustomsStatus(Integer customsStatus) {
@@ -449,70 +444,22 @@ public class ActiveUniqueForeignImeiDto {
     }
 
     public Integer getLocalManufacturerStatus() {
-        return localManufacturerStatus;
+        return this.localManufacturerStatus;
     }
 
     public void setLocalManufacturerStatus(Integer localManufacturerStatus) {
         this.localManufacturerStatus = localManufacturerStatus;
     }
 
-    @Override
     public String toString() {
-        return "ActiveUniqueForeignImeiDto{" +
-                "id=" + id +
-                ", createdOn=" + createdOn +
-                ", modifiedOn=" + modifiedOn +
-                ", foreignRule='" + foreignRule + '\'' +
-                ", tac='" + tac + '\'' +
-                ", msisdn='" + msisdn + '\'' +
-                ", failedRuleId=" + failedRuleId +
-                ", failedRuleName='" + failedRuleName + '\'' +
-                ", imsi='" + imsi + '\'' +
-                ", mobileOperator='" + mobileOperator + '\'' +
-                ", createFilename='" + createFilename + '\'' +
-                ", updateFilename='" + updateFilename + '\'' +
-                ", updatedOn=" + updatedOn +
-                ", systemType='" + systemType + '\'' +
-                ", action='" + action + '\'' +
-                ", period='" + period + '\'' +
-                ", failedRuleDate=" + failedRuleDate +
-                ", mobileOperatorId=" + mobileOperatorId +
-                ", taxPaid=" + taxPaid +
-                ", featureName='" + featureName + '\'' +
-                ", recordTime=" + recordTime +
-                ", actualImei='" + actualImei + '\'' +
-                ", recordType='" + recordType + '\'' +
-                ", imei='" + imei + '\'' +
-                ", rawCdrFileName='" + rawCdrFileName + '\'' +
-                ", imeiArrivalTime=" + imeiArrivalTime +
-                ", source='" + source + '\'' +
-                ", updateRawCdrFileName='" + updateRawCdrFileName + '\'' +
-                ", updateImeiArrivalTime=" + updateImeiArrivalTime +
-                ", updateSource='" + updateSource + '\'' +
-                ", serverOrigin='" + serverOrigin + '\'' +
-                ", validityFlag=" + validityFlag +
-                ", isTypeApproved=" + isTypeApproved +
-                ", testImei='" + testImei + '\'' +
-                ", actualOperator='" + actualOperator + '\'' +
-                ", deviceType='" + deviceType + '\'' +
-                ", isUsed='" + isUsed + '\'' +
-                ", reason='" + reason + '\'' +
-                ", gdceImeiStatus=" + gdceImeiStatus +
-                ", gdceModifiedTime=" + gdceModifiedTime +
-                ", trcImeiStatus=" + trcImeiStatus +
-                ", trcModifiedTime=" + trcModifiedTime +
-                ", customsStatus=" + customsStatus +
-                ", localManufacturerStatus=" + localManufacturerStatus +
-                '}';
+        return "ActiveUniqueForeignImeiDto{id=" + this.id + ", createdOn=" + String.valueOf(this.createdOn) + ", modifiedOn=" + String.valueOf(this.modifiedOn) + ", tac='" + this.tac + "', msisdn='" + this.msisdn + "', failedRuleId=" + this.failedRuleId + ", failedRuleName='" + this.failedRuleName + "', imsi='" + this.imsi + "', mobileOperator='" + this.mobileOperator + "', createFilename='" + this.createFilename + "', updateFilename='" + this.updateFilename + "', updatedOn=" + String.valueOf(this.updatedOn) + ", systemType='" + this.systemType + "', action='" + this.action + "', period='" + this.period + "', featureName='" + this.featureName + "', recordTime=" + String.valueOf(this.recordTime) + ", actualImei='" + this.actualImei + "', recordType='" + this.recordType + "', imei='" + this.imei + "', rawCdrFileName='" + this.rawCdrFileName + "', imeiArrivalTime=" + String.valueOf(this.imeiArrivalTime) + ", source='" + this.source + "', updateRawCdrFileName='" + this.updateRawCdrFileName + "', updateImeiArrivalTime=" + String.valueOf(this.updateImeiArrivalTime) + ", updateSource='" + this.updateSource + "', serverOrigin='" + this.serverOrigin + "', validityFlag=" + this.validityFlag + ", isTypeApproved=" + this.isTypeApproved + ", isTestImei=" + this.isTestImei + ", actualOperator='" + this.actualOperator + "', deviceType='" + this.deviceType + "', isUsed=" + this.isUsed + ", reason='" + this.reason + "', gdceImeiStatus=" + this.gdceImeiStatus + ", gdceModifiedTime=" + String.valueOf(this.gdceModifiedTime) + ", trcImeiStatus=" + this.trcImeiStatus + ", trcModifiedTime=" + String.valueOf(this.trcModifiedTime) + ", customsStatus=" + this.customsStatus + ", localManufacturerStatus=" + this.localManufacturerStatus + "}";
     }
 
-    // fromEntity method for ActiveUniqueForeignImei entity
     public static ActiveUniqueForeignImeiDto fromEntityForApp(ActiveUniqueForeignImei entity) {
         ActiveUniqueForeignImeiDto dto = new ActiveUniqueForeignImeiDto();
         dto.setId(entity.getId());
         dto.setCreatedOn(entity.getCreatedOn());
         dto.setModifiedOn(entity.getModifiedOn());
-        dto.setForeignRule(entity.getForeginRule());
         dto.setTac(entity.getTac());
         dto.setMsisdn(entity.getMsisdn());
         dto.setFailedRuleId(entity.getFailedRuleId());
@@ -525,9 +472,6 @@ public class ActiveUniqueForeignImeiDto {
         dto.setSystemType(entity.getSystemType());
         dto.setAction(entity.getAction());
         dto.setPeriod(entity.getPeriod());
-        dto.setFailedRuleDate(entity.getFailedRuleDate());
-        dto.setMobileOperatorId(entity.getMobileOperatorId());
-        dto.setTaxPaid(entity.getTaxPaid());
         dto.setFeatureName(entity.getFeatureName());
         dto.setRecordTime(entity.getRecordTime());
         dto.setActualImei(entity.getActualImei());
@@ -541,7 +485,7 @@ public class ActiveUniqueForeignImeiDto {
         dto.setUpdateSource(entity.getUpdateSource());
         dto.setServerOrigin(entity.getServerOrigin());
         dto.setValidityFlag(entity.getValidityFlag());
-        dto.setTestImei(entity.getTestImei());
+        dto.setIsTestImei(entity.getIsTestImei());
         dto.setActualOperator(entity.getActualOperator());
         dto.setDeviceType(entity.getDeviceType());
         dto.setIsUsed(entity.getIsUsed());
@@ -555,13 +499,11 @@ public class ActiveUniqueForeignImeiDto {
         return dto;
     }
 
-    // toEntity method for ActiveUniqueForeignImeiDto to ActiveUniqueForeignImei entity
     public static ActiveUniqueForeignImei toEntityForApp(ActiveUniqueForeignImeiDto dto) {
         ActiveUniqueForeignImei entity = new ActiveUniqueForeignImei();
         entity.setId(dto.getId());
         entity.setCreatedOn(dto.getCreatedOn());
         entity.setModifiedOn(dto.getModifiedOn());
-        entity.setForeginRule(dto.getForeignRule());
         entity.setTac(dto.getTac());
         entity.setMsisdn(dto.getMsisdn());
         entity.setFailedRuleId(dto.getFailedRuleId());
@@ -574,9 +516,6 @@ public class ActiveUniqueForeignImeiDto {
         entity.setSystemType(dto.getSystemType());
         entity.setAction(dto.getAction());
         entity.setPeriod(dto.getPeriod());
-        entity.setFailedRuleDate(dto.getFailedRuleDate());
-        entity.setMobileOperatorId(dto.getMobileOperatorId());
-        entity.setTaxPaid(dto.getTaxPaid());
         entity.setFeatureName(dto.getFeatureName());
         entity.setRecordTime(dto.getRecordTime());
         entity.setActualImei(dto.getActualImei());
@@ -590,7 +529,7 @@ public class ActiveUniqueForeignImeiDto {
         entity.setUpdateSource(dto.getUpdateSource());
         entity.setServerOrigin(dto.getServerOrigin());
         entity.setValidityFlag(dto.getValidityFlag());
-        entity.setTestImei(dto.getTestImei());
+        entity.setIsTestImei(dto.getIsTestImei());
         entity.setActualOperator(dto.getActualOperator());
         entity.setDeviceType(dto.getDeviceType());
         entity.setIsUsed(dto.getIsUsed());
@@ -609,21 +548,17 @@ public class ActiveUniqueForeignImeiDto {
         dto.setId(entity.getId());
         dto.setCreatedOn(entity.getCreatedOn());
         dto.setModifiedOn(entity.getModifiedOn());
-        dto.setForeignRule(entity.getForeignRule());
         dto.setTac(entity.getTac());
         dto.setMsisdn(entity.getMsisdn());
-        dto.setFailedRuleId(entity.getFailedRuleId() != null ? Integer.parseInt(entity.getFailedRuleId()) : null);
+        dto.setFailedRuleId((entity.getFailedRuleId() != null) ? Integer.valueOf(Integer.parseInt(entity.getFailedRuleId())) : null);
         dto.setFailedRuleName(entity.getFailedRuleName());
-        dto.setImsi(entity.getImsi() != null ? String.valueOf(entity.getImsi()) : null);
+        dto.setImsi((entity.getImsi() != null) ? String.valueOf(entity.getImsi()) : null);
         dto.setMobileOperator(entity.getMobileOperator());
         dto.setCreateFilename(entity.getCreateFilename());
         dto.setUpdateFilename(entity.getUpdateFilename());
         dto.setUpdatedOn(entity.getUpdatedOn());
         dto.setAction(entity.getAction());
         dto.setPeriod(entity.getPeriod());
-        dto.setFailedRuleDate(entity.getFailedRuleDate() != null ? LocalDateTime.parse(entity.getFailedRuleDate()) : null); // Assuming format is compatible
-        dto.setMobileOperatorId(entity.getMobileOperatorId());
-        dto.setTaxPaid(entity.getTaxPaid());
         dto.setFeatureName(entity.getFeatureName());
         dto.setRecordTime(entity.getRecordTime());
         dto.setActualImei(entity.getActualImei());
@@ -636,34 +571,29 @@ public class ActiveUniqueForeignImeiDto {
         dto.setUpdateSource(entity.getUpdateSource());
         dto.setServerOrigin(entity.getServerOrigin());
         dto.setActualOperator(entity.getActualOperator());
-        dto.setTestImei(entity.getTestImei());
+        dto.setIsTestImei(entity.getIsTestImei());
         dto.setIsUsed(entity.getIsUsed());
         dto.setValidityFlag(entity.getValidityFlag());
         dto.setDeviceType(entity.getDeviceType());
         return dto;
     }
 
-    // toEntity method for ActiveUniqueForeignImeiDto to ActiveUniqueForeignImeiEdr entity
     public static ActiveUniqueForeignImeiEdr toEntityForAppEdr(ActiveUniqueForeignImeiDto dto) {
         ActiveUniqueForeignImeiEdr entity = new ActiveUniqueForeignImeiEdr();
         entity.setId(dto.getId());
         entity.setCreatedOn(dto.getCreatedOn());
         entity.setModifiedOn(dto.getModifiedOn());
-        entity.setForeignRule(dto.getForeignRule());
         entity.setTac(dto.getTac());
         entity.setMsisdn(dto.getMsisdn());
-        entity.setFailedRuleId(dto.getFailedRuleId() != null ? dto.getFailedRuleId().toString() : null);
+        entity.setFailedRuleId((dto.getFailedRuleId() != null) ? dto.getFailedRuleId().toString() : null);
         entity.setFailedRuleName(dto.getFailedRuleName());
-        entity.setImsi(dto.getImsi() != null ? Long.parseLong(dto.getImsi()) : null);
+        entity.setImsi((dto.getImsi() != null) ? Long.valueOf(Long.parseLong(dto.getImsi())) : null);
         entity.setMobileOperator(dto.getMobileOperator());
         entity.setCreateFilename(dto.getCreateFilename());
         entity.setUpdateFilename(dto.getUpdateFilename());
         entity.setUpdatedOn(dto.getUpdatedOn());
         entity.setAction(dto.getAction());
         entity.setPeriod(dto.getPeriod());
-        entity.setFailedRuleDate(dto.getFailedRuleDate() != null ? dto.getFailedRuleDate().toString() : null); // Assuming format is compatible
-        entity.setMobileOperatorId(dto.getMobileOperatorId());
-        entity.setTaxPaid(dto.getTaxPaid());
         entity.setFeatureName(dto.getFeatureName());
         entity.setRecordTime(dto.getRecordTime());
         entity.setActualImei(dto.getActualImei());
@@ -676,9 +606,8 @@ public class ActiveUniqueForeignImeiDto {
         entity.setUpdateSource(dto.getUpdateSource());
         entity.setServerOrigin(dto.getServerOrigin());
         entity.setActualOperator(dto.getActualOperator());
-        entity.setTestImei(dto.getTestImei());
+        entity.setIsTestImei(dto.getIsTestImei());
         entity.setIsUsed(dto.getIsUsed());
         return entity;
     }
 }
-

@@ -1,72 +1,107 @@
 package com.gl.ceir.model.output;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "national_whitelist")
 public class NationalWhitelist {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer nationalWhitelistId;
+
     private LocalDateTime createdOn;
+
     private LocalDateTime modifiedOn;
-    private String foreignRule;
+
     private String mobileOperator;
+
     private String period;
-    private String taxPaid;
+
     private String createdFilename;
+
     private String updatedFilename;
+
     private LocalDateTime updatedOn;
+
     private String systemType;
+
     private Integer failedRuleId;
+
     private String failedRuleName;
+
     private Boolean validityFlag;
+
     private String tac;
+
     private String action;
-    private LocalDateTime failedRuleDate;
+
     private String featureName;
+
     private LocalDateTime recordTime;
+
     private String actualImei;
+
     private String recordType;
+
     private String imei;
+
     private String rawCdrFileName;
+
     private LocalDateTime imeiArrivalTime;
+
     private String source;
+
     private String updateRawCdrFileName;
+
     private LocalDateTime updateImeiArrivalTime;
+
     private String updateSource;
+
     private String serverOrigin;
+
     private String listType;
+
     private String reasonForInvalidImei;
+
     private String imsi;
+
     private String msisdn;
+
     private LocalDate createdOnDate;
+
     private String deviceType;
+
     private String actualOperator;
-    private String isTestImei;
-    private String isUsedDeviceImei;
+
+    private Integer isTestImei;
+
+    private Integer isUsedDeviceImei;
+
     private LocalDateTime nationalWhiteListCreatedDate;
+
     private Integer gdceImeiStatus;
+
     private LocalDateTime gdceModifiedTime;
+
     private Integer trcImeiStatus;
+
     private LocalDateTime trcModifiedTime;
+
     private LocalDateTime timestamp;
+
     private String protocol;
 
-    public NationalWhitelist() {
-    }
+    public NationalWhitelist() {}
 
-    public NationalWhitelist(Integer nationalWhitelistId, LocalDateTime createdOn, LocalDateTime modifiedOn, String foreignRule, String mobileOperator, String period, String taxPaid, String createdFilename, String updatedFilename, LocalDateTime updatedOn, String systemType, Integer failedRuleId, String failedRuleName, Boolean validityFlag, String tac, String action, LocalDateTime failedRuleDate, String featureName, LocalDateTime recordTime, String actualImei, String recordType, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, String listType, String reasonForInvalidImei, String imsi, String msisdn, LocalDate createdOnDate, String deviceType, String actualOperator, String isTestImei, String isUsedDeviceImei, LocalDateTime nationalWhiteListCreatedDate, Integer gdceImeiStatus, LocalDateTime gdceModifiedTime, Integer trcImeiStatus, LocalDateTime trcModifiedTime, LocalDateTime timestamp, String protocol) {
+    public NationalWhitelist(Integer nationalWhitelistId, LocalDateTime createdOn, LocalDateTime modifiedOn, String mobileOperator, String period, String createdFilename, String updatedFilename, LocalDateTime updatedOn, String systemType, Integer failedRuleId, String failedRuleName, Boolean validityFlag, String tac, String action, String featureName, LocalDateTime recordTime, String actualImei, String recordType, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, String listType, String reasonForInvalidImei, String imsi, String msisdn, LocalDate createdOnDate, String deviceType, String actualOperator, Integer isTestImei, Integer isUsedDeviceImei, LocalDateTime nationalWhiteListCreatedDate, Integer gdceImeiStatus, LocalDateTime gdceModifiedTime, Integer trcImeiStatus, LocalDateTime trcModifiedTime, LocalDateTime timestamp, String protocol) {
         this.nationalWhitelistId = nationalWhitelistId;
         this.createdOn = createdOn;
         this.modifiedOn = modifiedOn;
-        this.foreignRule = foreignRule;
         this.mobileOperator = mobileOperator;
         this.period = period;
-        this.taxPaid = taxPaid;
         this.createdFilename = createdFilename;
         this.updatedFilename = updatedFilename;
         this.updatedOn = updatedOn;
@@ -76,7 +111,6 @@ public class NationalWhitelist {
         this.validityFlag = validityFlag;
         this.tac = tac;
         this.action = action;
-        this.failedRuleDate = failedRuleDate;
         this.featureName = featureName;
         this.recordTime = recordTime;
         this.actualImei = actualImei;
@@ -108,7 +142,7 @@ public class NationalWhitelist {
     }
 
     public Integer getNationalWhitelistId() {
-        return nationalWhitelistId;
+        return this.nationalWhitelistId;
     }
 
     public void setNationalWhitelistId(Integer nationalWhitelistId) {
@@ -116,7 +150,7 @@ public class NationalWhitelist {
     }
 
     public LocalDateTime getCreatedOn() {
-        return createdOn;
+        return this.createdOn;
     }
 
     public void setCreatedOn(LocalDateTime createdOn) {
@@ -124,23 +158,15 @@ public class NationalWhitelist {
     }
 
     public LocalDateTime getModifiedOn() {
-        return modifiedOn;
+        return this.modifiedOn;
     }
 
     public void setModifiedOn(LocalDateTime modifiedOn) {
         this.modifiedOn = modifiedOn;
     }
 
-    public String getForeignRule() {
-        return foreignRule;
-    }
-
-    public void setForeignRule(String foreignRule) {
-        this.foreignRule = foreignRule;
-    }
-
     public String getMobileOperator() {
-        return mobileOperator;
+        return this.mobileOperator;
     }
 
     public void setMobileOperator(String mobileOperator) {
@@ -148,23 +174,15 @@ public class NationalWhitelist {
     }
 
     public String getPeriod() {
-        return period;
+        return this.period;
     }
 
     public void setPeriod(String period) {
         this.period = period;
     }
 
-    public String getTaxPaid() {
-        return taxPaid;
-    }
-
-    public void setTaxPaid(String taxPaid) {
-        this.taxPaid = taxPaid;
-    }
-
     public String getCreatedFilename() {
-        return createdFilename;
+        return this.createdFilename;
     }
 
     public void setCreatedFilename(String createdFilename) {
@@ -172,7 +190,7 @@ public class NationalWhitelist {
     }
 
     public String getUpdatedFilename() {
-        return updatedFilename;
+        return this.updatedFilename;
     }
 
     public void setUpdatedFilename(String updatedFilename) {
@@ -180,7 +198,7 @@ public class NationalWhitelist {
     }
 
     public LocalDateTime getUpdatedOn() {
-        return updatedOn;
+        return this.updatedOn;
     }
 
     public void setUpdatedOn(LocalDateTime updatedOn) {
@@ -188,7 +206,7 @@ public class NationalWhitelist {
     }
 
     public String getSystemType() {
-        return systemType;
+        return this.systemType;
     }
 
     public void setSystemType(String systemType) {
@@ -196,7 +214,7 @@ public class NationalWhitelist {
     }
 
     public Integer getFailedRuleId() {
-        return failedRuleId;
+        return this.failedRuleId;
     }
 
     public void setFailedRuleId(Integer failedRuleId) {
@@ -204,7 +222,7 @@ public class NationalWhitelist {
     }
 
     public String getFailedRuleName() {
-        return failedRuleName;
+        return this.failedRuleName;
     }
 
     public void setFailedRuleName(String failedRuleName) {
@@ -212,7 +230,7 @@ public class NationalWhitelist {
     }
 
     public Boolean getValidityFlag() {
-        return validityFlag;
+        return this.validityFlag;
     }
 
     public void setValidityFlag(Boolean validityFlag) {
@@ -220,7 +238,7 @@ public class NationalWhitelist {
     }
 
     public String getTac() {
-        return tac;
+        return this.tac;
     }
 
     public void setTac(String tac) {
@@ -228,23 +246,15 @@ public class NationalWhitelist {
     }
 
     public String getAction() {
-        return action;
+        return this.action;
     }
 
     public void setAction(String action) {
         this.action = action;
     }
 
-    public LocalDateTime getFailedRuleDate() {
-        return failedRuleDate;
-    }
-
-    public void setFailedRuleDate(LocalDateTime failedRuleDate) {
-        this.failedRuleDate = failedRuleDate;
-    }
-
     public String getFeatureName() {
-        return featureName;
+        return this.featureName;
     }
 
     public void setFeatureName(String featureName) {
@@ -252,7 +262,7 @@ public class NationalWhitelist {
     }
 
     public LocalDateTime getRecordTime() {
-        return recordTime;
+        return this.recordTime;
     }
 
     public void setRecordTime(LocalDateTime recordTime) {
@@ -260,7 +270,7 @@ public class NationalWhitelist {
     }
 
     public String getActualImei() {
-        return actualImei;
+        return this.actualImei;
     }
 
     public void setActualImei(String actualImei) {
@@ -268,7 +278,7 @@ public class NationalWhitelist {
     }
 
     public String getRecordType() {
-        return recordType;
+        return this.recordType;
     }
 
     public void setRecordType(String recordType) {
@@ -276,7 +286,7 @@ public class NationalWhitelist {
     }
 
     public String getImei() {
-        return imei;
+        return this.imei;
     }
 
     public void setImei(String imei) {
@@ -284,7 +294,7 @@ public class NationalWhitelist {
     }
 
     public String getRawCdrFileName() {
-        return rawCdrFileName;
+        return this.rawCdrFileName;
     }
 
     public void setRawCdrFileName(String rawCdrFileName) {
@@ -292,7 +302,7 @@ public class NationalWhitelist {
     }
 
     public LocalDateTime getImeiArrivalTime() {
-        return imeiArrivalTime;
+        return this.imeiArrivalTime;
     }
 
     public void setImeiArrivalTime(LocalDateTime imeiArrivalTime) {
@@ -300,7 +310,7 @@ public class NationalWhitelist {
     }
 
     public String getSource() {
-        return source;
+        return this.source;
     }
 
     public void setSource(String source) {
@@ -308,7 +318,7 @@ public class NationalWhitelist {
     }
 
     public String getUpdateRawCdrFileName() {
-        return updateRawCdrFileName;
+        return this.updateRawCdrFileName;
     }
 
     public void setUpdateRawCdrFileName(String updateRawCdrFileName) {
@@ -316,7 +326,7 @@ public class NationalWhitelist {
     }
 
     public LocalDateTime getUpdateImeiArrivalTime() {
-        return updateImeiArrivalTime;
+        return this.updateImeiArrivalTime;
     }
 
     public void setUpdateImeiArrivalTime(LocalDateTime updateImeiArrivalTime) {
@@ -324,7 +334,7 @@ public class NationalWhitelist {
     }
 
     public String getUpdateSource() {
-        return updateSource;
+        return this.updateSource;
     }
 
     public void setUpdateSource(String updateSource) {
@@ -332,7 +342,7 @@ public class NationalWhitelist {
     }
 
     public String getServerOrigin() {
-        return serverOrigin;
+        return this.serverOrigin;
     }
 
     public void setServerOrigin(String serverOrigin) {
@@ -340,7 +350,7 @@ public class NationalWhitelist {
     }
 
     public String getListType() {
-        return listType;
+        return this.listType;
     }
 
     public void setListType(String listType) {
@@ -348,7 +358,7 @@ public class NationalWhitelist {
     }
 
     public String getReasonForInvalidImei() {
-        return reasonForInvalidImei;
+        return this.reasonForInvalidImei;
     }
 
     public void setReasonForInvalidImei(String reasonForInvalidImei) {
@@ -356,7 +366,7 @@ public class NationalWhitelist {
     }
 
     public String getImsi() {
-        return imsi;
+        return this.imsi;
     }
 
     public void setImsi(String imsi) {
@@ -364,7 +374,7 @@ public class NationalWhitelist {
     }
 
     public String getMsisdn() {
-        return msisdn;
+        return this.msisdn;
     }
 
     public void setMsisdn(String msisdn) {
@@ -372,7 +382,7 @@ public class NationalWhitelist {
     }
 
     public LocalDate getCreatedOnDate() {
-        return createdOnDate;
+        return this.createdOnDate;
     }
 
     public void setCreatedOnDate(LocalDate createdOnDate) {
@@ -380,7 +390,7 @@ public class NationalWhitelist {
     }
 
     public String getDeviceType() {
-        return deviceType;
+        return this.deviceType;
     }
 
     public void setDeviceType(String deviceType) {
@@ -388,31 +398,31 @@ public class NationalWhitelist {
     }
 
     public String getActualOperator() {
-        return actualOperator;
+        return this.actualOperator;
     }
 
     public void setActualOperator(String actualOperator) {
         this.actualOperator = actualOperator;
     }
 
-    public String getIsTestImei() {
-        return isTestImei;
+    public Integer getIsTestImei() {
+        return this.isTestImei;
     }
 
-    public void setIsTestImei(String isTestImei) {
+    public void setIsTestImei(Integer isTestImei) {
         this.isTestImei = isTestImei;
     }
 
-    public String getIsUsedDeviceImei() {
-        return isUsedDeviceImei;
+    public Integer getIsUsedDeviceImei() {
+        return this.isUsedDeviceImei;
     }
 
-    public void setIsUsedDeviceImei(String isUsedDeviceImei) {
+    public void setIsUsedDeviceImei(Integer isUsedDeviceImei) {
         this.isUsedDeviceImei = isUsedDeviceImei;
     }
 
     public LocalDateTime getNationalWhiteListCreatedDate() {
-        return nationalWhiteListCreatedDate;
+        return this.nationalWhiteListCreatedDate;
     }
 
     public void setNationalWhiteListCreatedDate(LocalDateTime nationalWhiteListCreatedDate) {
@@ -420,7 +430,7 @@ public class NationalWhitelist {
     }
 
     public Integer getGdceImeiStatus() {
-        return gdceImeiStatus;
+        return this.gdceImeiStatus;
     }
 
     public void setGdceImeiStatus(Integer gdceImeiStatus) {
@@ -428,7 +438,7 @@ public class NationalWhitelist {
     }
 
     public LocalDateTime getGdceModifiedTime() {
-        return gdceModifiedTime;
+        return this.gdceModifiedTime;
     }
 
     public void setGdceModifiedTime(LocalDateTime gdceModifiedTime) {
@@ -436,7 +446,7 @@ public class NationalWhitelist {
     }
 
     public Integer getTrcImeiStatus() {
-        return trcImeiStatus;
+        return this.trcImeiStatus;
     }
 
     public void setTrcImeiStatus(Integer trcImeiStatus) {
@@ -444,7 +454,7 @@ public class NationalWhitelist {
     }
 
     public LocalDateTime getTrcModifiedTime() {
-        return trcModifiedTime;
+        return this.trcModifiedTime;
     }
 
     public void setTrcModifiedTime(LocalDateTime trcModifiedTime) {
@@ -452,7 +462,7 @@ public class NationalWhitelist {
     }
 
     public LocalDateTime getTimestamp() {
-        return timestamp;
+        return this.timestamp;
     }
 
     public void setTimestamp(LocalDateTime timestamp) {
@@ -460,62 +470,14 @@ public class NationalWhitelist {
     }
 
     public String getProtocol() {
-        return protocol;
+        return this.protocol;
     }
 
     public void setProtocol(String protocol) {
         this.protocol = protocol;
     }
 
-    @Override
     public String toString() {
-        return "NationalWhitelist{" +
-                "nationalWhitelistId=" + nationalWhitelistId +
-                ", createdOn=" + createdOn +
-                ", modifiedOn=" + modifiedOn +
-                ", foreignRule='" + foreignRule + '\'' +
-                ", mobileOperator='" + mobileOperator + '\'' +
-                ", period='" + period + '\'' +
-                ", taxPaid='" + taxPaid + '\'' +
-                ", createdFilename='" + createdFilename + '\'' +
-                ", updatedFilename='" + updatedFilename + '\'' +
-                ", updatedOn=" + updatedOn +
-                ", systemType='" + systemType + '\'' +
-                ", failedRuleId=" + failedRuleId +
-                ", failedRuleName='" + failedRuleName + '\'' +
-                ", validityFlag=" + validityFlag +
-                ", tac='" + tac + '\'' +
-                ", action='" + action + '\'' +
-                ", failedRuleDate=" + failedRuleDate +
-                ", featureName='" + featureName + '\'' +
-                ", recordTime=" + recordTime +
-                ", actualImei='" + actualImei + '\'' +
-                ", recordType='" + recordType + '\'' +
-                ", imei='" + imei + '\'' +
-                ", rawCdrFileName='" + rawCdrFileName + '\'' +
-                ", imeiArrivalTime=" + imeiArrivalTime +
-                ", source='" + source + '\'' +
-                ", updateRawCdrFileName='" + updateRawCdrFileName + '\'' +
-                ", updateImeiArrivalTime=" + updateImeiArrivalTime +
-                ", updateSource='" + updateSource + '\'' +
-                ", serverOrigin='" + serverOrigin + '\'' +
-                ", listType='" + listType + '\'' +
-                ", reasonForInvalidImei='" + reasonForInvalidImei + '\'' +
-                ", imsi='" + imsi + '\'' +
-                ", msisdn='" + msisdn + '\'' +
-                ", createdOnDate=" + createdOnDate +
-                ", deviceType='" + deviceType + '\'' +
-                ", actualOperator='" + actualOperator + '\'' +
-                ", isTestImei='" + isTestImei + '\'' +
-                ", isUsedDeviceImei='" + isUsedDeviceImei + '\'' +
-                ", nationalWhiteListCreatedDate=" + nationalWhiteListCreatedDate +
-                ", gdceImeiStatus=" + gdceImeiStatus +
-                ", gdceModifiedTime=" + gdceModifiedTime +
-                ", trcImeiStatus=" + trcImeiStatus +
-                ", trcModifiedTime=" + trcModifiedTime +
-                ", timestamp=" + timestamp +
-                ", protocol='" + protocol + '\'' +
-                '}';
+        return "NationalWhitelist{nationalWhitelistId=" + this.nationalWhitelistId + ", createdOn=" + String.valueOf(this.createdOn) + ", modifiedOn=" + String.valueOf(this.modifiedOn) + ", mobileOperator='" + this.mobileOperator + "', period='" + this.period + "', createdFilename='" + this.createdFilename + "', updatedFilename='" + this.updatedFilename + "', updatedOn=" + String.valueOf(this.updatedOn) + ", systemType='" + this.systemType + "', failedRuleId=" + this.failedRuleId + ", failedRuleName='" + this.failedRuleName + "', validityFlag=" + this.validityFlag + ", tac='" + this.tac + "', action='" + this.action + "', featureName='" + this.featureName + "', recordTime=" + String.valueOf(this.recordTime) + ", actualImei='" + this.actualImei + "', recordType='" + this.recordType + "', imei='" + this.imei + "', rawCdrFileName='" + this.rawCdrFileName + "', imeiArrivalTime=" + String.valueOf(this.imeiArrivalTime) + ", source='" + this.source + "', updateRawCdrFileName='" + this.updateRawCdrFileName + "', updateImeiArrivalTime=" + String.valueOf(this.updateImeiArrivalTime) + ", updateSource='" + this.updateSource + "', serverOrigin='" + this.serverOrigin + "', listType='" + this.listType + "', reasonForInvalidImei='" + this.reasonForInvalidImei + "', imsi='" + this.imsi + "', msisdn='" + this.msisdn + "', createdOnDate=" + String.valueOf(this.createdOnDate) + ", deviceType='" + this.deviceType + "', actualOperator='" + this.actualOperator + "', isTestImei=" + this.isTestImei + ", isUsedDeviceImei=" + this.isUsedDeviceImei + ", nationalWhiteListCreatedDate=" + String.valueOf(this.nationalWhiteListCreatedDate) + ", gdceImeiStatus=" + this.gdceImeiStatus + ", gdceModifiedTime=" + String.valueOf(this.gdceModifiedTime) + ", trcImeiStatus=" + this.trcImeiStatus + ", trcModifiedTime=" + String.valueOf(this.trcModifiedTime) + ", timestamp=" + String.valueOf(this.timestamp) + ", protocol='" + this.protocol + "'}";
     }
 }
-

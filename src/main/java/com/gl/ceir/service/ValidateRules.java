@@ -100,6 +100,8 @@ public class ValidateRules implements Runnable{
     EXISTS_IN_LOCAL_MANUFACTURER_DB existsInLocalManufacturerDb;
     @Autowired
     CommonService commonService;
+    @Autowired
+    AlertService alertService;
 
     @Override
     public void run() {
@@ -139,25 +141,25 @@ public class ValidateRules implements Runnable{
             boolean newLastRunTimeIsUpdate = false;
 
             if(activeUniqueImeiDate.isPresent()) {
-                    activeUniqueImeisLastRunDate = formatDateString(activeUniqueImeiDate.get().getValue());
-                    int compareDate = compareDates(activeUniqueImeisLastRunDate, cdrProcessingTimestamp);
-                    if (compareDate > 0) {
-                        if (compareDates(addOneDayToDate(activeUniqueImeisLastRunDate), cdrProcessingTimestamp) > 0) {
-                            newLastRunTimeIsUpdate = true;
+                activeUniqueImeisLastRunDate = formatDateString(activeUniqueImeiDate.get().getValue());
+                int compareDate = compareDates(activeUniqueImeisLastRunDate, cdrProcessingTimestamp);
+                if (compareDate > 0) {
+                    if (compareDates(addOneDayToDate(activeUniqueImeisLastRunDate), cdrProcessingTimestamp) > 0) {
+                        newLastRunTimeIsUpdate = true;
 
 //                            SystemConfigurationDb activeUniqueImeiLatestDate = activeUniqueImeiDate.get();
 //                            activeUniqueImeiLatestDate.setValue(addOneDayToDate(activeUniqueImeisLastRunDate));
 //                            systemConfigurationDbRepository.save(activeUniqueImeiLatestDate);
-                            activeUniqueImeisLastRunEndDate = addOneDayToDate(activeUniqueImeisLastRunDate);
-                        } else {
-                            newLastRunTimeIsUpdate = true;
+                        activeUniqueImeisLastRunEndDate = addOneDayToDate(activeUniqueImeisLastRunDate);
+                    } else {
+                        newLastRunTimeIsUpdate = true;
 
 //                            SystemConfigurationDb activeUniqueImeiLatestDate = activeUniqueImeiDate.get();
 //                            activeUniqueImeiLatestDate.setValue(cdrProcessingTimestamp);
 //                            systemConfigurationDbRepository.save(activeUniqueImeiLatestDate);
-                            activeUniqueImeisLastRunEndDate = cdrProcessingTimestamp;
-                        }
+                        activeUniqueImeisLastRunEndDate = cdrProcessingTimestamp;
                     }
+                }
             } else {
                 String inputDateString = "";
                 if ("app".equals(profile)) {
@@ -299,7 +301,7 @@ public class ValidateRules implements Runnable{
                 ModulesAuditTrail completedAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 200, "completed", "NA", "National Whitelist", "UPDATE", "Process completed for National Whitelist", MODULE_NAME+"national_whitelist", nwlCount, executionStartTime, startTime);
                 modulesAuditTrailRepository.save(completedAudit);
             } else {
-                log.error("checking alert config for alert017");
+                /*log.error("checking alert config for alert017");
                 System.out.println("checking alert config for alert017");
                 Optional<CfgFeatureAlert> alert = cfgFeatureAlertRepository.findByAlertId("alert017");
                 if (alert.isPresent()) {
@@ -308,15 +310,18 @@ public class ValidateRules implements Runnable{
                     raiseAnAlert(alert.get().getAlertId(), alert.get().getDescription(), MODULE_NAME+"national_whitelist", 0);
 //                RunningAlertDb alertDb = new RunningAlertDb(alert.get().getAlertId(), alert.get().getDescription().replace("<ERROR>", msg), 0);
 //                runningAlertDbRepo.save(alertDb);
-                }
+                }*/
+                this.log.error("raising alert017");
+                System.out.println("raising alert017");
+                this.alertService.raiseAlert("alert017", "", Integer.valueOf(0));
                 ModulesAuditTrail completedAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 501, "failed", "raised alert017", "National Whitelist", "UPDATE", "Exception during national whitelist process", MODULE_NAME+"national_whitelist", executionStartTime, startTime);
                 modulesAuditTrailRepository.save(completedAudit);
             }
 
-                // For foreign tables
-                ModulesAuditTrail foreignModuleTrail = ModulesAuditTrailBuilder.forInsert(201, "created", "NA", "National Whitelist", "INSERT", 0,"Started Foreign Whitelist Process", MODULE_NAME+"foreign_whitelist", startTime, executionStartTime);
-                foreignModuleTrail = modulesAuditTrailRepository.save(foreignModuleTrail);
-                foreignModuleTrailId = foreignModuleTrail.getId();
+            // For foreign tables
+            ModulesAuditTrail foreignModuleTrail = ModulesAuditTrailBuilder.forInsert(201, "created", "NA", "National Whitelist", "INSERT", 0,"Started Foreign Whitelist Process", MODULE_NAME+"foreign_whitelist", startTime, executionStartTime);
+            foreignModuleTrail = modulesAuditTrailRepository.save(foreignModuleTrail);
+            foreignModuleTrailId = foreignModuleTrail.getId();
 
             Optional<SystemConfigurationDb> acitveUniqueForeignImeiDate =Optional.ofNullable(systemConfigurationDbRepository.getByTag(profile+"_nw_unique_foreign_imei_last_run_time"));
             String activeUniqueForeignImeisLastRunDate = "";
@@ -585,14 +590,17 @@ public class ValidateRules implements Runnable{
             log.error("DB Exception: Raising alert016 "+e);
             String msg = e.getMessage().length() <= 200?e.getMessage(): e.getMessage().substring(0, 200);
             e.printStackTrace();
-            Optional<CfgFeatureAlert> alert = cfgFeatureAlertRepository.findByAlertId("alert016");
+            /*Optional<CfgFeatureAlert> alert = cfgFeatureAlertRepository.findByAlertId("alert016");
             log.error("raising alert016");
             System.out.println("raising alert016");
             if (alert.isPresent()) {
                 raiseAnAlert(alert.get().getAlertId(), msg, MODULE_NAME+"national_whitelist", 0);
 //                RunningAlertDb alertDb = new RunningAlertDb(alert.get().getAlertId(), alert.get().getDescription().replace("<ERROR>", msg), 0);
 //                runningAlertDbRepo.save(alertDb);
-            }
+            }*/
+            this.log.error("raising alert016");
+            System.out.println("raising alert016");
+            this.alertService.raiseAlert("alert016", msg, Integer.valueOf(0));
             if (moduleAudiTrailId == 0) {
                 ModulesAuditTrail audit = ModulesAuditTrailBuilder.forInsert(501, "failed", msg, "National Whitelist", "INSERT", 0,"Exception during national whitelist process", MODULE_NAME+"national_whitelist", startTime, executionStartTime);
                 modulesAuditTrailRepository.save(audit);
@@ -625,14 +633,12 @@ public class ValidateRules implements Runnable{
                 ModulesAuditTrail audit = ModulesAuditTrailBuilder.forUpdate(foreignModuleTrailId, 501, "failed", msg, "National Whitelist", "UPDATE", "Exception during exception whitelist process", MODULE_NAME+"foreign_whitelist", executionStartTime, startTime);
                 modulesAuditTrailRepository.save(audit);
             }
-            Optional<CfgFeatureAlert> alert = cfgFeatureAlertRepository.findByAlertId("alert1209");
+            /*Optional<CfgFeatureAlert> alert = cfgFeatureAlertRepository.findByAlertId("alert1209");
             log.error("raising alert1209");
+            System.out.println("raising alert1209");*/
+            this.log.error("raising alert1209");
             System.out.println("raising alert1209");
-            if (alert.isPresent()) {
-                raiseAnAlert(alert.get().getAlertId(), msg, MODULE_NAME+"national_whitelist", 0);
-//                RunningAlertDb alertDb = new RunningAlertDb(alert.get().getAlertId(), alert.get().getDescription().replace("<ERROR>", msg), 0);
-//                runningAlertDbRepo.save(alertDb);
-            }
+            this.alertService.raiseAlert("alert1209", msg, Integer.valueOf(0));
         } finally {
             log.info("Process Completed");
             System.out.println("Process Completed");

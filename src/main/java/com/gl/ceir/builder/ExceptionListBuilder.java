@@ -1,18 +1,14 @@
 package com.gl.ceir.builder;
 
-
 import com.gl.ceir.dto.ActiveUniqueImeiDto;
 import com.gl.ceir.model.app.ActiveImeiWithDifferentMsisdn;
-import com.gl.ceir.model.app.ActiveUniqueImei;
 import com.gl.ceir.model.app.ExceptionList;
 
 import java.time.LocalDateTime;
 
 public class ExceptionListBuilder {
-
     public static ExceptionList fromActiveUniqueImei(ActiveUniqueImeiDto activeUniqueImei) {
         ExceptionList exceptionList = new ExceptionList();
-
         exceptionList.setCreatedOn(activeUniqueImei.getCreatedOn());
         exceptionList.setModifiedOn(activeUniqueImei.getModifiedOn());
         exceptionList.setTac(activeUniqueImei.getTac());
@@ -26,8 +22,6 @@ public class ExceptionListBuilder {
         exceptionList.setSystemType(activeUniqueImei.getSystemType());
         exceptionList.setAction(activeUniqueImei.getAction());
         exceptionList.setPeriod(activeUniqueImei.getPeriod());
-        exceptionList.setFailedRuleDate(activeUniqueImei.getFailedRuleDate());
-        exceptionList.setTaxPaid(activeUniqueImei.getTaxPaid());
         exceptionList.setFeatureName(activeUniqueImei.getFeatureName());
         exceptionList.setRecordTime(activeUniqueImei.getRecordTime());
         exceptionList.setActualImei(activeUniqueImei.getActualImei());
@@ -43,18 +37,15 @@ public class ExceptionListBuilder {
         exceptionList.setValidityFlag(activeUniqueImei.getValidityFlag());
         exceptionList.setDeviceType(activeUniqueImei.getDeviceType());
         exceptionList.setActualOperator(activeUniqueImei.getActualOperator());
-        exceptionList.setIsTestImei(activeUniqueImei.getTestImei());
+        exceptionList.setIsTestImei(activeUniqueImei.getIsTestImei());
         exceptionList.setExceptionListCreatedDate(LocalDateTime.now());
         exceptionList.setListType("active_unique_imei");
-        exceptionList.setForeignRule(activeUniqueImei.getForeignRule());
         exceptionList.setIsUsedDeviceImei(activeUniqueImei.getIsUsed());
-
         return exceptionList;
     }
 
     public static ExceptionList fromActiveImeiWithDifferentMsisdn(ActiveImeiWithDifferentMsisdn activeImeiWithDifferentMsisdn) {
         ExceptionList exceptionList = new ExceptionList();
-
         exceptionList.setCreatedOn(activeImeiWithDifferentMsisdn.getCreatedOn());
         exceptionList.setModifiedOn(activeImeiWithDifferentMsisdn.getModifiedOn());
         exceptionList.setTac(activeImeiWithDifferentMsisdn.getTac());
@@ -68,8 +59,6 @@ public class ExceptionListBuilder {
         exceptionList.setSystemType(activeImeiWithDifferentMsisdn.getSystemType());
         exceptionList.setAction(activeImeiWithDifferentMsisdn.getAction());
         exceptionList.setPeriod(activeImeiWithDifferentMsisdn.getPeriod());
-        exceptionList.setFailedRuleDate(activeImeiWithDifferentMsisdn.getFailedRuleDate());
-        exceptionList.setTaxPaid(activeImeiWithDifferentMsisdn.getTaxPaid());
         exceptionList.setFeatureName(activeImeiWithDifferentMsisdn.getFeatureName());
         exceptionList.setRecordTime(activeImeiWithDifferentMsisdn.getRecordTime());
         exceptionList.setActualImei(activeImeiWithDifferentMsisdn.getActualImei());
@@ -84,12 +73,10 @@ public class ExceptionListBuilder {
         exceptionList.setServerOrigin(activeImeiWithDifferentMsisdn.getServerOrigin());
         exceptionList.setValidityFlag(activeImeiWithDifferentMsisdn.getValidityFlag());
         exceptionList.setActualOperator(activeImeiWithDifferentMsisdn.getActualOperator());
-        exceptionList.setIsTestImei(activeImeiWithDifferentMsisdn.getTestImei());
+        exceptionList.setIsTestImei(activeImeiWithDifferentMsisdn.getIsTestImei());
         exceptionList.setExceptionListCreatedDate(LocalDateTime.now());
         exceptionList.setListType("active_imei_with_different_msisdn");
         exceptionList.setIsUsedDeviceImei(activeImeiWithDifferentMsisdn.getIsUsed());
-
         return exceptionList;
     }
-
 }
