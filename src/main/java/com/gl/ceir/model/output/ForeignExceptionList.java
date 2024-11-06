@@ -1,64 +1,92 @@
 package com.gl.ceir.model.output;
 
+
 import jakarta.persistence.*;
+
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "foreign_exception_list")
 public class ForeignExceptionList implements Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer foreignExceptionListId;
 
     private LocalDateTime createdOn;
+
     private LocalDateTime modifiedOn;
-    private String foreignRule;
+
     private String tac;
+
     private String msisdn;
+
     private Integer failedRuleId;
+
     private String failedRuleName;
+
     private String imsi;
+
     private String mobileOperator;
+
     private String createdFilename;
+
     private String updatedFilename;
+
     private LocalDateTime updatedOn;
+
     private String systemType;
+
     private String action;
+
     private String period;
-    private LocalDateTime failedRuleDate;
-    private Integer taxPaid;
+
     private String featureName;
+
     private LocalDateTime recordTime;
+
     private String actualImei;
+
     private String recordType;
+
     private String imei;
+
     private String rawCdrFileName;
+
     private LocalDateTime imeiArrivalTime;
+
     private String source;
+
     private String updateRawCdrFileName;
+
     private LocalDateTime updateImeiArrivalTime;
+
     private String updateSource;
+
     private String serverOrigin;
+
     private String reasonForInvalidImei;
+
     private Boolean validityFlag;
+
     private LocalDateTime exceptionListCreatedDate;
+
     private String deviceType;
+
     private String actualOperator;
-    private String isTestImei;
+
+    private Integer isTestImei;
+
     private String listType;
-    private String isUsedDeviceImei;
 
-    public ForeignExceptionList() {
-    }
+    private Integer isUsedDeviceImei;
 
-    public ForeignExceptionList(Integer foreignExceptionListId, LocalDateTime createdOn, LocalDateTime modifiedOn, String foreignRule, String tac, String msisdn, Integer failedRuleId, String failedRuleName, String imsi, String mobileOperator, String createdFilename, String updatedFilename, LocalDateTime updatedOn, String systemType, String action, String period, LocalDateTime failedRuleDate, Integer taxPaid, String featureName, LocalDateTime recordTime, String actualImei, String recordType, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, String reasonForInvalidImei, Boolean validityFlag, LocalDateTime exceptionListCreatedDate, String deviceType, String actualOperator, String isTestImei, String listType, String isUsedDeviceImei) {
+    public ForeignExceptionList() {}
+
+    public ForeignExceptionList(Integer foreignExceptionListId, LocalDateTime createdOn, LocalDateTime modifiedOn, String tac, String msisdn, Integer failedRuleId, String failedRuleName, String imsi, String mobileOperator, String createdFilename, String updatedFilename, LocalDateTime updatedOn, String systemType, String action, String period, String featureName, LocalDateTime recordTime, String actualImei, String recordType, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, String reasonForInvalidImei, Boolean validityFlag, LocalDateTime exceptionListCreatedDate, String deviceType, String actualOperator, Integer isTestImei, String listType, Integer isUsedDeviceImei) {
         this.foreignExceptionListId = foreignExceptionListId;
         this.createdOn = createdOn;
         this.modifiedOn = modifiedOn;
-        this.foreignRule = foreignRule;
         this.tac = tac;
         this.msisdn = msisdn;
         this.failedRuleId = failedRuleId;
@@ -71,8 +99,6 @@ public class ForeignExceptionList implements Serializable {
         this.systemType = systemType;
         this.action = action;
         this.period = period;
-        this.failedRuleDate = failedRuleDate;
-        this.taxPaid = taxPaid;
         this.featureName = featureName;
         this.recordTime = recordTime;
         this.actualImei = actualImei;
@@ -96,7 +122,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public Integer getForeignExceptionListId() {
-        return foreignExceptionListId;
+        return this.foreignExceptionListId;
     }
 
     public void setForeignExceptionListId(Integer foreignExceptionListId) {
@@ -104,7 +130,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public LocalDateTime getCreatedOn() {
-        return createdOn;
+        return this.createdOn;
     }
 
     public void setCreatedOn(LocalDateTime createdOn) {
@@ -112,23 +138,15 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public LocalDateTime getModifiedOn() {
-        return modifiedOn;
+        return this.modifiedOn;
     }
 
     public void setModifiedOn(LocalDateTime modifiedOn) {
         this.modifiedOn = modifiedOn;
     }
 
-    public String getForeignRule() {
-        return foreignRule;
-    }
-
-    public void setForeignRule(String foreignRule) {
-        this.foreignRule = foreignRule;
-    }
-
     public String getTac() {
-        return tac;
+        return this.tac;
     }
 
     public void setTac(String tac) {
@@ -136,7 +154,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public String getMsisdn() {
-        return msisdn;
+        return this.msisdn;
     }
 
     public void setMsisdn(String msisdn) {
@@ -144,7 +162,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public Integer getFailedRuleId() {
-        return failedRuleId;
+        return this.failedRuleId;
     }
 
     public void setFailedRuleId(Integer failedRuleId) {
@@ -152,7 +170,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public String getFailedRuleName() {
-        return failedRuleName;
+        return this.failedRuleName;
     }
 
     public void setFailedRuleName(String failedRuleName) {
@@ -160,7 +178,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public String getImsi() {
-        return imsi;
+        return this.imsi;
     }
 
     public void setImsi(String imsi) {
@@ -168,7 +186,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public String getMobileOperator() {
-        return mobileOperator;
+        return this.mobileOperator;
     }
 
     public void setMobileOperator(String mobileOperator) {
@@ -176,7 +194,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public String getCreatedFilename() {
-        return createdFilename;
+        return this.createdFilename;
     }
 
     public void setCreatedFilename(String createdFilename) {
@@ -184,7 +202,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public String getUpdatedFilename() {
-        return updatedFilename;
+        return this.updatedFilename;
     }
 
     public void setUpdatedFilename(String updatedFilename) {
@@ -192,7 +210,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public LocalDateTime getUpdatedOn() {
-        return updatedOn;
+        return this.updatedOn;
     }
 
     public void setUpdatedOn(LocalDateTime updatedOn) {
@@ -200,7 +218,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public String getSystemType() {
-        return systemType;
+        return this.systemType;
     }
 
     public void setSystemType(String systemType) {
@@ -208,7 +226,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public String getAction() {
-        return action;
+        return this.action;
     }
 
     public void setAction(String action) {
@@ -216,31 +234,15 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public String getPeriod() {
-        return period;
+        return this.period;
     }
 
     public void setPeriod(String period) {
         this.period = period;
     }
 
-    public LocalDateTime getFailedRuleDate() {
-        return failedRuleDate;
-    }
-
-    public void setFailedRuleDate(LocalDateTime failedRuleDate) {
-        this.failedRuleDate = failedRuleDate;
-    }
-
-    public Integer getTaxPaid() {
-        return taxPaid;
-    }
-
-    public void setTaxPaid(Integer taxPaid) {
-        this.taxPaid = taxPaid;
-    }
-
     public String getFeatureName() {
-        return featureName;
+        return this.featureName;
     }
 
     public void setFeatureName(String featureName) {
@@ -248,7 +250,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public LocalDateTime getRecordTime() {
-        return recordTime;
+        return this.recordTime;
     }
 
     public void setRecordTime(LocalDateTime recordTime) {
@@ -256,7 +258,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public String getActualImei() {
-        return actualImei;
+        return this.actualImei;
     }
 
     public void setActualImei(String actualImei) {
@@ -264,7 +266,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public String getRecordType() {
-        return recordType;
+        return this.recordType;
     }
 
     public void setRecordType(String recordType) {
@@ -272,7 +274,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public String getImei() {
-        return imei;
+        return this.imei;
     }
 
     public void setImei(String imei) {
@@ -280,7 +282,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public String getRawCdrFileName() {
-        return rawCdrFileName;
+        return this.rawCdrFileName;
     }
 
     public void setRawCdrFileName(String rawCdrFileName) {
@@ -288,7 +290,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public LocalDateTime getImeiArrivalTime() {
-        return imeiArrivalTime;
+        return this.imeiArrivalTime;
     }
 
     public void setImeiArrivalTime(LocalDateTime imeiArrivalTime) {
@@ -296,7 +298,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public String getSource() {
-        return source;
+        return this.source;
     }
 
     public void setSource(String source) {
@@ -304,7 +306,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public String getUpdateRawCdrFileName() {
-        return updateRawCdrFileName;
+        return this.updateRawCdrFileName;
     }
 
     public void setUpdateRawCdrFileName(String updateRawCdrFileName) {
@@ -312,7 +314,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public LocalDateTime getUpdateImeiArrivalTime() {
-        return updateImeiArrivalTime;
+        return this.updateImeiArrivalTime;
     }
 
     public void setUpdateImeiArrivalTime(LocalDateTime updateImeiArrivalTime) {
@@ -320,7 +322,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public String getUpdateSource() {
-        return updateSource;
+        return this.updateSource;
     }
 
     public void setUpdateSource(String updateSource) {
@@ -328,7 +330,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public String getServerOrigin() {
-        return serverOrigin;
+        return this.serverOrigin;
     }
 
     public void setServerOrigin(String serverOrigin) {
@@ -336,7 +338,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public String getReasonForInvalidImei() {
-        return reasonForInvalidImei;
+        return this.reasonForInvalidImei;
     }
 
     public void setReasonForInvalidImei(String reasonForInvalidImei) {
@@ -344,7 +346,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public Boolean getValidityFlag() {
-        return validityFlag;
+        return this.validityFlag;
     }
 
     public void setValidityFlag(Boolean validityFlag) {
@@ -352,7 +354,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public LocalDateTime getExceptionListCreatedDate() {
-        return exceptionListCreatedDate;
+        return this.exceptionListCreatedDate;
     }
 
     public void setExceptionListCreatedDate(LocalDateTime exceptionListCreatedDate) {
@@ -360,7 +362,7 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public String getDeviceType() {
-        return deviceType;
+        return this.deviceType;
     }
 
     public void setDeviceType(String deviceType) {
@@ -368,79 +370,38 @@ public class ForeignExceptionList implements Serializable {
     }
 
     public String getActualOperator() {
-        return actualOperator;
+        return this.actualOperator;
     }
 
     public void setActualOperator(String actualOperator) {
         this.actualOperator = actualOperator;
     }
 
-    public String getIsTestImei() {
-        return isTestImei;
+    public Integer getIsTestImei() {
+        return this.isTestImei;
     }
 
-    public void setIsTestImei(String isTestImei) {
+    public void setIsTestImei(Integer isTestImei) {
         this.isTestImei = isTestImei;
     }
 
     public String getListType() {
-        return listType;
+        return this.listType;
     }
 
     public void setListType(String listType) {
         this.listType = listType;
     }
 
-    public String getIsUsedDeviceImei() {
-        return isUsedDeviceImei;
+    public Integer getIsUsedDeviceImei() {
+        return this.isUsedDeviceImei;
     }
 
-    public void setIsUsedDeviceImei(String isUsedDeviceImei) {
+    public void setIsUsedDeviceImei(Integer isUsedDeviceImei) {
         this.isUsedDeviceImei = isUsedDeviceImei;
     }
 
-    @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ForeignExceptionList{");
-        sb.append("foreignExceptionListId=").append(foreignExceptionListId);
-        sb.append(", createdOn=").append(createdOn);
-        sb.append(", modifiedOn=").append(modifiedOn);
-        sb.append(", foreignRule='").append(foreignRule).append('\'');
-        sb.append(", tac='").append(tac).append('\'');
-        sb.append(", msisdn='").append(msisdn).append('\'');
-        sb.append(", failedRuleId=").append(failedRuleId);
-        sb.append(", failedRuleName='").append(failedRuleName).append('\'');
-        sb.append(", imsi='").append(imsi).append('\'');
-        sb.append(", mobileOperator='").append(mobileOperator).append('\'');
-        sb.append(", createdFilename='").append(createdFilename).append('\'');
-        sb.append(", updatedFilename='").append(updatedFilename).append('\'');
-        sb.append(", updatedOn=").append(updatedOn);
-        sb.append(", systemType='").append(systemType).append('\'');
-        sb.append(", action='").append(action).append('\'');
-        sb.append(", period='").append(period).append('\'');
-        sb.append(", failedRuleDate=").append(failedRuleDate);
-        sb.append(", taxPaid=").append(taxPaid);
-        sb.append(", featureName='").append(featureName).append('\'');
-        sb.append(", recordTime=").append(recordTime);
-        sb.append(", actualImei='").append(actualImei).append('\'');
-        sb.append(", recordType='").append(recordType).append('\'');
-        sb.append(", imei='").append(imei).append('\'');
-        sb.append(", rawCdrFileName='").append(rawCdrFileName).append('\'');
-        sb.append(", imeiArrivalTime=").append(imeiArrivalTime);
-        sb.append(", source='").append(source).append('\'');
-        sb.append(", updateRawCdrFileName='").append(updateRawCdrFileName).append('\'');
-        sb.append(", updateImeiArrivalTime=").append(updateImeiArrivalTime);
-        sb.append(", updateSource='").append(updateSource).append('\'');
-        sb.append(", serverOrigin='").append(serverOrigin).append('\'');
-        sb.append(", reasonForInvalidImei='").append(reasonForInvalidImei).append('\'');
-        sb.append(", validityFlag=").append(validityFlag);
-        sb.append(", exceptionListCreatedDate=").append(exceptionListCreatedDate);
-        sb.append(", deviceType='").append(deviceType).append('\'');
-        sb.append(", actualOperator='").append(actualOperator).append('\'');
-        sb.append(", isTestImei='").append(isTestImei).append('\'');
-        sb.append(", listType='").append(listType).append('\'');
-        sb.append(", isUsedDeviceImei='").append(isUsedDeviceImei).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "ForeignExceptionList{foreignExceptionListId=" + this.foreignExceptionListId + ", createdOn=" + String.valueOf(this.createdOn) + ", modifiedOn=" + String.valueOf(this.modifiedOn) + ", tac='" + this.tac + "', msisdn='" + this.msisdn + "', failedRuleId=" + this.failedRuleId + ", failedRuleName='" + this.failedRuleName + "', imsi='" + this.imsi + "', mobileOperator='" + this.mobileOperator + "', createdFilename='" + this.createdFilename + "', updatedFilename='" + this.updatedFilename + "', updatedOn=" + String.valueOf(this.updatedOn) + ", systemType='" + this.systemType + "', action='" + this.action + "', period='" + this.period + "', featureName='" + this.featureName + "', recordTime=" + String.valueOf(this.recordTime) + ", actualImei='" + this.actualImei + "', recordType='" + this.recordType + "', imei='" + this.imei + "', rawCdrFileName='" + this.rawCdrFileName + "', imeiArrivalTime=" + String.valueOf(this.imeiArrivalTime) + ", source='" + this.source + "', updateRawCdrFileName='" + this.updateRawCdrFileName + "', updateImeiArrivalTime=" + String.valueOf(this.updateImeiArrivalTime) + ", updateSource='" + this.updateSource + "', serverOrigin='" + this.serverOrigin + "', reasonForInvalidImei='" + this.reasonForInvalidImei + "', validityFlag=" + this.validityFlag + ", exceptionListCreatedDate=" + String.valueOf(this.exceptionListCreatedDate) + ", deviceType='" + this.deviceType + "', actualOperator='" + this.actualOperator + "', isTestImei=" + this.isTestImei + ", listType='" + this.listType + "', isUsedDeviceImei=" + this.isUsedDeviceImei + "}";
     }
 }

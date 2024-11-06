@@ -1,4 +1,4 @@
-package com.gl.ceir.model.app;
+package com.gl.ceir.repository.app;
 
 
 import jakarta.persistence.*;
@@ -7,17 +7,15 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "exception_list")
-public class ExceptionList implements Serializable {
+@Table(name = "foreign_exception_list")
+public class ForeignExceptionList implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer exceptionListId;
+    private Integer foreignExceptionListId;
 
     private LocalDateTime createdOn;
 
     private LocalDateTime modifiedOn;
-
-    private String foreignRule;
 
     private String tac;
 
@@ -42,10 +40,6 @@ public class ExceptionList implements Serializable {
     private String action;
 
     private String period;
-
-    private LocalDateTime failedRuleDate;
-
-    private Integer taxPaid;
 
     private String featureName;
 
@@ -75,9 +69,9 @@ public class ExceptionList implements Serializable {
 
     private Boolean validityFlag;
 
-    private String deviceType;
-
     private LocalDateTime exceptionListCreatedDate;
+
+    private String deviceType;
 
     private String actualOperator;
 
@@ -87,13 +81,12 @@ public class ExceptionList implements Serializable {
 
     private Integer isUsedDeviceImei;
 
-    public ExceptionList() {}
+    public ForeignExceptionList() {}
 
-    public ExceptionList(Integer exceptionListId, LocalDateTime createdOn, LocalDateTime modifiedOn, String foreignRule, String tac, String msisdn, Integer failedRuleId, String failedRuleName, String imsi, String mobileOperator, String createdFilename, String updatedFilename, LocalDateTime updatedOn, String systemType, String action, String period, LocalDateTime failedRuleDate, Integer taxPaid, String featureName, LocalDateTime recordTime, String actualImei, String recordType, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, String reasonForInvalidImei, Boolean validityFlag, String deviceType, LocalDateTime exceptionListCreatedDate, String actualOperator, Integer isTestImei, String listType, Integer isUsedDeviceImei) {
-        this.exceptionListId = exceptionListId;
+    public ForeignExceptionList(Integer foreignExceptionListId, LocalDateTime createdOn, LocalDateTime modifiedOn, String tac, String msisdn, Integer failedRuleId, String failedRuleName, String imsi, String mobileOperator, String createdFilename, String updatedFilename, LocalDateTime updatedOn, String systemType, String action, String period, String featureName, LocalDateTime recordTime, String actualImei, String recordType, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, String reasonForInvalidImei, Boolean validityFlag, LocalDateTime exceptionListCreatedDate, String deviceType, String actualOperator, Integer isTestImei, String listType, Integer isUsedDeviceImei) {
+        this.foreignExceptionListId = foreignExceptionListId;
         this.createdOn = createdOn;
         this.modifiedOn = modifiedOn;
-        this.foreignRule = foreignRule;
         this.tac = tac;
         this.msisdn = msisdn;
         this.failedRuleId = failedRuleId;
@@ -106,8 +99,6 @@ public class ExceptionList implements Serializable {
         this.systemType = systemType;
         this.action = action;
         this.period = period;
-        this.failedRuleDate = failedRuleDate;
-        this.taxPaid = taxPaid;
         this.featureName = featureName;
         this.recordTime = recordTime;
         this.actualImei = actualImei;
@@ -122,20 +113,20 @@ public class ExceptionList implements Serializable {
         this.serverOrigin = serverOrigin;
         this.reasonForInvalidImei = reasonForInvalidImei;
         this.validityFlag = validityFlag;
-        this.deviceType = deviceType;
         this.exceptionListCreatedDate = exceptionListCreatedDate;
+        this.deviceType = deviceType;
         this.actualOperator = actualOperator;
         this.isTestImei = isTestImei;
         this.listType = listType;
         this.isUsedDeviceImei = isUsedDeviceImei;
     }
 
-    public Integer getExceptionListId() {
-        return this.exceptionListId;
+    public Integer getForeignExceptionListId() {
+        return this.foreignExceptionListId;
     }
 
-    public void setExceptionListId(Integer exceptionListId) {
-        this.exceptionListId = exceptionListId;
+    public void setForeignExceptionListId(Integer foreignExceptionListId) {
+        this.foreignExceptionListId = foreignExceptionListId;
     }
 
     public LocalDateTime getCreatedOn() {
@@ -152,14 +143,6 @@ public class ExceptionList implements Serializable {
 
     public void setModifiedOn(LocalDateTime modifiedOn) {
         this.modifiedOn = modifiedOn;
-    }
-
-    public String getForeignRule() {
-        return this.foreignRule;
-    }
-
-    public void setForeignRule(String foreignRule) {
-        this.foreignRule = foreignRule;
     }
 
     public String getTac() {
@@ -256,22 +239,6 @@ public class ExceptionList implements Serializable {
 
     public void setPeriod(String period) {
         this.period = period;
-    }
-
-    public LocalDateTime getFailedRuleDate() {
-        return this.failedRuleDate;
-    }
-
-    public void setFailedRuleDate(LocalDateTime failedRuleDate) {
-        this.failedRuleDate = failedRuleDate;
-    }
-
-    public Integer getTaxPaid() {
-        return this.taxPaid;
-    }
-
-    public void setTaxPaid(Integer taxPaid) {
-        this.taxPaid = taxPaid;
     }
 
     public String getFeatureName() {
@@ -386,20 +353,20 @@ public class ExceptionList implements Serializable {
         this.validityFlag = validityFlag;
     }
 
-    public String getDeviceType() {
-        return this.deviceType;
-    }
-
-    public void setDeviceType(String deviceType) {
-        this.deviceType = deviceType;
-    }
-
     public LocalDateTime getExceptionListCreatedDate() {
         return this.exceptionListCreatedDate;
     }
 
     public void setExceptionListCreatedDate(LocalDateTime exceptionListCreatedDate) {
         this.exceptionListCreatedDate = exceptionListCreatedDate;
+    }
+
+    public String getDeviceType() {
+        return this.deviceType;
+    }
+
+    public void setDeviceType(String deviceType) {
+        this.deviceType = deviceType;
     }
 
     public String getActualOperator() {
@@ -435,6 +402,6 @@ public class ExceptionList implements Serializable {
     }
 
     public String toString() {
-        return "ExceptionList{exceptionListId=" + this.exceptionListId + ", createdOn=" + String.valueOf(this.createdOn) + ", modifiedOn=" + String.valueOf(this.modifiedOn) + ", foreignRule='" + this.foreignRule + "', tac='" + this.tac + "', msisdn='" + this.msisdn + "', failedRuleId=" + this.failedRuleId + ", failedRuleName='" + this.failedRuleName + "', imsi='" + this.imsi + "', mobileOperator='" + this.mobileOperator + "', createdFilename='" + this.createdFilename + "', updatedFilename='" + this.updatedFilename + "', updatedOn=" + String.valueOf(this.updatedOn) + ", systemType='" + this.systemType + "', action='" + this.action + "', period='" + this.period + "', failedRuleDate=" + String.valueOf(this.failedRuleDate) + ", taxPaid=" + this.taxPaid + ", featureName='" + this.featureName + "', recordTime=" + String.valueOf(this.recordTime) + ", actualImei='" + this.actualImei + "', recordType='" + this.recordType + "', imei='" + this.imei + "', rawCdrFileName='" + this.rawCdrFileName + "', imeiArrivalTime=" + String.valueOf(this.imeiArrivalTime) + ", source='" + this.source + "', updateRawCdrFileName='" + this.updateRawCdrFileName + "', updateImeiArrivalTime=" + String.valueOf(this.updateImeiArrivalTime) + ", updateSource='" + this.updateSource + "', serverOrigin='" + this.serverOrigin + "', reasonForInvalidImei='" + this.reasonForInvalidImei + "', validityFlag=" + this.validityFlag + ", deviceType='" + this.deviceType + "', exceptionListCreatedDate=" + String.valueOf(this.exceptionListCreatedDate) + ", actualOperator='" + this.actualOperator + "', isTestImei=" + this.isTestImei + ", listType='" + this.listType + "', isUsedDeviceImei=" + this.isUsedDeviceImei + "}";
+        return "ForeignExceptionList{foreignExceptionListId=" + this.foreignExceptionListId + ", createdOn=" + String.valueOf(this.createdOn) + ", modifiedOn=" + String.valueOf(this.modifiedOn) + ", tac='" + this.tac + "', msisdn='" + this.msisdn + "', failedRuleId=" + this.failedRuleId + ", failedRuleName='" + this.failedRuleName + "', imsi='" + this.imsi + "', mobileOperator='" + this.mobileOperator + "', createdFilename='" + this.createdFilename + "', updatedFilename='" + this.updatedFilename + "', updatedOn=" + String.valueOf(this.updatedOn) + ", systemType='" + this.systemType + "', action='" + this.action + "', period='" + this.period + "', featureName='" + this.featureName + "', recordTime=" + String.valueOf(this.recordTime) + ", actualImei='" + this.actualImei + "', recordType='" + this.recordType + "', imei='" + this.imei + "', rawCdrFileName='" + this.rawCdrFileName + "', imeiArrivalTime=" + String.valueOf(this.imeiArrivalTime) + ", source='" + this.source + "', updateRawCdrFileName='" + this.updateRawCdrFileName + "', updateImeiArrivalTime=" + String.valueOf(this.updateImeiArrivalTime) + ", updateSource='" + this.updateSource + "', serverOrigin='" + this.serverOrigin + "', reasonForInvalidImei='" + this.reasonForInvalidImei + "', validityFlag=" + this.validityFlag + ", exceptionListCreatedDate=" + String.valueOf(this.exceptionListCreatedDate) + ", deviceType='" + this.deviceType + "', actualOperator='" + this.actualOperator + "', isTestImei=" + this.isTestImei + ", listType='" + this.listType + "', isUsedDeviceImei=" + this.isUsedDeviceImei + "}";
     }
 }

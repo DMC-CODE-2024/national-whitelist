@@ -1,13 +1,12 @@
 package com.gl.ceir.model.app;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "active_foreign_imei_with_different_msisdn", schema = "app")
 public class ActiveForeignImeiWithDifferentMsisdn {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -55,15 +54,6 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     @Column(name = "period")
     private String period;
 
-    @Column(name = "failed_rule_date")
-    private LocalDateTime failedRuleDate;
-
-    @Column(name = "mobile_operator_id")
-    private Integer mobileOperatorId;
-
-    @Column(name = "tax_paid")
-    private Integer taxPaid;
-
     @Column(name = "feature_name")
     private String featureName;
 
@@ -100,23 +90,23 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     @Column(name = "server_origin")
     private String serverOrigin;
 
-    @Column(name = "test_imei")
-    private String testImei;
+    @Column(name = "is_test_imei")
+    private Integer isTestImei;
 
     @Column(name = "actual_operator")
     private String actualOperator;
 
     @Column(name = "device_type")
     private String deviceType;
+
     @Column(name = "is_used")
-    private String isUsed;
+    private Integer isUsed;
 
     private Boolean validityFlag;
 
-    public ActiveForeignImeiWithDifferentMsisdn() {
-    }
+    public ActiveForeignImeiWithDifferentMsisdn() {}
 
-    public ActiveForeignImeiWithDifferentMsisdn(Integer id, LocalDateTime createdOn, LocalDateTime modifiedOn, String tac, String msisdn, Integer failedRuleId, String failedRuleName, String imsi, String mobileOperator, String createFilename, String updateFilename, LocalDateTime updatedOn, String systemType, String action, String period, LocalDateTime failedRuleDate, Integer mobileOperatorId, Integer taxPaid, String featureName, LocalDateTime recordTime, String actualImei, String recordType, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, Boolean validityFlag, String testImei, String actualOperator, String deviceType, String isUsed) {
+    public ActiveForeignImeiWithDifferentMsisdn(Integer id, LocalDateTime createdOn, LocalDateTime modifiedOn, String tac, String msisdn, Integer failedRuleId, String failedRuleName, String imsi, String mobileOperator, String createFilename, String updateFilename, LocalDateTime updatedOn, String systemType, String action, String period, String featureName, LocalDateTime recordTime, String actualImei, String recordType, String imei, String rawCdrFileName, LocalDateTime imeiArrivalTime, String source, String updateRawCdrFileName, LocalDateTime updateImeiArrivalTime, String updateSource, String serverOrigin, Integer isTestImei, String actualOperator, String deviceType, Integer isUsed, Boolean validityFlag) {
         this.id = id;
         this.createdOn = createdOn;
         this.modifiedOn = modifiedOn;
@@ -132,9 +122,6 @@ public class ActiveForeignImeiWithDifferentMsisdn {
         this.systemType = systemType;
         this.action = action;
         this.period = period;
-        this.failedRuleDate = failedRuleDate;
-        this.mobileOperatorId = mobileOperatorId;
-        this.taxPaid = taxPaid;
         this.featureName = featureName;
         this.recordTime = recordTime;
         this.actualImei = actualImei;
@@ -147,15 +134,15 @@ public class ActiveForeignImeiWithDifferentMsisdn {
         this.updateImeiArrivalTime = updateImeiArrivalTime;
         this.updateSource = updateSource;
         this.serverOrigin = serverOrigin;
-        this.validityFlag = validityFlag;
-        this.testImei = testImei;
+        this.isTestImei = isTestImei;
         this.actualOperator = actualOperator;
         this.deviceType = deviceType;
         this.isUsed = isUsed;
+        this.validityFlag = validityFlag;
     }
 
     public Integer getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Integer id) {
@@ -163,7 +150,7 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public LocalDateTime getCreatedOn() {
-        return createdOn;
+        return this.createdOn;
     }
 
     public void setCreatedOn(LocalDateTime createdOn) {
@@ -171,7 +158,7 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public LocalDateTime getModifiedOn() {
-        return modifiedOn;
+        return this.modifiedOn;
     }
 
     public void setModifiedOn(LocalDateTime modifiedOn) {
@@ -179,7 +166,7 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public String getTac() {
-        return tac;
+        return this.tac;
     }
 
     public void setTac(String tac) {
@@ -187,7 +174,7 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public String getMsisdn() {
-        return msisdn;
+        return this.msisdn;
     }
 
     public void setMsisdn(String msisdn) {
@@ -195,7 +182,7 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public Integer getFailedRuleId() {
-        return failedRuleId;
+        return this.failedRuleId;
     }
 
     public void setFailedRuleId(Integer failedRuleId) {
@@ -203,7 +190,7 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public String getFailedRuleName() {
-        return failedRuleName;
+        return this.failedRuleName;
     }
 
     public void setFailedRuleName(String failedRuleName) {
@@ -211,7 +198,7 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public String getImsi() {
-        return imsi;
+        return this.imsi;
     }
 
     public void setImsi(String imsi) {
@@ -219,7 +206,7 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public String getMobileOperator() {
-        return mobileOperator;
+        return this.mobileOperator;
     }
 
     public void setMobileOperator(String mobileOperator) {
@@ -227,7 +214,7 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public String getCreateFilename() {
-        return createFilename;
+        return this.createFilename;
     }
 
     public void setCreateFilename(String createFilename) {
@@ -235,7 +222,7 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public String getUpdateFilename() {
-        return updateFilename;
+        return this.updateFilename;
     }
 
     public void setUpdateFilename(String updateFilename) {
@@ -243,7 +230,7 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public LocalDateTime getUpdatedOn() {
-        return updatedOn;
+        return this.updatedOn;
     }
 
     public void setUpdatedOn(LocalDateTime updatedOn) {
@@ -251,7 +238,7 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public String getSystemType() {
-        return systemType;
+        return this.systemType;
     }
 
     public void setSystemType(String systemType) {
@@ -259,7 +246,7 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public String getAction() {
-        return action;
+        return this.action;
     }
 
     public void setAction(String action) {
@@ -267,39 +254,15 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public String getPeriod() {
-        return period;
+        return this.period;
     }
 
     public void setPeriod(String period) {
         this.period = period;
     }
 
-    public LocalDateTime getFailedRuleDate() {
-        return failedRuleDate;
-    }
-
-    public void setFailedRuleDate(LocalDateTime failedRuleDate) {
-        this.failedRuleDate = failedRuleDate;
-    }
-
-    public Integer getMobileOperatorId() {
-        return mobileOperatorId;
-    }
-
-    public void setMobileOperatorId(Integer mobileOperatorId) {
-        this.mobileOperatorId = mobileOperatorId;
-    }
-
-    public Integer getTaxPaid() {
-        return taxPaid;
-    }
-
-    public void setTaxPaid(Integer taxPaid) {
-        this.taxPaid = taxPaid;
-    }
-
     public String getFeatureName() {
-        return featureName;
+        return this.featureName;
     }
 
     public void setFeatureName(String featureName) {
@@ -307,7 +270,7 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public LocalDateTime getRecordTime() {
-        return recordTime;
+        return this.recordTime;
     }
 
     public void setRecordTime(LocalDateTime recordTime) {
@@ -315,7 +278,7 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public String getActualImei() {
-        return actualImei;
+        return this.actualImei;
     }
 
     public void setActualImei(String actualImei) {
@@ -323,7 +286,7 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public String getRecordType() {
-        return recordType;
+        return this.recordType;
     }
 
     public void setRecordType(String recordType) {
@@ -331,7 +294,7 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public String getImei() {
-        return imei;
+        return this.imei;
     }
 
     public void setImei(String imei) {
@@ -339,7 +302,7 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public String getRawCdrFileName() {
-        return rawCdrFileName;
+        return this.rawCdrFileName;
     }
 
     public void setRawCdrFileName(String rawCdrFileName) {
@@ -347,7 +310,7 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public LocalDateTime getImeiArrivalTime() {
-        return imeiArrivalTime;
+        return this.imeiArrivalTime;
     }
 
     public void setImeiArrivalTime(LocalDateTime imeiArrivalTime) {
@@ -355,7 +318,7 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public String getSource() {
-        return source;
+        return this.source;
     }
 
     public void setSource(String source) {
@@ -363,7 +326,7 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public String getUpdateRawCdrFileName() {
-        return updateRawCdrFileName;
+        return this.updateRawCdrFileName;
     }
 
     public void setUpdateRawCdrFileName(String updateRawCdrFileName) {
@@ -371,7 +334,7 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public LocalDateTime getUpdateImeiArrivalTime() {
-        return updateImeiArrivalTime;
+        return this.updateImeiArrivalTime;
     }
 
     public void setUpdateImeiArrivalTime(LocalDateTime updateImeiArrivalTime) {
@@ -379,7 +342,7 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public String getUpdateSource() {
-        return updateSource;
+        return this.updateSource;
     }
 
     public void setUpdateSource(String updateSource) {
@@ -387,31 +350,23 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public String getServerOrigin() {
-        return serverOrigin;
+        return this.serverOrigin;
     }
 
     public void setServerOrigin(String serverOrigin) {
         this.serverOrigin = serverOrigin;
     }
 
-    public Boolean getValidityFlag() {
-        return validityFlag;
+    public Integer getIsTestImei() {
+        return this.isTestImei;
     }
 
-    public void setValidityFlag(Boolean validityFlag) {
-        this.validityFlag = validityFlag;
-    }
-
-    public String getTestImei() {
-        return testImei;
-    }
-
-    public void setTestImei(String testImei) {
-        this.testImei = testImei;
+    public void setIsTestImei(Integer isTestImei) {
+        this.isTestImei = isTestImei;
     }
 
     public String getActualOperator() {
-        return actualOperator;
+        return this.actualOperator;
     }
 
     public void setActualOperator(String actualOperator) {
@@ -419,59 +374,30 @@ public class ActiveForeignImeiWithDifferentMsisdn {
     }
 
     public String getDeviceType() {
-        return deviceType;
+        return this.deviceType;
     }
 
     public void setDeviceType(String deviceType) {
         this.deviceType = deviceType;
     }
 
-    public String getIsUsed() {
-        return isUsed;
+    public Integer getIsUsed() {
+        return this.isUsed;
     }
 
-    public void setIsUsed(String isUsed) {
+    public void setIsUsed(Integer isUsed) {
         this.isUsed = isUsed;
     }
 
-    @Override
+    public Boolean getValidityFlag() {
+        return this.validityFlag;
+    }
+
+    public void setValidityFlag(Boolean validityFlag) {
+        this.validityFlag = validityFlag;
+    }
+
     public String toString() {
-        return "ActiveForeignImeiWithDifferentMsisdn{" +
-                "id=" + id +
-                ", createdOn=" + createdOn +
-                ", modifiedOn=" + modifiedOn +
-                ", tac='" + tac + '\'' +
-                ", msisdn='" + msisdn + '\'' +
-                ", failedRuleId=" + failedRuleId +
-                ", failedRuleName='" + failedRuleName + '\'' +
-                ", imsi='" + imsi + '\'' +
-                ", mobileOperator='" + mobileOperator + '\'' +
-                ", createFilename='" + createFilename + '\'' +
-                ", updateFilename='" + updateFilename + '\'' +
-                ", updatedOn=" + updatedOn +
-                ", systemType='" + systemType + '\'' +
-                ", action='" + action + '\'' +
-                ", period='" + period + '\'' +
-                ", failedRuleDate=" + failedRuleDate +
-                ", mobileOperatorId=" + mobileOperatorId +
-                ", taxPaid=" + taxPaid +
-                ", featureName='" + featureName + '\'' +
-                ", recordTime=" + recordTime +
-                ", actualImei='" + actualImei + '\'' +
-                ", recordType='" + recordType + '\'' +
-                ", imei='" + imei + '\'' +
-                ", rawCdrFileName='" + rawCdrFileName + '\'' +
-                ", imeiArrivalTime=" + imeiArrivalTime +
-                ", source='" + source + '\'' +
-                ", updateRawCdrFileName='" + updateRawCdrFileName + '\'' +
-                ", updateImeiArrivalTime=" + updateImeiArrivalTime +
-                ", updateSource='" + updateSource + '\'' +
-                ", serverOrigin='" + serverOrigin + '\'' +
-                ", validityFlag=" + validityFlag +
-                ", testImei='" + testImei + '\'' +
-                ", actualOperator='" + actualOperator + '\'' +
-                ", deviceType='" + deviceType + '\'' +
-                ", isUsed='" + isUsed + '\'' +
-                '}';
+        return "ActiveForeignImeiWithDifferentMsisdn{id=" + this.id + ", createdOn=" + String.valueOf(this.createdOn) + ", modifiedOn=" + String.valueOf(this.modifiedOn) + ", tac='" + this.tac + "', msisdn='" + this.msisdn + "', failedRuleId=" + this.failedRuleId + ", failedRuleName='" + this.failedRuleName + "', imsi='" + this.imsi + "', mobileOperator='" + this.mobileOperator + "', createFilename='" + this.createFilename + "', updateFilename='" + this.updateFilename + "', updatedOn=" + String.valueOf(this.updatedOn) + ", systemType='" + this.systemType + "', action='" + this.action + "', period='" + this.period + "', featureName='" + this.featureName + "', recordTime=" + String.valueOf(this.recordTime) + ", actualImei='" + this.actualImei + "', recordType='" + this.recordType + "', imei='" + this.imei + "', rawCdrFileName='" + this.rawCdrFileName + "', imeiArrivalTime=" + String.valueOf(this.imeiArrivalTime) + ", source='" + this.source + "', updateRawCdrFileName='" + this.updateRawCdrFileName + "', updateImeiArrivalTime=" + String.valueOf(this.updateImeiArrivalTime) + ", updateSource='" + this.updateSource + "', serverOrigin='" + this.serverOrigin + "', isTestImei=" + this.isTestImei + ", actualOperator='" + this.actualOperator + "', deviceType='" + this.deviceType + "', isUsed=" + this.isUsed + ", validityFlag=" + this.validityFlag + "}";
     }
 }

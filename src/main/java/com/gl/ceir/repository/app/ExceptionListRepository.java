@@ -6,5 +6,4 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ExceptionListRepository  extends JpaRepository<ExceptionList,Long>, JpaSpecificationExecutor<ExceptionList> {
-}
+public interface ExceptionListRepository extends JpaRepository<ExceptionList, Long>, JpaSpecificationExecutor<ExceptionList> {}
