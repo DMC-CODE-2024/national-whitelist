@@ -1,5 +1,7 @@
 package com.gl.ceir.rules;
 
+import com.gl.ceir.builder.ExceptionListBuilder;
+import com.gl.ceir.builder.ForeignExceptionBuilder;
 import com.gl.ceir.dto.ActiveForeignImeiWithDifferentImsiDto;
 import com.gl.ceir.dto.ActiveUniqueForeignImeiDto;
 import com.gl.ceir.dto.ActiveUniqueImeiDto;
