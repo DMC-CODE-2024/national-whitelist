@@ -179,7 +179,12 @@ public class ValidateRules implements Runnable{
 //                    systemConfigurationDbRepository.save(new SystemConfigurationDb(profile+"_nw_unique_imei_last_run_time", activeUniqueImeisLastRunEndDate, "latest date when national whitelist process for unique imei ran", "National Whitelist"));
                 }
             }
-            List<RuleEngineMapping> rules = ruleEngineMappingRepository.getByFeatureAndUserTypeOrderByRuleOrder("national_whitelist", "default", "Enabled");
+            List<RuleEngineMapping> rules = ruleEngineMappingRepository.getByFeatureAndUserTypeOrderByRuleOrder
+
+
+
+
+
             List<String> ruleNames = rules.stream()
                     .map(RuleEngineMapping::getName)
                     .collect(Collectors.toList());

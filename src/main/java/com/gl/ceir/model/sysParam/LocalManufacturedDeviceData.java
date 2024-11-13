@@ -26,7 +26,7 @@ public class LocalManufacturedDeviceData {
     @Column(name = "manufacturer_name")
     private String manufacturerName;
 
-    @Column(name = "manufacturering_date")
+    @Column(name = "manufacturing_date")
     private String manufacturingDate;
 
     public LocalManufacturedDeviceData() {
