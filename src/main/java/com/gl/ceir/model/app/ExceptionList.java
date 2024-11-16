@@ -434,7 +434,12 @@ public class ExceptionList implements Serializable {
         this.isUsedDeviceImei = isUsedDeviceImei;
     }
 
+    @Override
     public String toString() {
-        return "ExceptionList{exceptionListId=" + this.exceptionListId + ", createdOn=" + String.valueOf(this.createdOn) + ", modifiedOn=" + String.valueOf(this.modifiedOn) + ", foreignRule='" + this.foreignRule + "', tac='" + this.tac + "', msisdn='" + this.msisdn + "', failedRuleId=" + this.failedRuleId + ", failedRuleName='" + this.failedRuleName + "', imsi='" + this.imsi + "', mobileOperator='" + this.mobileOperator + "', createdFilename='" + this.createdFilename + "', updatedFilename='" + this.updatedFilename + "', updatedOn=" + String.valueOf(this.updatedOn) + ", systemType='" + this.systemType + "', action='" + this.action + "', period='" + this.period + "', failedRuleDate=" + String.valueOf(this.failedRuleDate) + ", taxPaid=" + this.taxPaid + ", featureName='" + this.featureName + "', recordTime=" + String.valueOf(this.recordTime) + ", actualImei='" + this.actualImei + "', recordType='" + this.recordType + "', imei='" + this.imei + "', rawCdrFileName='" + this.rawCdrFileName + "', imeiArrivalTime=" + String.valueOf(this.imeiArrivalTime) + ", source='" + this.source + "', updateRawCdrFileName='" + this.updateRawCdrFileName + "', updateImeiArrivalTime=" + String.valueOf(this.updateImeiArrivalTime) + ", updateSource='" + this.updateSource + "', serverOrigin='" + this.serverOrigin + "', reasonForInvalidImei='" + this.reasonForInvalidImei + "', validityFlag=" + this.validityFlag + ", deviceType='" + this.deviceType + "', exceptionListCreatedDate=" + String.valueOf(this.exceptionListCreatedDate) + ", actualOperator='" + this.actualOperator + "', isTestImei=" + this.isTestImei + ", listType='" + this.listType + "', isUsedDeviceImei=" + this.isUsedDeviceImei + "}";
+        return "ExceptionList{" +
+                "imei='" + imei + '\'' +
+                ", validityFlag=" + validityFlag +
+                ", reasonForInvalidImei='" + reasonForInvalidImei + '\'' +
+                '}';
     }
 }
