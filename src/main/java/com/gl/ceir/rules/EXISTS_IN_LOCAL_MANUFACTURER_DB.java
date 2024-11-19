@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class EXISTS_IN_LOCAL_MANUFACTURER_DB implements RulesInterface {
+public class LOCAL_MANUFACTURER implements RulesInterface {
     @Autowired
     private LocalManufacturedDeviceDataRepository localManufacturedDeviceDataRepository;
     @Override

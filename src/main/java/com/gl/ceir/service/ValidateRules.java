@@ -94,11 +94,11 @@ public class ValidateRules implements Runnable{
     @Autowired
     IMEI_ALPHANUMERIC imeiAlphanumeric;
     @Autowired
-    CUSTOM_CHK customChk;
+    CUSTOM_GDCE customChk;
     @Autowired
     TYPE_APPROVED typeApproved;
     @Autowired
-    EXISTS_IN_LOCAL_MANUFACTURER_DB existsInLocalManufacturerDb;
+    LOCAL_MANUFACTURER existsInLocalManufacturerDb;
     @Autowired
     CommonService commonService;
     @Autowired
@@ -185,7 +185,7 @@ public class ValidateRules implements Runnable{
             List<String> ruleNames = rules.stream()
                     .map(RuleEngineMapping::getName)
                     .collect(Collectors.toList());
-            if(!ruleNames.contains(Rules.CUSTOM_CHK.getRuleName()) && !amnestyPeriodFlag) {
+            if(!ruleNames.contains(Rules.CUSTOM_GDCE.getRuleName()) && !amnestyPeriodFlag) {
                 skip = true;
             }
             if(!skip) {
@@ -233,12 +233,12 @@ public class ValidateRules implements Runnable{
                                                 modulesAuditTrailRepository.save(typeApprovedAudit);
                                                 activeUniqueImeiDto = typeApproved.validateActiveUniqueImei(activeUniqueImeiDto);
                                                 break;
-                                            case CUSTOM_CHK:
+                                            case CUSTOM_GDCE:
                                                 ModulesAuditTrail customCheckAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking customs data", MODULE_NAME+"national_whitelist", executionStartTime, startTime);
                                                 modulesAuditTrailRepository.save(customCheckAudit);
                                                 activeUniqueImeiDto = customChk.validateActiveUniqueImei(activeUniqueImeiDto);
                                                 break;
-                                            case EXISTS_IN_LOCAL_MANUFACTURER_DB:
+                                            case LOCAL_MANUFACTURER:
                                                 ModulesAuditTrail manufacturersAudit = ModulesAuditTrailBuilder.forUpdate(moduleAudiTrailId, 201, "rule-" + rule.getRuleOrder(), "NA", "National Whitelist", "UPDATE", "Checking manufacturers data", MODULE_NAME+"national_whitelist", executionStartTime, startTime);
                                                 modulesAuditTrailRepository.save(manufacturersAudit);
                                                 activeUniqueImeiDto = existsInLocalManufacturerDb.validateActiveUniqueImei(activeUniqueImeiDto);

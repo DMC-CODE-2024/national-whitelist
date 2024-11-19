@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CUSTOM_CHK implements RulesInterface {
+public class CUSTOM_GDCE implements RulesInterface {
     @Autowired
     private GdceDataRepository gdceDataRepository;
 

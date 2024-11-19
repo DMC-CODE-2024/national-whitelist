@@ -6,9 +6,9 @@ public enum Rules {
     IMEI_LENGTH_NATIONAL_WHITELIST,
     IMEI_TEST,
     IMEI_ALPHANUMERIC,
-    CUSTOM_CHK,
+    CUSTOM_GDCE,
     TYPE_APPROVED,
-    EXISTS_IN_LOCAL_MANUFACTURER_DB;
+    LOCAL_MANUFACTURER;
 
     public String getRuleName() {
         return this.name();

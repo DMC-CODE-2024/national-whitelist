@@ -109,8 +109,8 @@ public class NationalWhitelistBuilder {
     }
 
     public static int evaluateGdceFinalValue(Integer customsStatus, Integer manufacturerStatus, List<String> activeRules, boolean amnestyPeriodFlag) {
-        boolean isCustomsActive = activeRules.contains("CUSTOM_CHK");
-        boolean isManufacturerActive = activeRules.contains("EXISTS_IN_LOCAL_MANUFACTURER_DB");
+        boolean isCustomsActive = activeRules.contains("CUSTOM_GDCE");
+        boolean isManufacturerActive = activeRules.contains("LOCAL_MANUFACTURER");
         int customs = (isCustomsActive && customsStatus != null) ? 1 : 0;
         int manufacturer = (isManufacturerActive && manufacturerStatus != null) ? 1 : 0;
         if (customs == 0 && manufacturer == 0)

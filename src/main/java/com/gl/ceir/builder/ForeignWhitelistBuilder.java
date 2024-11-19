@@ -98,8 +98,8 @@ public class ForeignWhitelistBuilder {
     }
 
     public static int evaluateFinalValue(Integer customsStatus, Integer manufacturerStatus, List<String> activeRules) {
-        boolean isCustomsActive = activeRules.contains("CUSTOM_CHK");
-        boolean isManufacturerActive = activeRules.contains("EXISTS_IN_LOCAL_MANUFACTURER_DB");
+        boolean isCustomsActive = activeRules.contains("CUSTOM_GDCE");
+        boolean isManufacturerActive = activeRules.contains("LOCAL_MANUFACTURER");
         int customs = (isCustomsActive && customsStatus != null && customsStatus.intValue() == 1) ? 1 : 0;
         int manufacturer = (isManufacturerActive && manufacturerStatus != null && manufacturerStatus.intValue() == 1) ? 1 : 0;
         if (customs == 0 && manufacturer == 0) {
