@@ -151,6 +151,7 @@ public class NationalWhitelistBuilder {
             }
         } else if (validityFlag) {
             trc = 3;
+
         } else {
             trc = 2;
         }
