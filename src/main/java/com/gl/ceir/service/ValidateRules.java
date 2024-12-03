@@ -1,6 +1,7 @@
 package com.gl.ceir.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.gl.ceir.builder.*;
 import com.gl.ceir.dto.ActiveForeignImeiWithDifferentImsiDto;
 import com.gl.ceir.dto.ActiveUniqueForeignImeiDto;
@@ -277,9 +278,10 @@ public class ValidateRules implements Runnable{
                                         nwlCount = nationalWhitelistService.saveNationalWhitelists(nationalWhitelists, amnestyPeriodFlag, allowedDeviceTypes);
                                     }
                                     ObjectMapper objectMapper = new ObjectMapper();
+                                    objectMapper.registerModule(new JavaTimeModule());
                                     if (!activeUniqueImeiDto.getExceptionList().isEmpty()) {
                                         try {
-                                            String jsonOutput = objectMapper.writeValueAsString(activeUniqueImeiDto.getExceptionList());
+                                                String jsonOutput = objectMapper.writeValueAsString(activeUniqueImeiDto.getExceptionList());
                                             log.info("Skipped entries for nwl: " + jsonOutput);
                                         } catch (Exception e) {
                                             log.error("Error while converting exceptionList to JSON", e);
