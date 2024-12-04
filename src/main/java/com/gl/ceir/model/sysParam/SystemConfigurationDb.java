@@ -60,6 +60,8 @@ public class SystemConfigurationDb implements Serializable {
 		this.value = value;
 		this.description = description;
 		this.featureName =featureName;
+		this.modifiedBy = "system";
+		this.userType = "system";
 	}
 
 	public Integer getId() {
