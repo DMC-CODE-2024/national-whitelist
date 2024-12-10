@@ -93,8 +93,4 @@ public class NationalWhitelist {
     private Integer trcImeiStatus;
 
     private LocalDateTime trcModifiedTime;
-
-    private LocalDateTime timestamp;
-
-    private String protocol;
 }
