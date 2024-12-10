@@ -30,7 +30,6 @@ public class NationalWhitelistBuilder {
             nationalWhitelist.setAction(activeUniqueImei.getAction());
             nationalWhitelist.setPeriod(activeUniqueImei.getPeriod());
             nationalWhitelist.setFailedRuleId(activeUniqueImei.getFailedRuleId());
-            nationalWhitelist.setFailedRuleName(activeUniqueImei.getFailedRuleName());
             nationalWhitelist.setFeatureName(activeUniqueImei.getFeatureName());
             nationalWhitelist.setRecordTime(activeUniqueImei.getRecordTime());
             nationalWhitelist.setActualImei(activeUniqueImei.getActualImei());
@@ -78,7 +77,6 @@ public class NationalWhitelistBuilder {
         nationalWhitelist.setAction(activeUniqueImei.getAction());
         nationalWhitelist.setPeriod(activeUniqueImei.getPeriod());
         nationalWhitelist.setFailedRuleId(activeUniqueImei.getFailedRuleId());
-        nationalWhitelist.setFailedRuleName(activeUniqueImei.getFailedRuleName());
         nationalWhitelist.setFeatureName(activeUniqueImei.getFeatureName());
         nationalWhitelist.setRecordTime(activeUniqueImei.getRecordTime());
         nationalWhitelist.setActualImei(activeUniqueImei.getActualImei());

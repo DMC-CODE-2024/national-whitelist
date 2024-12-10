@@ -14,7 +14,6 @@ public class ForeignExceptionBuilder {
         exceptionList.setTac(activeUniqueImei.getTac());
         exceptionList.setMsisdn(activeUniqueImei.getMsisdn());
         exceptionList.setFailedRuleId(activeUniqueImei.getFailedRuleId());
-        exceptionList.setFailedRuleName(activeUniqueImei.getFailedRuleName());
         exceptionList.setImsi(activeUniqueImei.getImsi());
         exceptionList.setMobileOperator(activeUniqueImei.getMobileOperator());
         exceptionList.setCreatedFilename(activeUniqueImei.getCreateFilename());
@@ -52,7 +51,6 @@ public class ForeignExceptionBuilder {
         exceptionList.setTac(activeImeiWithDifferentMsisdn.getTac());
         exceptionList.setMsisdn(activeImeiWithDifferentMsisdn.getMsisdn());
         exceptionList.setFailedRuleId(activeImeiWithDifferentMsisdn.getFailedRuleId());
-        exceptionList.setFailedRuleName(activeImeiWithDifferentMsisdn.getFailedRuleName());
         exceptionList.setImsi(activeImeiWithDifferentMsisdn.getImsi());
         exceptionList.setMobileOperator(activeImeiWithDifferentMsisdn.getMobileOperator());
         exceptionList.setCreatedFilename(activeImeiWithDifferentMsisdn.getCreateFilename());

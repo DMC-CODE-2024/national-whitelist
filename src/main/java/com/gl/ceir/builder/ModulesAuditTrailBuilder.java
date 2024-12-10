@@ -9,7 +9,9 @@ public class ModulesAuditTrailBuilder {
     public static ModulesAuditTrail forInsert(Integer statusCode, String status, String errorMessage, String featureName, String action, Integer count, String info, String moduleName, LocalDateTime startTime, int executionTime) {
         ModulesAuditTrail modulesAuditTrail = new ModulesAuditTrail();
         modulesAuditTrail.setCreatedOn(startTime);
-        modulesAuditTrail.setModifiedOn(LocalDateTime.now());
+        modulesAuditTrail.setModifiedOn(LocalDateTime.now()
+
+        );
         modulesAuditTrail.setExecutionTime(Integer.valueOf(Math.toIntExact(System.currentTimeMillis() / 1000L) - executionTime));
         modulesAuditTrail.setStatusCode(statusCode);
         modulesAuditTrail.setStatus(status);
