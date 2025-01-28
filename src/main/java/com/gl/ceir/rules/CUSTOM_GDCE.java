@@ -37,9 +37,11 @@ public class CUSTOM_GDCE implements RulesInterface {
                     if (gdceDataOpt.isPresent()) {
                         imei.setCustomsStatus(1);
                     } else {
-                        boolean res = CustomCheck.identifyCustomComplianceStatus(connection, imei.getImei(), "NWL");
-                        if(res){
+                        String res = CustomCheck.identifyCustomComplianceStatus(connection, imei.getImei(), "NWL");
+                        if ("true".equalsIgnoreCase(res)) {
                             imei.setCustomsStatus(1);
+                        } else if ("false".equalsIgnoreCase(res)) {
+                            imei.setCustomsStatus(0);
                         } else {
                             imei.setCustomsStatus(0);
                         }
