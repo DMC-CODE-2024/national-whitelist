@@ -137,6 +137,8 @@ public class ValidateRules implements Runnable{
             if (amnestyPeriodDate.isPresent()){
                 amnestyPeriodFlag = isBeforeOrEqualAmnestyPeriod(amnestyPeriodDate.get().getValue());
             }
+            log.info("amnestyPeriodFlag: "+ amnestyPeriodFlag);
+            System.out.println("amnestyPeriodFlag: "+ amnestyPeriodFlag);
             String cdrProcessingTimestamp = Optional.ofNullable(genericRepository.getCdrProcessingTimestamp()).orElseThrow(() -> new Exception("CDR Not Processed Yet"));
             String activeUniqueImeisLastRunDate = "";
             String activeUniqueImeisLastRunEndDate = "";

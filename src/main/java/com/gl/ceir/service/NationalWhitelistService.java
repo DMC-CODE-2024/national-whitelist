@@ -28,7 +28,7 @@ public class NationalWhitelistService {
                     if (Boolean.TRUE.equals(entry.getValidityFlag())) {
                         if (deviceTypeOptional.isPresent()) {
                             String deviceType = deviceTypeOptional.get().getValue();
-                            if (deviceType.contains(entry.getDeviceType())) {
+                            if (deviceType.toLowerCase().contains(entry.getDeviceType().toLowerCase())) {
                                 if (entry.getGdceImeiStatus() == 1) {
                                     nationalWhitelistRepository.save(entry);
                                     count++;
