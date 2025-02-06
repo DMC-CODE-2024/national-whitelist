@@ -135,12 +135,17 @@
 		</dependency>
 
 
-		<dependency>
+		<!--<dependency>
 			<groupId>com.gl</groupId>
 			<artifactId>RuleEngine</artifactId>
 			<version>1.1</version>
 			<scope>system</scope>
 			<systemPath>${project.basedir}/libs/RuleEngine-1.1.jar</systemPath>
+		</dependency>-->
+		<dependency>
+			<groupId>com.gl</groupId>
+			<artifactId>rule_engine</artifactId>
+			<version>0.1</version>
 		</dependency>
 
 		<dependency>
